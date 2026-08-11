@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Новый проект — Анонс</title>
+    <title>BattleZ — Новый проект</title>
     <style>
         /* ===== БАЗОВЫЕ НАСТРОЙКИ ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -13,7 +13,31 @@
             color: #f0f6fc;
             min-height: 100vh;
             padding: 20px;
-            background-image: radial-gradient(circle at 10% 20%, rgba(255, 215, 0, 0.02) 0%, transparent 60%);
+            overflow-x: hidden;
+        }
+
+        /* ===== 3D-ФОН (ВРАЩАЮЩИЕСЯ ЗВЁЗДЫ) ===== */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            background-image: 
+                radial-gradient(2px 2px at 20px 30px, #ffd700, transparent),
+                radial-gradient(2px 2px at 40px 70px, #ffd700, transparent),
+                radial-gradient(2px 2px at 50px 160px, #ffd700, transparent),
+                radial-gradient(2px 2px at 90px 40px, #ffd700, transparent),
+                radial-gradient(2px 2px at 130px 80px, #ffd700, transparent),
+                radial-gradient(2px 2px at 160px 30px, #ffd700, transparent);
+            background-size: 200px 200px;
+            background-repeat: repeat;
+            opacity: 0.3;
+            animation: rotateBg 60s linear infinite;
+        }
+        @keyframes rotateBg {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         /* ===== КОНТЕЙНЕР ===== */
@@ -30,6 +54,24 @@
             letter-spacing: -1px;
         }
         .header p { color: #8b949e; font-size: 16px; margin-top: 4px; }
+
+        /* ===== ТАЙМЕР ДО ЗАПУСКА ===== */
+        .timer-section {
+            background: rgba(255, 215, 0, 0.05);
+            border: 1px solid rgba(255, 215, 0, 0.15);
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+        .timer-section .label { color: #8b949e; font-size: 14px; }
+        .timer-section .time {
+            font-size: 36px;
+            font-weight: 700;
+            color: #ffd700;
+            margin-top: 4px;
+            font-variant-numeric: tabular-nums;
+        }
 
         /* ===== КАРТОЧКИ ===== */
         .card {
@@ -74,6 +116,28 @@
         .event-item .title { color: #ffd700; font-weight: 600; font-size: 16px; }
         .event-item .desc { color: #f0f6fc; font-size: 14px; margin-top: 4px; }
 
+        /* ===== ДОРОЖНАЯ КАРТА (Roadmap) ===== */
+        .roadmap-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        @media (max-width: 480px) {
+            .roadmap-grid { grid-template-columns: 1fr; }
+        }
+        .roadmap-item {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: border 0.3s;
+        }
+        .roadmap-item:hover { border-color: #ffd700; }
+        .roadmap-item .icon { font-size: 28px; }
+        .roadmap-item .name { color: #f0f6fc; font-weight: 600; margin-top: 4px; }
+        .roadmap-item .desc { color: #8b949e; font-size: 13px; margin-top: 2px; }
+
         /* ===== КНОПКИ ===== */
         .btn {
             display: block;
@@ -93,10 +157,53 @@
         }
         .btn:hover { transform: scale(1.02); }
 
-        .btn-secondary {
+        /* ===== КНОПКА ПОДПИСАТЬСЯ ===== */
+        .btn-channel {
             background: rgba(255, 255, 255, 0.08);
             color: #f0f6fc;
             border: 1px solid rgba(255, 255, 255, 0.08);
+            text-decoration: none;
+            display: inline-block;
+            padding: 12px 24px;
+            border-radius: 50px;
+        }
+        .btn-channel:hover { background: rgba(255, 255, 255, 0.15); }
+
+        /* ===== POP-UP ===== */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            animation: fadeIn 0.5s ease-out;
+        }
+        .popup.open { display: flex; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .popup-content {
+            background: #0a0d14;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+        .popup-content h2 { font-size: 22px; margin-bottom: 12px; }
+        .popup-content p { color: #8b949e; font-size: 14px; line-height: 1.6; }
+        .popup-content .close-popup {
+            margin-top: 16px;
+            background: none;
+            border: none;
+            color: #8b949e;
+            cursor: pointer;
+            font-size: 14px;
         }
 
         /* ===== АДМИНКА ===== */
@@ -123,6 +230,12 @@
         }
         .admin-input:focus { border-color: #ffd700; outline: none; }
 
+        .btn-admin {
+            background: rgba(255, 255, 255, 0.08);
+            color: #f0f6fc;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
         /* ===== ФУТЕР ===== */
         .footer {
             text-align: center;
@@ -130,6 +243,7 @@
             font-size: 12px;
             padding: 30px 0;
         }
+        .footer a { color: #ffd700; text-decoration: none; }
 
         /* ===== МОДАЛКА ПАРОЛЯ ===== */
         .modal {
@@ -176,29 +290,40 @@
             font-size: 24px;
             color: #8b949e;
         }
-
-        /* ===== АДАПТИВНОСТЬ ===== */
-        @media (max-width: 480px) {
-            .header h1 { font-size: 32px; }
-        }
     </style>
 </head>
 <body>
+    <!-- POP-UP ПОДПИСКИ -->
+    <div class="popup" id="subscribePopup">
+        <div class="popup-content">
+            <h2>🌟 Не пропусти запуск!</h2>
+            <p>
+                Подпишись на канал <strong>@CoinFlowNews</strong>, чтобы первым узнать о релизе и получить эксклюзивные бонусы.
+            </p>
+            <a href="https://t.me/CoinFlowNews" class="btn-channel" style="margin-top:12px;">📢 Подписаться</a>
+            <button class="close-popup" onclick="document.getElementById('subscribePopup').classList.remove('open')">Закрыть</button>
+        </div>
+    </div>
+
     <div class="container">
         <!-- ЗАГОЛОВОК -->
         <div class="header">
-            <h1>✦ Новый проект</h1>
-            <p>Скоро в Telegram</p>
+            <h1>⚔️ BattleZ</h1>
+            <p>Новый игровой проект в Telegram</p>
+        </div>
+
+        <!-- ТАЙМЕР -->
+        <div class="timer-section">
+            <div class="label">⏳ До запуска</div>
+            <div class="time" id="timerDisplay">Загрузка...</div>
         </div>
 
         <!-- АНОНС -->
         <div class="card">
             <h2 style="margin-bottom: 12px;">📢 Мы готовим нечто большое</h2>
             <p style="color: #8b949e; line-height: 1.7;">
-                Друзья, мы создаём новый проект, который изменит ваше представление о Telegram-ботах.
-                Сейчас он находится в стадии закрытого бета-тестирования, и мы готовимся к запуску.
-                <br><br>
-                Следи за новостями в этом разделе и подпишись на канал @CoinFlowNews, чтобы не пропустить анонс!
+                BattleZ — это новый игровой проект в Telegram, который объединит квесты, гильдии и PvP.
+                Сейчас мы в стадии закрытого тестирования и готовимся к запуску.
             </p>
         </div>
 
@@ -211,11 +336,11 @@
             <div id="newsContainer">
                 <div class="news-item">
                     <div class="date">11 августа 2026</div>
-                    <div class="text">🚀 Проект перешёл в стадию закрытого бета-тестирования. Мы активно тестируем все системы!</div>
+                    <div class="text">🚀 BattleZ перешёл в стадию закрытого бета-тестирования!</div>
                 </div>
                 <div class="news-item">
                     <div class="date">10 августа 2026</div>
-                    <div class="text">🔮 Анонс нового проекта! Следите за новостями в канале @CoinFlowNews.</div>
+                    <div class="text">🔮 Анонс нового игрового проекта BattleZ!</div>
                 </div>
             </div>
         </div>
@@ -234,6 +359,35 @@
             </div>
         </div>
 
+        <!-- ДОРОЖНАЯ КАРТА -->
+        <div class="card">
+            <div class="card-header">
+                <h2>🗺️ Что вас ждёт</h2>
+            </div>
+            <div class="roadmap-grid">
+                <div class="roadmap-item">
+                    <div class="icon">🧙</div>
+                    <div class="name">Персонажи</div>
+                    <div class="desc">Прокачка, уровни и уникальные способности</div>
+                </div>
+                <div class="roadmap-item">
+                    <div class="icon">⚔️</div>
+                    <div class="name">PvP-арена</div>
+                    <div class="desc">Сражайся с другими игроками</div>
+                </div>
+                <div class="roadmap-item">
+                    <div class="icon">🏆</div>
+                    <div class="name">Гильдии</div>
+                    <div class="desc">Создавай кланы и участвуй в битвах</div>
+                </div>
+                <div class="roadmap-item">
+                    <div class="icon">🎁</div>
+                    <div class="name">Промокоды</div>
+                    <div class="desc">Эксклюзивные бонусы для подписчиков</div>
+                </div>
+            </div>
+        </div>
+
         <!-- ССЫЛКИ -->
         <div class="card">
             <h2 style="margin-bottom: 12px;">🔗 Полезные ссылки</h2>
@@ -244,7 +398,9 @@
         </div>
 
         <!-- ПОДВАЛ -->
-        <div class="footer">Проект в разработке • 2026</div>
+        <div class="footer">
+            BattleZ © 2026 • <a href="https://t.me/CoinFlowNews">@CoinFlowNews</a>
+        </div>
     </div>
 
     <!-- МОДАЛКА АДМИНКИ -->
@@ -265,18 +421,60 @@
         </div>
 
         <input type="text" class="admin-input" id="newsInput" placeholder="Текст новости...">
-        <button class="btn btn-secondary" onclick="addNews()" style="margin-top:0;">➕ Добавить новость</button>
+        <button class="btn-admin" onclick="addNews()" style="width:100%;margin-top:0;">➕ Добавить новость</button>
 
         <div style="height:12px;"></div>
 
         <input type="text" class="admin-input" id="eventTitleInput" placeholder="Название ивента...">
         <input type="text" class="admin-input" id="eventDescInput" placeholder="Описание ивента...">
-        <button class="btn btn-secondary" onclick="addEvent()">➕ Добавить ивент</button>
+        <button class="btn-admin" onclick="addEvent()" style="width:100%;">➕ Добавить ивент</button>
     </div>
 
     <script>
+        // ===== ЗВУК ПРИ ДОБАВЛЕНИИ =====
+        function playSound() {
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(880, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(1320, audioCtx.currentTime + 0.1);
+                gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.3);
+            } catch (e) {}
+        }
+
+        // ===== ТАЙМЕР =====
+        function startTimer() {
+            const launchDate = new Date('2026-09-01T00:00:00').getTime();
+            const timer = setInterval(() => {
+                const now = new Date().getTime();
+                const diff = launchDate - now;
+                if (diff < 0) {
+                    clearInterval(timer);
+                    document.getElementById('timerDisplay').textContent = '🚀 Запущен!';
+                    return;
+                }
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+                document.getElementById('timerDisplay').textContent = `${days}д ${hours}ч ${minutes}м ${seconds}с`;
+            }, 1000);
+        }
+
+        // ===== POP-UP =====
+        setTimeout(() => {
+            document.getElementById('subscribePopup').classList.add('open');
+        }, 5000);
+
         // ===== ПАРОЛЬ АДМИНКИ =====
-        const ADMIN_PASSWORD = "123456"; // Смени на свой пароль
+        const ADMIN_PASSWORD = "123456";
 
         function openAdmin() {
             document.getElementById('adminModal').classList.add('open');
@@ -323,6 +521,7 @@
             container.innerHTML = newItem + container.innerHTML;
             localStorage.setItem('news', container.innerHTML);
             document.getElementById('newsInput').value = '';
+            playSound();
             alert('✅ Новость добавлена!');
         }
 
@@ -351,12 +550,14 @@
             localStorage.setItem('events', container.innerHTML);
             document.getElementById('eventTitleInput').value = '';
             document.getElementById('eventDescInput').value = '';
+            playSound();
             alert('✅ Ивент добавлен!');
         }
 
         // ===== ЗАПУСК =====
+        startTimer();
         loadNews();
         loadEvents();
     </script>
 </body>
-  </html>
+    </html>
