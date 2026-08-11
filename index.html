@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Новый проект — Анонс</title>
+    <style>
+        /* ===== БАЗОВЫЕ НАСТРОЙКИ ===== */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: #0a0d14;
+            color: #f0f6fc;
+            min-height: 100vh;
+            padding: 20px;
+            background-image: radial-gradient(circle at 10% 20%, rgba(255, 215, 0, 0.02) 0%, transparent 60%);
+        }
+
+        /* ===== КОНТЕЙНЕР ===== */
+        .container { max-width: 800px; margin: 0 auto; }
+
+        /* ===== ЗАГОЛОВОК ===== */
+        .header { text-align: center; padding: 30px 0 20px; }
+        .header h1 {
+            font-size: 42px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #ffd700, #ff8c00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -1px;
+        }
+        .header p { color: #8b949e; font-size: 16px; margin-top: 4px; }
+
+        /* ===== КАРТОЧКИ ===== */
+        .card {
+            background: rgba(22, 27, 34, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(16px);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 16px;
+            transition: transform 0.3s;
+        }
+        .card:hover { transform: translateY(-2px); }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .card-header h2 { font-size: 20px; font-weight: 700; }
+
+        /* ===== НОВОСТИ ===== */
+        .news-item {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 10px;
+            border-left: 4px solid #ffd700;
+        }
+        .news-item .date { color: #8b949e; font-size: 12px; }
+        .news-item .text { color: #f0f6fc; font-size: 14px; line-height: 1.6; }
+
+        /* ===== ИВЕНТЫ ===== */
+        .event-item {
+            background: rgba(255, 215, 0, 0.05);
+            border: 1px solid rgba(255, 215, 0, 0.15);
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 10px;
+        }
+        .event-item .date { color: #8b949e; font-size: 12px; }
+        .event-item .title { color: #ffd700; font-weight: 600; font-size: 16px; }
+        .event-item .desc { color: #f0f6fc; font-size: 14px; margin-top: 4px; }
+
+        /* ===== КНОПКИ ===== */
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #ffd700, #ff8c00);
+            color: #0a0d14;
+            border: none;
+            border-radius: 14px;
+            font-size: 17px;
+            font-weight: 700;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            margin-top: 12px;
+            transition: all 0.3s;
+        }
+        .btn:hover { transform: scale(1.02); }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.08);
+            color: #f0f6fc;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        /* ===== АДМИНКА ===== */
+        .admin-panel {
+            background: rgba(255, 215, 0, 0.05);
+            border: 1px solid rgba(255, 215, 0, 0.15);
+            border-radius: 20px;
+            padding: 20px;
+            margin-top: 20px;
+            display: none;
+        }
+        .admin-panel.open { display: block; }
+
+        .admin-input {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: #f0f6fc;
+            margin-bottom: 10px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+        .admin-input:focus { border-color: #ffd700; outline: none; }
+
+        /* ===== ФУТЕР ===== */
+        .footer {
+            text-align: center;
+            color: #586069;
+            font-size: 12px;
+            padding: 30px 0;
+        }
+
+        /* ===== МОДАЛКА ПАРОЛЯ ===== */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+        }
+        .modal.open { display: flex; }
+        .modal-content {
+            background: #0a0d14;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 400px;
+            width: 100%;
+        }
+        .modal-content h2 { text-align: center; margin-bottom: 20px; }
+        .modal-content input {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: #f0f6fc;
+            margin-bottom: 12px;
+        }
+        .modal-content .btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #ffd700, #ff8c00);
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+        .close-modal {
+            float: right;
+            cursor: pointer;
+            font-size: 24px;
+            color: #8b949e;
+        }
+
+        /* ===== АДАПТИВНОСТЬ ===== */
+        @media (max-width: 480px) {
+            .header h1 { font-size: 32px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- ЗАГОЛОВОК -->
+        <div class="header">
+            <h1>✦ Новый проект</h1>
+            <p>Скоро в Telegram</p>
+        </div>
+
+        <!-- АНОНС -->
+        <div class="card">
+            <h2 style="margin-bottom: 12px;">📢 Мы готовим нечто большое</h2>
+            <p style="color: #8b949e; line-height: 1.7;">
+                Друзья, мы создаём новый проект, который изменит ваше представление о Telegram-ботах.
+                Сейчас он находится в стадии закрытого бета-тестирования, и мы готовимся к запуску.
+                <br><br>
+                Следи за новостями в этом разделе и подпишись на канал @CoinFlowNews, чтобы не пропустить анонс!
+            </p>
+        </div>
+
+        <!-- НОВОСТИ -->
+        <div class="card" id="newsSection">
+            <div class="card-header">
+                <h2>📰 Новости</h2>
+                <button onclick="openAdmin()" style="background:none;border:none;color:#ffd700;cursor:pointer;font-size:14px;">🔧 Админка</button>
+            </div>
+            <div id="newsContainer">
+                <div class="news-item">
+                    <div class="date">11 августа 2026</div>
+                    <div class="text">🚀 Проект перешёл в стадию закрытого бета-тестирования. Мы активно тестируем все системы!</div>
+                </div>
+                <div class="news-item">
+                    <div class="date">10 августа 2026</div>
+                    <div class="text">🔮 Анонс нового проекта! Следите за новостями в канале @CoinFlowNews.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ИВЕНТЫ -->
+        <div class="card">
+            <div class="card-header">
+                <h2>🎮 Ивенты</h2>
+            </div>
+            <div id="eventsContainer">
+                <div class="event-item">
+                    <div class="date">Скоро</div>
+                    <div class="title">🔥 Закрытый тест</div>
+                    <div class="desc">Первые тестировщики получат эксклюзивные бонусы при запуске.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ССЫЛКИ -->
+        <div class="card">
+            <h2 style="margin-bottom: 12px;">🔗 Полезные ссылки</h2>
+            <p style="color: #8b949e; line-height: 1.7;">
+                📢 Канал: <a href="https://t.me/CoinFlowNews" style="color: #ffd700; text-decoration: none;">@CoinFlowNews</a><br>
+                💬 Чат: <a href="https://t.me/PrsAdvertisementMy" style="color: #ffd700; text-decoration: none;">@PrsAdvertisementMy</a>
+            </p>
+        </div>
+
+        <!-- ПОДВАЛ -->
+        <div class="footer">Проект в разработке • 2026</div>
+    </div>
+
+    <!-- МОДАЛКА АДМИНКИ -->
+    <div class="modal" id="adminModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeAdmin()">×</span>
+            <h2>🔐 Вход в админку</h2>
+            <input type="password" id="adminPassword" placeholder="Пароль">
+            <button class="btn" onclick="checkPassword()">Войти</button>
+        </div>
+    </div>
+
+    <!-- ПАНЕЛЬ АДМИНКИ -->
+    <div class="admin-panel" id="adminPanel">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+            <h3 style="color:#ffd700;">👑 Админ-панель</h3>
+            <button onclick="closeAdminPanel()" style="background:none;border:none;color:#8b949e;cursor:pointer;">✕</button>
+        </div>
+
+        <input type="text" class="admin-input" id="newsInput" placeholder="Текст новости...">
+        <button class="btn btn-secondary" onclick="addNews()" style="margin-top:0;">➕ Добавить новость</button>
+
+        <div style="height:12px;"></div>
+
+        <input type="text" class="admin-input" id="eventTitleInput" placeholder="Название ивента...">
+        <input type="text" class="admin-input" id="eventDescInput" placeholder="Описание ивента...">
+        <button class="btn btn-secondary" onclick="addEvent()">➕ Добавить ивент</button>
+    </div>
+
+    <script>
+        // ===== ПАРОЛЬ АДМИНКИ =====
+        const ADMIN_PASSWORD = "123456"; // Смени на свой пароль
+
+        function openAdmin() {
+            document.getElementById('adminModal').classList.add('open');
+        }
+
+        function closeAdmin() {
+            document.getElementById('adminModal').classList.remove('open');
+        }
+
+        function checkPassword() {
+            const input = document.getElementById('adminPassword').value;
+            if (input === ADMIN_PASSWORD) {
+                closeAdmin();
+                document.getElementById('adminPanel').classList.add('open');
+                document.getElementById('adminPassword').value = '';
+            } else {
+                alert('❌ Неверный пароль!');
+            }
+        }
+
+        function closeAdminPanel() {
+            document.getElementById('adminPanel').classList.remove('open');
+        }
+
+        // ===== НОВОСТИ =====
+        function loadNews() {
+            const saved = localStorage.getItem('news');
+            if (saved) {
+                document.getElementById('newsContainer').innerHTML = saved;
+            }
+        }
+
+        function addNews() {
+            const text = document.getElementById('newsInput').value;
+            if (!text) return alert('Введи текст новости');
+            const today = new Date().toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' });
+            const newItem = `
+                <div class="news-item">
+                    <div class="date">${today}</div>
+                    <div class="text">${text}</div>
+                </div>
+            `;
+            const container = document.getElementById('newsContainer');
+            container.innerHTML = newItem + container.innerHTML;
+            localStorage.setItem('news', container.innerHTML);
+            document.getElementById('newsInput').value = '';
+            alert('✅ Новость добавлена!');
+        }
+
+        // ===== ИВЕНТЫ =====
+        function loadEvents() {
+            const saved = localStorage.getItem('events');
+            if (saved) {
+                document.getElementById('eventsContainer').innerHTML = saved;
+            }
+        }
+
+        function addEvent() {
+            const title = document.getElementById('eventTitleInput').value;
+            const desc = document.getElementById('eventDescInput').value;
+            if (!title || !desc) return alert('Заполни название и описание');
+            const today = new Date().toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' });
+            const newItem = `
+                <div class="event-item">
+                    <div class="date">${today}</div>
+                    <div class="title">${title}</div>
+                    <div class="desc">${desc}</div>
+                </div>
+            `;
+            const container = document.getElementById('eventsContainer');
+            container.innerHTML = newItem + container.innerHTML;
+            localStorage.setItem('events', container.innerHTML);
+            document.getElementById('eventTitleInput').value = '';
+            document.getElementById('eventDescInput').value = '';
+            alert('✅ Ивент добавлен!');
+        }
+
+        // ===== ЗАПУСК =====
+        loadNews();
+        loadEvents();
+    </script>
+</body>
+  </html>
