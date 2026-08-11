@@ -61,6 +61,7 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             letter-spacing: -0.5px;
+            cursor: pointer;
         }
         .navbar .nav-links {
             display: flex;
@@ -138,6 +139,11 @@
             border-left: 3px solid var(--gold);
         }
         .admin-sidebar .menu-item .icon { font-size: 20px; }
+        .admin-sidebar .menu-item.exit {
+            margin-top: auto;
+            border-top: 1px solid var(--border);
+            padding-top: 16px;
+        }
 
         .admin-content {
             display: none;
@@ -442,10 +448,55 @@
             transition: background 0.2s;
         }
         .share-btn:hover { background: rgba(255, 255, 255, 0.1); }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+        }
+        .modal.open { display: flex; }
+        .modal-content {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 30px;
+            max-width: 400px;
+            width: 100%;
+            box-shadow: var(--shadow);
+        }
+        .modal-content h2 { text-align: center; margin-bottom: 20px; }
+        .modal-content input {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text);
+            margin-bottom: 12px;
+        }
+        .modal-content .btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #ffd700, #ff8c00);
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+        .close-modal {
+            float: right;
+            cursor: pointer;
+            font-size: 24px;
+            color: var(--text-muted);
+        }
     </style>
 </head>
 <body>
-    <!-- МЕНЮ -->
     <nav class="navbar">
         <div class="logo">⚔️ BattleZ</div>
         <div class="nav-links">
@@ -457,7 +508,6 @@
     </nav>
 
     <div class="container">
-        <!-- ГЛАВНАЯ -->
         <div class="page active" id="page-home">
             <div class="header">
                 <h1>BattleZ</h1>
@@ -503,20 +553,18 @@
             </div>
         </div>
 
-        <!-- НОВОСТИ -->
         <div class="page" id="page-news">
             <div class="header"><h2 style="color:var(--gold);">📰 Новости</h2></div>
             <div class="card"><div id="newsContainer"></div></div>
         </div>
 
-        <!-- ИВЕНТЫ -->
         <div class="page" id="page-events">
             <div class="header"><h2 style="color:var(--gold);">🎮 Ивенты</h2></div>
             <div class="card"><div id="eventsContainer"></div></div>
         </div>
     </div>
 
-    <!-- АДМИНКА В СТИЛЕ SPEED HOST -->
+    <!-- АДМИНКА -->
     <div class="admin-sidebar" id="adminSidebar">
         <button class="admin-close" onclick="closeAdmin()">✕</button>
         <div class="brand"><span>⚔️</span> BattleZ</div>
@@ -524,11 +572,10 @@
         <div class="menu-item" onclick="switchAdmin('events')"><span class="icon">🎮</span> Ивенты</div>
         <div class="menu-item" onclick="switchAdmin('timer')"><span class="icon">⏱️</span> Таймер</div>
         <div class="menu-item" onclick="switchAdmin('beta')"><span class="icon">📋</span> Бета-тестеры</div>
-        <div class="menu-item" onclick="closeAdmin()"><span class="icon">🚪</span> Выйти</div>
+        <div class="menu-item exit" onclick="closeAdmin()"><span class="icon">🚪</span> Выйти</div>
     </div>
 
     <div class="admin-content" id="adminContent">
-        <!-- Новости -->
         <div class="admin-section active" id="admin-news">
             <div class="admin-card">
                 <h3>📰 Добавить новость</h3>
@@ -541,7 +588,6 @@
             </div>
         </div>
 
-        <!-- Ивенты -->
         <div class="admin-section" id="admin-events">
             <div class="admin-card">
                 <h3>🎮 Добавить ивент</h3>
@@ -555,7 +601,6 @@
             </div>
         </div>
 
-        <!-- Таймер -->
         <div class="admin-section" id="admin-timer">
             <div class="admin-card">
                 <h3>⏱️ Управление таймером</h3>
@@ -568,7 +613,6 @@
             </div>
         </div>
 
-        <!-- Бета-тестеры -->
         <div class="admin-section" id="admin-beta">
             <div class="admin-card">
                 <h3>📋 Список бета-тестеров</h3>
@@ -577,7 +621,6 @@
         </div>
     </div>
 
-    <!-- МОДАЛКА БЕТЫ -->
     <div class="modal" id="betaModal">
         <div class="modal-content">
             <span class="close-modal" onclick="closeBetaModal()">×</span>
@@ -628,28 +671,7 @@
             localStorage.setItem('onlineCount', onlineCount);
         }, 8000);
 
-        // ===== БЕТА-РЕГИСТРАЦИЯ =====
-        function openBetaModal() {
-            if (localStorage.getItem('beta_registered') === 'true') return;
-            document.getElementById('betaModal').classList.add('open');
-        }
-        function closeBetaModal() { document.getElementById('betaModal').classList.remove('open'); }
-        function registerBeta() {
-            const name = document.getElementById('betaName').value.trim();
-            const tg = document.getElementById('betaTelegram').value.trim();
-            if (!name || !tg) return alert('Заполни все поля!');
-            const users = JSON.parse(localStorage.getItem('beta_users') || '[]');
-            users.push({ name, tg, date: new Date().toLocaleString() });
-            localStorage.setItem('beta_users', JSON.stringify(users));
-            localStorage.setItem('beta_registered', 'true');
-            closeBetaModal();
-            const btn = document.getElementById('betaBtn');
-            btn.className = 'beta-btn registered';
-            btn.textContent = '✅ Вы зарегистрированы на бета-тест';
-            alert('🎉 Ты записан! Администратор свяжется с тобой.');
-        }
-
-        // ===== АДМИНКА (SPEED HOST STYLE) =====
+        // ===== АДМИНКА =====
         function openAdmin() {
             const password = prompt('Введите пароль администратора:');
             if (password === '123456') {
@@ -676,15 +698,15 @@
             document.querySelector(`.menu-item[onclick*="${section}"]`).classList.add('active');
         }
 
-        // ===== АДМИН-НОВОСТИ =====
+        // ===== НОВОСТИ (админ + пользователь) =====
         function renderAdminNews() {
             const saved = localStorage.getItem('news');
-            const items = saved ? saved.split('</div>').filter(s => s.trim()).map(s => s + '</div>') : [];
             const container = document.getElementById('adminNewsList');
-            if (!items.length) {
+            if (!saved || saved.trim() === '') {
                 container.innerHTML = '<div style="color:var(--text-muted);font-size:14px;">Новостей пока нет.</div>';
                 return;
             }
+            const items = saved.split('</div>').filter(s => s.trim());
             container.innerHTML = items.map((item, i) => {
                 const div = document.createElement('div');
                 div.innerHTML = item;
@@ -718,15 +740,15 @@
         }
         function deleteNews(btn) { btn.closest('.news-item').remove(); localStorage.setItem('news', document.getElementById('newsContainer').innerHTML); renderAdminNews(); }
 
-        // ===== АДМИН-ИВЕНТЫ =====
+        // ===== ИВЕНТЫ =====
         function renderAdminEvents() {
             const saved = localStorage.getItem('events');
-            const items = saved ? saved.split('</div>').filter(s => s.trim()).map(s => s + '</div>') : [];
             const container = document.getElementById('adminEventsList');
-            if (!items.length) {
+            if (!saved || saved.trim() === '') {
                 container.innerHTML = '<div style="color:var(--text-muted);font-size:14px;">Ивентов пока нет.</div>';
                 return;
             }
+            const items = saved.split('</div>').filter(s => s.trim());
             container.innerHTML = items.map((item, i) => {
                 const div = document.createElement('div');
                 div.innerHTML = item;
@@ -762,20 +784,7 @@
         }
         function deleteEvent(btn) { btn.closest('.event-item').remove(); localStorage.setItem('events', document.getElementById('eventsContainer').innerHTML); renderAdminEvents(); }
 
-        // ===== АДМИН-ТАЙМЕР =====
-        function updateTimerStatus() {
-            const saved = localStorage.getItem('launchDate');
-            document.getElementById('timerStatus').textContent = saved ? `Дата запуска: ${saved}` : 'Дата не установлена';
-        }
-        function setTimer() {
-            const date = document.getElementById('timerDateInput').value;
-            if (!date) return alert('Выбери дату!');
-            localStorage.setItem('launchDate', date);
-            updateTimerStatus();
-            alert('✅ Дата установлена!');
-        }
-
-        // ===== АДМИН-БЕТА =====
+        // ===== БЕТА =====
         function renderAdminBeta() {
             const users = JSON.parse(localStorage.getItem('beta_users') || '[]');
             const container = document.getElementById('adminBetaList');
@@ -791,16 +800,41 @@
             ).join('');
         }
 
-        // ===== ЗАПУСК =====
-        if (localStorage.getItem('beta_registered') === 'true') {
+        // ===== БЕТА-МОДАЛКА =====
+        function openBetaModal() {
+            if (localStorage.getItem('beta_registered') === 'true') return;
+            document.getElementById('betaModal').classList.add('open');
+        }
+        function closeBetaModal() { document.getElementById('betaModal').classList.remove('open'); }
+        function registerBeta() {
+            const name = document.getElementById('betaName').value.trim();
+            const tg = document.getElementById('betaTelegram').value.trim();
+            if (!name || !tg) return alert('Заполни все поля!');
+            const users = JSON.parse(localStorage.getItem('beta_users') || '[]');
+            users.push({ name, tg, date: new Date().toLocaleString() });
+            localStorage.setItem('beta_users', JSON.stringify(users));
+            localStorage.setItem('beta_registered', 'true');
+            closeBetaModal();
             const btn = document.getElementById('betaBtn');
             btn.className = 'beta-btn registered';
             btn.textContent = '✅ Вы зарегистрированы на бета-тест';
+            alert('🎉 Ты записан! Администратор свяжется с тобой.');
         }
-        // Открытие админки по двойному клику на логотип в меню
-        document.querySelector('.navbar .logo').addEventListener('dblclick', openAdmin);
 
-        // Таймер на главной
+        // ===== ТАЙМЕР =====
+        function updateTimerStatus() {
+            const saved = localStorage.getItem('launchDate');
+            document.getElementById('timerStatus').textContent = saved ? `Дата запуска: ${saved}` : 'Дата не установлена';
+        }
+        function setTimer() {
+            const date = document.getElementById('timerDateInput').value;
+            if (!date) return alert('Выбери дату!');
+            localStorage.setItem('launchDate', date);
+            updateTimerStatus();
+            alert('✅ Дата установлена!');
+        }
+
+        // ===== ТАЙМЕР НА ГЛАВНОЙ =====
         function updateTimer() {
             const saved = localStorage.getItem('launchDate');
             if (!saved) { document.getElementById('timerDisplay').textContent = 'Дата не установлена'; return; }
@@ -817,12 +851,21 @@
         setInterval(updateTimer, 1000);
         updateTimer();
 
-        // ===== ПОДЕЛИТЬСЯ =====
+        // ===== ЗАПУСК =====
+        document.getElementById('newsContainer').innerHTML = localStorage.getItem('news') || '';
+        document.getElementById('eventsContainer').innerHTML = localStorage.getItem('events') || '';
+        if (localStorage.getItem('beta_registered') === 'true') {
+            const btn = document.getElementById('betaBtn');
+            btn.className = 'beta-btn registered';
+            btn.textContent = '✅ Вы зарегистрированы на бета-тест';
+        }
+
         function shareBattleZ() {
             const url = encodeURIComponent(window.location.href);
             const text = encodeURIComponent('⚔️ BattleZ — новый игровой проект в Telegram!');
             window.open(`https://t.me/share/url?url=${url}&text=${text}`, '_blank');
         }
+        document.querySelector('.navbar .logo').addEventListener('dblclick', openAdmin);
     </script>
 </body>
-                                                                                                            </html>
+    </html>
