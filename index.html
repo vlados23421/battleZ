@@ -17,8 +17,6 @@
             padding: 20px;
             overflow-x: hidden;
         }
-
-        /* ===== 3D-ФОН ===== */
         body::before {
             content: '';
             position: fixed;
@@ -35,24 +33,78 @@
             background-size: 200px 200px;
             background-repeat: repeat;
             opacity: 0.3;
-            animation: rotateBg 60s linear infinite;
+            animation: particles 20s ease-in-out infinite alternate;
         }
-        @keyframes rotateBg {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        @keyframes particles {
+            0% { opacity: 0.2; transform: scale(1); }
+            100% { opacity: 0.5; transform: scale(1.05); }
         }
-
         .container { max-width: 800px; margin: 0 auto; }
 
+        /* ===== МЕНЮ ===== */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 20px;
+            background: rgba(10, 13, 20, 0.8);
+            backdrop-filter: blur(12px);
+            border-radius: 16px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .navbar .logo {
+            font-size: 22px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ffd700, #ff8c00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .navbar .nav-links {
+            display: flex;
+            gap: 12px;
+        }
+        .navbar .nav-links a {
+            color: #8b949e;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s;
+        }
+        .navbar .nav-links a:hover,
+        .navbar .nav-links a.active {
+            color: #ffd700;
+        }
+
+        /* ===== АДМИН-КНОПКА (появляется только у админа) ===== */
+        .navbar .nav-admin {
+            background: rgba(255, 215, 0, 0.1);
+            padding: 4px 14px;
+            border-radius: 50px;
+            color: #ffd700;
+            font-size: 13px;
+            cursor: pointer;
+            display: none;
+        }
+        .navbar .nav-admin.visible {
+            display: inline-block;
+        }
+
+        /* ===== СТРАНИЦЫ ===== */
+        .page { display: none; animation: fade 0.4s ease; }
+        .page.active { display: block; }
+        @keyframes fade {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         /* ===== ЗАГОЛОВОК ===== */
-        .header { text-align: center; padding: 30px 0 20px; }
+        .header { text-align: center; padding: 20px 0; }
         .header h1 {
             font-size: 42px;
             font-weight: 900;
             background: linear-gradient(135deg, #ffd700, #ff8c00);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            letter-spacing: -1px;
         }
         .header p { color: #8b949e; font-size: 16px; margin-top: 4px; }
 
@@ -63,7 +115,6 @@
             border-radius: 20px;
             padding: 20px;
             text-align: center;
-            margin-bottom: 16px;
         }
         .timer-section .label { color: #8b949e; font-size: 14px; }
         .timer-section .time {
@@ -71,21 +122,17 @@
             font-weight: 700;
             color: #ffd700;
             margin-top: 4px;
-            font-variant-numeric: tabular-nums;
         }
 
         /* ===== КАРТОЧКИ ===== */
         .card {
             background: rgba(22, 27, 34, 0.6);
             border: 1px solid rgba(255, 255, 255, 0.06);
-            backdrop-filter: blur(16px);
+            backdrop-filter: blur(12px);
             border-radius: 20px;
             padding: 20px;
             margin-bottom: 16px;
-            transition: transform 0.3s;
         }
-        .card:hover { transform: translateY(-2px); }
-
         .card-header {
             display: flex;
             justify-content: space-between;
@@ -101,9 +148,24 @@
             padding: 14px;
             margin-bottom: 10px;
             border-left: 4px solid #ffd700;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
+        .news-item .content { flex: 1; }
         .news-item .date { color: #8b949e; font-size: 12px; }
         .news-item .text { color: #f0f6fc; font-size: 14px; line-height: 1.6; }
+        .news-item .delete-btn {
+            background: rgba(255, 0, 0, 0.1);
+            border: none;
+            color: #ff6b6b;
+            padding: 4px 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: background 0.2s;
+        }
+        .news-item .delete-btn:hover { background: rgba(255, 0, 0, 0.2); }
 
         /* ===== ИВЕНТЫ ===== */
         .event-item {
@@ -112,10 +174,23 @@
             border-radius: 12px;
             padding: 14px;
             margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
+        .event-item .content { flex: 1; }
         .event-item .date { color: #8b949e; font-size: 12px; }
         .event-item .title { color: #ffd700; font-weight: 600; font-size: 16px; }
         .event-item .desc { color: #f0f6fc; font-size: 14px; margin-top: 4px; }
+        .event-item .delete-btn {
+            background: rgba(255, 0, 0, 0.1);
+            border: none;
+            color: #ff6b6b;
+            padding: 4px 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 12px;
+        }
 
         /* ===== ДОРОЖНАЯ КАРТА ===== */
         .roadmap-grid {
@@ -131,10 +206,7 @@
             border-radius: 12px;
             padding: 16px;
             text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: border 0.3s;
         }
-        .roadmap-item:hover { border-color: #ffd700; }
         .roadmap-item .icon { font-size: 28px; }
         .roadmap-item .name { color: #f0f6fc; font-weight: 600; margin-top: 4px; }
         .roadmap-item .desc { color: #8b949e; font-size: 13px; margin-top: 2px; }
@@ -152,58 +224,19 @@
             font-weight: 700;
             cursor: pointer;
             text-align: center;
-            text-decoration: none;
-            margin-top: 12px;
             transition: all 0.3s;
+            margin-top: 12px;
         }
         .btn:hover { transform: scale(1.02); }
-
-        /* ===== POP-UP ===== */
-        .popup {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(10px);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            animation: fadeIn 0.5s ease-out;
-        }
-        .popup.open { display: flex; }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.95); }
-            to { opacity: 1; transform: scale(1); }
-        }
-        .popup-content {
-            background: #0a0d14;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 30px;
-            max-width: 400px;
-            width: 100%;
-            text-align: center;
-        }
-        .popup-content h2 { font-size: 22px; margin-bottom: 12px; }
-        .popup-content p { color: #8b949e; font-size: 14px; line-height: 1.6; }
-        .popup-content .close-popup {
-            margin-top: 16px;
-            background: none;
-            border: none;
-            color: #8b949e;
-            cursor: pointer;
-            font-size: 14px;
-        }
-        .btn-channel {
+        .btn-admin {
             background: rgba(255, 255, 255, 0.08);
             color: #f0f6fc;
             border: 1px solid rgba(255, 255, 255, 0.08);
-            text-decoration: none;
-            display: inline-block;
-            padding: 12px 24px;
+            padding: 10px 20px;
             border-radius: 50px;
+            cursor: pointer;
+            font-size: 14px;
         }
-        .btn-channel:hover { background: rgba(255, 255, 255, 0.15); }
 
         /* ===== АДМИНКА ===== */
         .admin-panel {
@@ -229,19 +262,13 @@
         }
         .admin-input:focus { border-color: #ffd700; outline: none; }
 
-        .btn-admin {
-            background: rgba(255, 255, 255, 0.08);
-            color: #f0f6fc;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-        }
-
         /* ===== МОДАЛКА ПАРОЛЯ ===== */
         .modal {
             display: none;
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(10px);
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
             justify-content: center;
             align-items: center;
             z-index: 999;
@@ -292,92 +319,102 @@
     </style>
 </head>
 <body>
-    <!-- POP-UP ПОДПИСКИ -->
-    <div class="popup" id="subscribePopup">
-        <div class="popup-content">
-            <h2>🌟 Не пропусти запуск!</h2>
-            <p>
-                Подпишись на новостной канал, чтобы первым узнать о релизе и получить эксклюзивные бонусы.
-            </p>
-            <a href="https://t.me/StarWayBuyStarsNews" class="btn-channel" style="margin-top:12px;">📢 Подписаться</a>
-            <button class="close-popup" onclick="closePopup()">Закрыть</button>
+    <nav class="navbar">
+        <div class="logo">⚔️ BattleZ</div>
+        <div class="nav-links">
+            <a href="#" class="active" onclick="switchPage('home')">Главная</a>
+            <a href="#" onclick="switchPage('news')">📰 Новости</a>
+            <a href="#" onclick="switchPage('events')">🎮 Ивенты</a>
+            <span class="nav-admin" id="adminBtn" onclick="openAdmin()">🔧 Админка</span>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page active" id="page-home">
+            <div class="header">
+                <h1>BattleZ</h1>
+                <p>Новый игровой проект в Telegram</p>
+            </div>
+
+            <div class="timer-section">
+                <div class="label">⏳ До запуска</div>
+                <div class="time" id="timerDisplay">00д 00ч 00м 00с</div>
+            </div>
+
+            <div class="card">
+                <h2 style="margin-bottom: 12px;">📢 Мы готовим нечто большое</h2>
+                <p style="color: #8b949e; line-height: 1.7;">
+                    BattleZ — это новый игровой проект в Telegram, который объединит квесты, гильдии и PvP.
+                    Сейчас мы в стадии закрытого тестирования и готовимся к запуску.
+                </p>
+            </div>
+
+            <div class="card">
+                <h2 style="margin-bottom: 12px;">🗺️ Что вас ждёт</h2>
+                <div class="roadmap-grid">
+                    <div class="roadmap-item">
+                        <div class="icon">🧙</div>
+                        <div class="name">Персонажи</div>
+                        <div class="desc">Прокачка, уровни, способности</div>
+                    </div>
+                    <div class="roadmap-item">
+                        <div class="icon">⚔️</div>
+                        <div class="name">PvP-арена</div>
+                        <div class="desc">Сражайся с другими игроками</div>
+                    </div>
+                    <div class="roadmap-item">
+                        <div class="icon">🏆</div>
+                        <div class="name">Гильдии</div>
+                        <div class="desc">Создавай кланы и участвуй в битвах</div>
+                    </div>
+                    <div class="roadmap-item">
+                        <div class="icon">🎁</div>
+                        <div class="name">Промокоды</div>
+                        <div class="desc">Эксклюзивные бонусы</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="page" id="page-news">
+            <div class="header">
+                <h2 style="color:#ffd700;">📰 Новости</h2>
+            </div>
+            <div class="card">
+                <div id="newsContainer"></div>
+            </div>
+        </div>
+
+        <div class="page" id="page-events">
+            <div class="header">
+                <h2 style="color:#ffd700;">🎮 Ивенты</h2>
+            </div>
+            <div class="card">
+                <div id="eventsContainer"></div>
+            </div>
         </div>
     </div>
 
-    <div class="container">
-        <div class="header">
-            <h1>⚔️ BattleZ</h1>
-            <p>Новый игровой проект в Telegram</p>
+    <div class="admin-panel" id="adminPanel">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+            <h3 style="color:#ffd700;">👑 Админ-панель</h3>
+            <button onclick="closeAdminPanel()" style="background:none;border:none;color:#8b949e;cursor:pointer;font-size:20px;">✕</button>
         </div>
 
-        <div class="timer-section">
-            <div class="label">⏳ До запуска</div>
-            <div class="time" id="timerDisplay">00д 00ч 00м 00с</div>
-        </div>
+        <input type="text" class="admin-input" id="newsInput" placeholder="Текст новости...">
+        <button class="btn-admin" onclick="addNews()" style="width:100%;margin-top:0;">➕ Добавить новость</button>
 
-        <div class="card">
-            <h2 style="margin-bottom: 12px;">📢 Мы готовим нечто большое</h2>
-            <p style="color: #8b949e; line-height: 1.7;">
-                BattleZ — это новый игровой проект в Telegram, который объединит квесты, гильдии и PvP.
-                Сейчас мы в стадии закрытого тестирования и готовимся к запуску.
-            </p>
-        </div>
+        <div style="height:12px;"></div>
 
-        <div class="card" id="newsSection">
-            <div class="card-header">
-                <h2>📰 Новости</h2>
-                <button onclick="openAdmin()" style="background:none;border:none;color:#ffd700;cursor:pointer;font-size:14px;">🔧 Админка</button>
-            </div>
-            <div id="newsContainer"></div>
-        </div>
+        <input type="text" class="admin-input" id="eventTitleInput" placeholder="Название ивента...">
+        <input type="text" class="admin-input" id="eventDescInput" placeholder="Описание ивента...">
+        <button class="btn-admin" onclick="addEvent()" style="width:100%;">➕ Добавить ивент</button>
 
-        <div class="card">
-            <div class="card-header">
-                <h2>🎮 Ивенты</h2>
-            </div>
-            <div id="eventsContainer"></div>
-        </div>
+        <div style="height:12px;"></div>
 
-        <div class="card">
-            <div class="card-header">
-                <h2>🗺️ Что вас ждёт</h2>
-            </div>
-            <div class="roadmap-grid">
-                <div class="roadmap-item">
-                    <div class="icon">🧙</div>
-                    <div class="name">Персонажи</div>
-                    <div class="desc">Прокачка, уровни и уникальные способности</div>
-                </div>
-                <div class="roadmap-item">
-                    <div class="icon">⚔️</div>
-                    <div class="name">PvP-арена</div>
-                    <div class="desc">Сражайся с другими игроками</div>
-                </div>
-                <div class="roadmap-item">
-                    <div class="icon">🏆</div>
-                    <div class="name">Гильдии</div>
-                    <div class="desc">Создавай кланы и участвуй в битвах</div>
-                </div>
-                <div class="roadmap-item">
-                    <div class="icon">🎁</div>
-                    <div class="name">Промокоды</div>
-                    <div class="desc">Эксклюзивные бонусы для подписчиков</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="card">
-            <h2 style="margin-bottom: 12px;">🔗 Полезные ссылки</h2>
-            <p style="color: #8b949e; line-height: 1.7;">
-                🔬 Лаборатория разработки: <a href="https://t.me/StarWayLaboratory" style="color: #ffd700; text-decoration: none;">@StarWayLaboratory</a><br>
-                📢 Новостной канал: <a href="https://t.me/StarWayBuyStarsNews" style="color: #ffd700; text-decoration: none;">@StarWayBuyStarsNews</a><br>
-                💬 Чат: <a href="https://t.me/PrsAdvertisementMy" style="color: #ffd700; text-decoration: none;">@PrsAdvertisementMy</a>
-            </p>
-        </div>
-
-        <div class="footer">
-            BattleZ © 2026 • <a href="https://t.me/StarWayLaboratory">@StarWayLaboratory</a>
-        </div>
+        <h4 style="color:#ffd700; margin-bottom:8px;">⏱️ Таймер</h4>
+        <input type="date" class="admin-input" id="timerDateInput">
+        <button class="btn-admin" onclick="setTimer()" style="width:100%;">Установить дату</button>
     </div>
 
     <div class="modal" id="adminModal">
@@ -389,53 +426,88 @@
         </div>
     </div>
 
-    <div class="admin-panel" id="adminPanel">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-            <h3 style="color:#ffd700;">👑 Админ-панель</h3>
-            <button onclick="closeAdminPanel()" style="background:none;border:none;color:#8b949e;cursor:pointer;">✕</button>
-        </div>
-
-        <input type="text" class="admin-input" id="newsInput" placeholder="Текст новости...">
-        <button class="btn-admin" onclick="addNews()" style="width:100%;margin-top:0;">➕ Добавить новость</button>
-        <div style="height:12px;"></div>
-
-        <input type="text" class="admin-input" id="eventTitleInput" placeholder="Название ивента...">
-        <input type="text" class="admin-input" id="eventDescInput" placeholder="Описание ивента...">
-        <button class="btn-admin" onclick="addEvent()" style="width:100%;">➕ Добавить ивент</button>
-        <div style="height:12px;"></div>
-
-        <h4 style="color:#ffd700; margin-bottom:8px;">⏱️ Таймер</h4>
-        <input type="date" class="admin-input" id="timerDateInput">
-        <button class="btn-admin" onclick="setTimer()" style="width:100%;">Установить дату запуска</button>
+    <div class="footer">
+        BattleZ © 2026 • <a href="https://t.me/StarWayLaboratory">@StarWayLaboratory</a>
     </div>
 
     <script>
+        // ===== ПАРОЛЬ АДМИНА =====
+        const ADMIN_PASSWORD = "123456";
+
+        // ===== КНОПКА АДМИНКИ (скрыта от всех, пока не введён пароль) =====
+        function unlockAdmin() {
+            const input = prompt("Введите пароль администратора:");
+            if (input === ADMIN_PASSWORD) {
+                document.getElementById('adminBtn').classList.add('visible');
+                localStorage.setItem('isAdmin', 'true');
+                alert("✅ Админ-режим активирован!");
+            } else {
+                alert("❌ Неверный пароль!");
+            }
+        }
+
+        // При загрузке проверяем, активирован ли уже админ-режим
+        if (localStorage.getItem('isAdmin') === 'true') {
+            document.getElementById('adminBtn').classList.add('visible');
+        }
+
+        // ===== ПЕРЕКЛЮЧЕНИЕ СТРАНИЦ =====
+        function switchPage(id) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById('page-' + id).classList.add('active');
+            document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+            if (id === 'home') document.querySelector('.nav-links a:first-child').classList.add('active');
+            if (id === 'news') document.querySelector('.nav-links a:nth-child(2)').classList.add('active');
+            if (id === 'events') document.querySelector('.nav-links a:nth-child(3)').classList.add('active');
+        }
+
+        // ===== АДМИНКА =====
+        function openAdmin() {
+            document.getElementById('adminModal').classList.add('open');
+        }
+        function closeAdmin() {
+            document.getElementById('adminModal').classList.remove('open');
+        }
+        function checkPassword() {
+            const input = document.getElementById('adminPassword').value;
+            if (input === ADMIN_PASSWORD) {
+                closeAdmin();
+                document.getElementById('adminPanel').classList.add('open');
+                document.getElementById('adminPassword').value = '';
+            } else {
+                alert('❌ Неверный пароль!');
+            }
+        }
+        function closeAdminPanel() {
+            document.getElementById('adminPanel').classList.remove('open');
+        }
+
         // ===== ЗВУК =====
         function playSound() {
             try {
-                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
                 osc.type = 'sine';
-                osc.frequency.setValueAtTime(880, audioCtx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(1320, audioCtx.currentTime + 0.1);
-                gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+                osc.frequency.setValueAtTime(880, ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(1320, ctx.currentTime + 0.1);
+                gain.gain.setValueAtTime(0.3, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
                 osc.connect(gain);
-                gain.connect(audioCtx.destination);
+                gain.connect(ctx.destination);
                 osc.start();
-                osc.stop(audioCtx.currentTime + 0.3);
+                osc.stop(ctx.currentTime + 0.3);
             } catch (e) {}
         }
 
         // ===== ТАЙМЕР =====
         function updateTimer() {
-            const savedDate = localStorage.getItem('launchDate');
-            if (!savedDate) {
+            const saved = localStorage.getItem('launchDate');
+            if (!saved) {
                 document.getElementById('timerDisplay').textContent = 'Дата не установлена';
                 return;
             }
-            const target = new Date(savedDate).getTime();
+            const target = new Date(saved).getTime();
             const now = new Date().getTime();
             const diff = target - now;
             if (diff < 0) {
@@ -448,52 +520,13 @@
             const s = Math.floor((diff % (1000 * 60)) / 1000);
             document.getElementById('timerDisplay').textContent = `${d}д ${h}ч ${m}м ${s}с`;
         }
-
         function setTimer() {
             const date = document.getElementById('timerDateInput').value;
             if (!date) return alert('Выбери дату!');
             localStorage.setItem('launchDate', date);
             updateTimer();
             playSound();
-            alert('✅ Дата запуска установлена!');
-        }
-
-        // ===== POP-UP =====
-        if (!localStorage.getItem('popupShown')) {
-            setTimeout(() => {
-                document.getElementById('subscribePopup').classList.add('open');
-                localStorage.setItem('popupShown', 'true');
-            }, 5000);
-        }
-
-        function closePopup() {
-            document.getElementById('subscribePopup').classList.remove('open');
-        }
-
-        // ===== ПАРОЛЬ АДМИНКИ =====
-        const ADMIN_PASSWORD = "123456";
-
-        function openAdmin() {
-            document.getElementById('adminModal').classList.add('open');
-        }
-
-        function closeAdmin() {
-            document.getElementById('adminModal').classList.remove('open');
-        }
-
-        function checkPassword() {
-            const input = document.getElementById('adminPassword').value;
-            if (input === ADMIN_PASSWORD) {
-                closeAdmin();
-                document.getElementById('adminPanel').classList.add('open');
-                document.getElementById('adminPassword').value = '';
-            } else {
-                alert('❌ Неверный пароль!');
-            }
-        }
-
-        function closeAdminPanel() {
-            document.getElementById('adminPanel').classList.remove('open');
+            alert('✅ Дата установлена!');
         }
 
         // ===== НОВОСТИ =====
@@ -504,29 +537,41 @@
             } else {
                 document.getElementById('newsContainer').innerHTML = `
                     <div class="news-item">
-                        <div class="date">11 августа 2026</div>
-                        <div class="text">🚀 BattleZ перешёл в стадию закрытого бета-тестирования!</div>
+                        <div class="content">
+                            <div class="date">11 августа 2026</div>
+                            <div class="text">🚀 BattleZ перешёл в стадию закрытого бета-тестирования!</div>
+                        </div>
+                        <button class="delete-btn" onclick="deleteNews(this)">🗑️</button>
                     </div>
                 `;
             }
         }
-
         function addNews() {
             const text = document.getElementById('newsInput').value;
             if (!text) return alert('Введи текст новости');
             const today = new Date().toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' });
-            const newItem = `
+            const item = `
                 <div class="news-item">
-                    <div class="date">${today}</div>
-                    <div class="text">${text}</div>
+                    <div class="content">
+                        <div class="date">${today}</div>
+                        <div class="text">${text}</div>
+                    </div>
+                    <button class="delete-btn" onclick="deleteNews(this)">🗑️</button>
                 </div>
             `;
             const container = document.getElementById('newsContainer');
-            container.innerHTML = newItem + container.innerHTML;
+            container.innerHTML = item + container.innerHTML;
             localStorage.setItem('news', container.innerHTML);
             document.getElementById('newsInput').value = '';
             playSound();
             alert('✅ Новость добавлена!');
+        }
+        function deleteNews(btn) {
+            if (!confirm('Удалить новость?')) return;
+            const item = btn.closest('.news-item');
+            item.remove();
+            localStorage.setItem('news', document.getElementById('newsContainer').innerHTML);
+            playSound();
         }
 
         // ===== ИВЕНТЫ =====
@@ -537,40 +582,60 @@
             } else {
                 document.getElementById('eventsContainer').innerHTML = `
                     <div class="event-item">
-                        <div class="date">Скоро</div>
-                        <div class="title">🔥 Закрытый тест</div>
-                        <div class="desc">Первые тестировщики получат эксклюзивные бонусы при запуске.</div>
+                        <div class="content">
+                            <div class="date">Скоро</div>
+                            <div class="title">🔥 Закрытый тест</div>
+                            <div class="desc">Первые тестировщики получат эксклюзивные бонусы при запуске.</div>
+                        </div>
+                        <button class="delete-btn" onclick="deleteEvent(this)">🗑️</button>
                     </div>
                 `;
             }
         }
-
         function addEvent() {
             const title = document.getElementById('eventTitleInput').value;
             const desc = document.getElementById('eventDescInput').value;
-            if (!title || !desc) return alert('Заполни название и описание');
+            if (!title || !desc) return alert('Заполни все поля');
             const today = new Date().toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' });
-            const newItem = `
+            const item = `
                 <div class="event-item">
-                    <div class="date">${today}</div>
-                    <div class="title">${title}</div>
-                    <div class="desc">${desc}</div>
+                    <div class="content">
+                        <div class="date">${today}</div>
+                        <div class="title">${title}</div>
+                        <div class="desc">${desc}</div>
+                    </div>
+                    <button class="delete-btn" onclick="deleteEvent(this)">🗑️</button>
                 </div>
             `;
             const container = document.getElementById('eventsContainer');
-            container.innerHTML = newItem + container.innerHTML;
+            container.innerHTML = item + container.innerHTML;
             localStorage.setItem('events', container.innerHTML);
             document.getElementById('eventTitleInput').value = '';
             document.getElementById('eventDescInput').value = '';
             playSound();
             alert('✅ Ивент добавлен!');
         }
+        function deleteEvent(btn) {
+            if (!confirm('Удалить ивент?')) return;
+            const item = btn.closest('.event-item');
+            item.remove();
+            localStorage.setItem('events', document.getElementById('eventsContainer').innerHTML);
+            playSound();
+        }
 
         // ===== ЗАПУСК =====
+        // Если админ-режим ещё не активирован, показываем запрос при клике на кнопку
+        document.getElementById('adminBtn').addEventListener('click', function(e) {
+            if (!this.classList.contains('visible')) {
+                e.preventDefault();
+                unlockAdmin();
+            }
+        });
+
         loadNews();
         loadEvents();
         updateTimer();
         setInterval(updateTimer, 1000);
     </script>
 </body>
-    </html>
+                            </html>
