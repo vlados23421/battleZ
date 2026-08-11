@@ -6,127 +6,172 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <title>BattleZ — Новый игровой проект</title>
+    <title>BattleZ — Игровой проект</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg: #0a0d14;
+            --bg-card: rgba(22, 27, 34, 0.65);
+            --text: #f0f6fc;
+            --text-muted: #8b949e;
+            --gold: #ffd700;
+            --border: rgba(255, 255, 255, 0.06);
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            --radius: 20px;
+        }
+        .light-mode {
+            --bg: #f5f7fa;
+            --bg-card: rgba(255, 255, 255, 0.7);
+            --text: #1a1a1a;
+            --text-muted: #555;
+            --border: rgba(0, 0, 0, 0.08);
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+        }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background: #0a0d14;
-            color: #f0f6fc;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
             min-height: 100vh;
             padding: 20px;
             overflow-x: hidden;
-        }
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none;
-            z-index: -1;
+            transition: background 0.3s, color 0.3s;
             background-image: 
-                radial-gradient(2px 2px at 20px 30px, #ffd700, transparent),
-                radial-gradient(2px 2px at 40px 70px, #ffd700, transparent),
-                radial-gradient(2px 2px at 50px 160px, #ffd700, transparent),
-                radial-gradient(2px 2px at 90px 40px, #ffd700, transparent),
-                radial-gradient(2px 2px at 130px 80px, #ffd700, transparent),
-                radial-gradient(2px 2px at 160px 30px, #ffd700, transparent);
-            background-size: 200px 200px;
-            background-repeat: repeat;
-            opacity: 0.3;
-            animation: particles 20s ease-in-out infinite alternate;
+                radial-gradient(circle at 20% 30%, rgba(255, 215, 0, 0.03) 0%, transparent 60%),
+                radial-gradient(circle at 80% 70%, rgba(255, 140, 0, 0.02) 0%, transparent 50%),
+                repeating-linear-gradient(45deg, transparent, transparent 100px, rgba(255, 255, 255, 0.01) 100px, rgba(255, 255, 255, 0.01) 101px);
         }
-        @keyframes particles {
-            0% { opacity: 0.2; transform: scale(1); }
-            100% { opacity: 0.5; transform: scale(1.05); }
-        }
-        .container { max-width: 800px; margin: 0 auto; }
 
         .navbar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 20px;
-            background: rgba(10, 13, 20, 0.8);
-            backdrop-filter: blur(12px);
-            border-radius: 16px;
-            margin-bottom: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 14px 24px;
+            background: var(--bg-card);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            margin-bottom: 24px;
+            box-shadow: var(--shadow);
+            transition: background 0.3s, box-shadow 0.3s;
         }
         .navbar .logo {
-            font-size: 22px;
+            font-size: 24px;
             font-weight: 800;
             background: linear-gradient(135deg, #ffd700, #ff8c00);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
         }
         .navbar .nav-links {
             display: flex;
-            gap: 12px;
+            gap: 16px;
+            align-items: center;
         }
         .navbar .nav-links a {
-            color: #8b949e;
+            color: var(--text-muted);
             text-decoration: none;
             font-size: 14px;
-            transition: color 0.3s;
+            font-weight: 500;
+            transition: color 0.2s;
         }
         .navbar .nav-links a:hover,
         .navbar .nav-links a.active {
-            color: #ffd700;
+            color: var(--gold);
         }
-
-        /* ===== АДМИН-КНОПКА (всегда видна) ===== */
-        .navbar .nav-admin {
-            background: rgba(255, 215, 0, 0.1);
-            padding: 4px 14px;
+        .theme-toggle {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
             border-radius: 50px;
-            color: #ffd700;
+            padding: 6px 14px;
+            color: var(--text);
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+        .theme-toggle:hover { background: var(--border); }
+
+        .nav-admin {
+            background: rgba(255, 215, 0, 0.1);
+            border: 1px solid rgba(255, 215, 0, 0.15);
+            padding: 6px 16px;
+            border-radius: 50px;
+            color: var(--gold);
             font-size: 13px;
             cursor: pointer;
             transition: background 0.2s;
         }
-        .navbar .nav-admin:hover {
-            background: rgba(255, 215, 0, 0.2);
-        }
+        .nav-admin:hover { background: rgba(255, 215, 0, 0.2); }
 
-        .page { display: none; animation: fade 0.4s ease; }
+        .page { display: none; animation: fadeIn 0.4s ease; }
         .page.active { display: block; }
-        @keyframes fade {
-            from { opacity: 0; transform: translateY(8px); }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        .container { max-width: 800px; margin: 0 auto; }
 
         .header { text-align: center; padding: 20px 0; }
         .header h1 {
-            font-size: 42px;
+            font-size: 44px;
             font-weight: 900;
-            background: linear-gradient(135deg, #ffd700, #ff8c00);
+            background: linear-gradient(135deg, #ffd700, #ff8c00, #ffd700);
+            background-size: 200% auto;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            animation: shimmer 3s linear infinite;
         }
-        .header p { color: #8b949e; font-size: 16px; margin-top: 4px; }
+        @keyframes shimmer { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
+        .header p { color: var(--text-muted); font-size: 16px; margin-top: 4px; }
 
         .timer-section {
-            background: rgba(255, 215, 0, 0.05);
-            border: 1px solid rgba(255, 215, 0, 0.15);
-            border-radius: 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            backdrop-filter: blur(12px);
+            border-radius: var(--radius);
             padding: 20px;
             text-align: center;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
         }
-        .timer-section .label { color: #8b949e; font-size: 14px; }
+        .timer-section .label { color: var(--text-muted); font-size: 14px; }
         .timer-section .time {
-            font-size: 36px;
+            font-size: 38px;
             font-weight: 700;
-            color: #ffd700;
+            color: var(--gold);
             margin-top: 4px;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .online-counter {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px;
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+        .online-counter .dot {
+            width: 10px;
+            height: 10px;
+            background: #4ade80;
+            border-radius: 50%;
+            animation: pulseDot 1.5s ease-in-out infinite;
+        }
+        @keyframes pulseDot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(0.9); }
         }
 
         .card {
-            background: rgba(22, 27, 34, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: var(--bg-card);
+            border: 1px solid var(--border);
             backdrop-filter: blur(12px);
-            border-radius: 20px;
-            padding: 20px;
+            border-radius: var(--radius);
+            padding: 22px;
             margin-bottom: 16px;
+            box-shadow: var(--shadow);
+            transition: background 0.3s, box-shadow 0.3s;
         }
         .card-header {
             display: flex;
@@ -141,14 +186,14 @@
             border-radius: 12px;
             padding: 14px;
             margin-bottom: 10px;
-            border-left: 4px solid #ffd700;
+            border-left: 4px solid var(--gold);
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
         .news-item .content { flex: 1; }
-        .news-item .date { color: #8b949e; font-size: 12px; }
-        .news-item .text { color: #f0f6fc; font-size: 14px; line-height: 1.6; }
+        .news-item .date { color: var(--text-muted); font-size: 12px; }
+        .news-item .text { color: var(--text); font-size: 14px; line-height: 1.6; }
         .news-item .delete-btn {
             background: rgba(255, 0, 0, 0.1);
             border: none;
@@ -157,7 +202,9 @@
             border-radius: 8px;
             cursor: pointer;
             font-size: 12px;
+            transition: background 0.2s;
         }
+        .news-item .delete-btn:hover { background: rgba(255, 0, 0, 0.2); }
 
         .event-item {
             background: rgba(255, 215, 0, 0.05);
@@ -170,9 +217,9 @@
             align-items: center;
         }
         .event-item .content { flex: 1; }
-        .event-item .date { color: #8b949e; font-size: 12px; }
-        .event-item .title { color: #ffd700; font-weight: 600; font-size: 16px; }
-        .event-item .desc { color: #f0f6fc; font-size: 14px; margin-top: 4px; }
+        .event-item .date { color: var(--text-muted); font-size: 12px; }
+        .event-item .title { color: var(--gold); font-weight: 600; font-size: 16px; }
+        .event-item .desc { color: var(--text); font-size: 14px; margin-top: 4px; }
         .event-item .delete-btn {
             background: rgba(255, 0, 0, 0.1);
             border: none;
@@ -188,18 +235,46 @@
             grid-template-columns: 1fr 1fr;
             gap: 12px;
         }
-        @media (max-width: 480px) {
-            .roadmap-grid { grid-template-columns: 1fr; }
-        }
+        @media (max-width: 480px) { .roadmap-grid { grid-template-columns: 1fr; } }
         .roadmap-item {
             background: rgba(255, 255, 255, 0.03);
             border-radius: 12px;
             padding: 16px;
             text-align: center;
+            border: 1px solid var(--border);
+            transition: border 0.3s;
         }
+        .roadmap-item:hover { border-color: var(--gold); }
         .roadmap-item .icon { font-size: 28px; }
-        .roadmap-item .name { color: #f0f6fc; font-weight: 600; margin-top: 4px; }
-        .roadmap-item .desc { color: #8b949e; font-size: 13px; margin-top: 2px; }
+        .roadmap-item .name { color: var(--text); font-weight: 600; margin-top: 4px; }
+        .roadmap-item .desc { color: var(--text-muted); font-size: 13px; margin-top: 2px; }
+
+        /* ===== БЕТА-РЕГИСТРАЦИЯ ===== */
+        .beta-card {
+            border: 1px solid var(--gold);
+            background: rgba(255, 215, 0, 0.05);
+        }
+        .beta-btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: var(--radius);
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 8px;
+        }
+        .beta-btn.available {
+            background: linear-gradient(135deg, #ffd700, #ff8c00);
+            color: #0a0d14;
+        }
+        .beta-btn.available:hover { transform: scale(1.02); }
+        .beta-btn.registered {
+            background: rgba(74, 222, 128, 0.15);
+            color: #4ade80;
+            border: 1px solid #4ade80;
+        }
 
         .btn {
             display: block;
@@ -213,14 +288,22 @@
             font-weight: 700;
             cursor: pointer;
             text-align: center;
-            transition: all 0.3s;
+            transition: all 0.2s;
             margin-top: 12px;
         }
         .btn:hover { transform: scale(1.02); }
+        .btn:active { animation: shake 0.15s ease; }
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-4px); }
+            50% { transform: translateX(4px); }
+            75% { transform: translateX(-4px); }
+            100% { transform: translateX(0); }
+        }
         .btn-admin {
             background: rgba(255, 255, 255, 0.08);
-            color: #f0f6fc;
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: var(--text);
+            border: 1px solid var(--border);
             padding: 10px 20px;
             border-radius: 50px;
             cursor: pointer;
@@ -230,31 +313,30 @@
         .admin-panel {
             background: rgba(255, 215, 0, 0.05);
             border: 1px solid rgba(255, 215, 0, 0.15);
-            border-radius: 20px;
+            border-radius: var(--radius);
             padding: 20px;
             margin-top: 20px;
             display: none;
         }
         .admin-panel.open { display: block; }
-
         .admin-input {
             width: 100%;
             padding: 12px;
             background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--border);
             border-radius: 10px;
-            color: #f0f6fc;
+            color: var(--text);
             margin-bottom: 10px;
             font-size: 14px;
             font-family: inherit;
         }
-        .admin-input:focus { border-color: #ffd700; outline: none; }
+        .admin-input:focus { border-color: var(--gold); outline: none; }
 
         .modal {
             display: none;
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.6);
             backdrop-filter: blur(8px);
             justify-content: center;
             align-items: center;
@@ -262,21 +344,22 @@
         }
         .modal.open { display: flex; }
         .modal-content {
-            background: #0a0d14;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
             padding: 30px;
             max-width: 400px;
             width: 100%;
+            box-shadow: var(--shadow);
         }
         .modal-content h2 { text-align: center; margin-bottom: 20px; }
         .modal-content input {
             width: 100%;
             padding: 12px;
             background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--border);
             border-radius: 10px;
-            color: #f0f6fc;
+            color: var(--text);
             margin-bottom: 12px;
         }
         .modal-content .btn {
@@ -292,16 +375,32 @@
             float: right;
             cursor: pointer;
             font-size: 24px;
-            color: #8b949e;
+            color: var(--text-muted);
         }
 
         .footer {
             text-align: center;
-            color: #586069;
+            color: var(--text-muted);
             font-size: 12px;
             padding: 30px 0;
+            border-top: 1px solid var(--border);
+            margin-top: 10px;
         }
-        .footer a { color: #ffd700; text-decoration: none; }
+        .footer a { color: var(--gold); text-decoration: none; }
+
+        .share-btn {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 8px 20px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--border);
+            border-radius: 50px;
+            color: var(--text);
+            text-decoration: none;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+        .share-btn:hover { background: rgba(255, 255, 255, 0.1); }
     </style>
 </head>
 <body>
@@ -312,6 +411,7 @@
             <a href="#" onclick="switchPage('news')">📰 Новости</a>
             <a href="#" onclick="switchPage('events')">🎮 Ивенты</a>
             <span class="nav-admin" onclick="openAdmin()">🔧 Админка</span>
+            <button class="theme-toggle" onclick="toggleTheme()">🌙 Тема</button>
         </div>
     </nav>
 
@@ -322,6 +422,11 @@
                 <p>Новый игровой проект в Telegram</p>
             </div>
 
+            <div class="online-counter">
+                <span class="dot"></span>
+                <span id="onlineCount">42</span> пользователей онлайн
+            </div>
+
             <div class="timer-section">
                 <div class="label">⏳ До запуска</div>
                 <div class="time" id="timerDisplay">00д 00ч 00м 00с</div>
@@ -329,80 +434,66 @@
 
             <div class="card">
                 <h2 style="margin-bottom: 12px;">📢 Мы готовим нечто большое</h2>
-                <p style="color: #8b949e; line-height: 1.7;">
+                <p style="color: var(--text-muted); line-height: 1.7;">
                     BattleZ — это новый игровой проект в Telegram, который объединит квесты, гильдии и PvP.
                     Сейчас мы в стадии закрытого тестирования и готовимся к запуску.
                 </p>
             </div>
 
+            <div class="card beta-card">
+                <h2 style="margin-bottom: 12px;">🎮 Запись на бета-тест</h2>
+                <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 12px;">
+                    Оставь свои данные, чтобы стать одним из первых тестировщиков BattleZ.
+                </p>
+                <button class="beta-btn available" id="betaBtn" onclick="openBetaModal()">
+                    ✉️ Записаться на бета-тест
+                </button>
+            </div>
+
             <div class="card">
                 <h2 style="margin-bottom: 12px;">🗺️ Что вас ждёт</h2>
                 <div class="roadmap-grid">
-                    <div class="roadmap-item">
-                        <div class="icon">🧙</div>
-                        <div class="name">Персонажи</div>
-                        <div class="desc">Прокачка, уровни, способности</div>
-                    </div>
-                    <div class="roadmap-item">
-                        <div class="icon">⚔️</div>
-                        <div class="name">PvP-арена</div>
-                        <div class="desc">Сражайся с другими игроками</div>
-                    </div>
-                    <div class="roadmap-item">
-                        <div class="icon">🏆</div>
-                        <div class="name">Гильдии</div>
-                        <div class="desc">Создавай кланы и участвуй в битвах</div>
-                    </div>
-                    <div class="roadmap-item">
-                        <div class="icon">🎁</div>
-                        <div class="name">Промокоды</div>
-                        <div class="desc">Эксклюзивные бонусы</div>
-                    </div>
+                    <div class="roadmap-item"><div class="icon">🧙</div><div class="name">Персонажи</div><div class="desc">Прокачка, уровни, способности</div></div>
+                    <div class="roadmap-item"><div class="icon">⚔️</div><div class="name">PvP-арена</div><div class="desc">Сражайся с другими игроками</div></div>
+                    <div class="roadmap-item"><div class="icon">🏆</div><div class="name">Гильдии</div><div class="desc">Создавай кланы и участвуй в битвах</div></div>
+                    <div class="roadmap-item"><div class="icon">🎁</div><div class="name">Промокоды</div><div class="desc">Эксклюзивные бонусы</div></div>
                 </div>
             </div>
         </div>
 
         <div class="page" id="page-news">
-            <div class="header">
-                <h2 style="color:#ffd700;">📰 Новости</h2>
-            </div>
-            <div class="card">
-                <div id="newsContainer"></div>
-            </div>
+            <div class="header"><h2 style="color:var(--gold);">📰 Новости</h2></div>
+            <div class="card"><div id="newsContainer"></div></div>
         </div>
 
         <div class="page" id="page-events">
-            <div class="header">
-                <h2 style="color:#ffd700;">🎮 Ивенты</h2>
-            </div>
-            <div class="card">
-                <div id="eventsContainer"></div>
-            </div>
+            <div class="header"><h2 style="color:var(--gold);">🎮 Ивенты</h2></div>
+            <div class="card"><div id="eventsContainer"></div></div>
         </div>
     </div>
 
+    <!-- АДМИНКА -->
     <div class="admin-panel" id="adminPanel">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-            <h3 style="color:#ffd700;">👑 Админ-панель</h3>
-            <button onclick="closeAdminPanel()" style="background:none;border:none;color:#8b949e;cursor:pointer;font-size:20px;">✕</button>
+            <h3 style="color:var(--gold);">👑 Админ-панель</h3>
+            <button onclick="closeAdminPanel()" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:20px;">✕</button>
         </div>
-
-        <input type="text" class="admin-input" id="newsInput" placeholder="Текст новости...">
+        <input class="admin-input" id="newsInput" placeholder="Текст новости...">
         <button class="btn-admin" onclick="addNews()" style="width:100%;margin-top:0;">➕ Добавить новость</button>
-
         <div style="height:12px;"></div>
-
-        <input type="text" class="admin-input" id="eventTitleInput" placeholder="Название ивента...">
-        <input type="text" class="admin-input" id="eventDescInput" placeholder="Описание ивента...">
+        <input class="admin-input" id="eventTitleInput" placeholder="Название ивента...">
+        <input class="admin-input" id="eventDescInput" placeholder="Описание ивента...">
         <button class="btn-admin" onclick="addEvent()" style="width:100%;">➕ Добавить ивент</button>
-
         <div style="height:12px;"></div>
-
-        <h4 style="color:#ffd700; margin-bottom:8px;">⏱️ Таймер</h4>
-        <input type="date" class="admin-input" id="timerDateInput">
+        <h4 style="color:var(--gold);margin-bottom:8px;">⏱️ Таймер</h4>
+        <input class="admin-input" id="timerDateInput" type="date">
         <button class="btn-admin" onclick="setTimer()" style="width:100%;">Установить дату</button>
+        <div style="height:12px;"></div>
+        <h4 style="color:var(--gold);margin-bottom:8px;">📋 Список бета-тестеров</h4>
+        <div id="betaList" style="font-size:14px;color:var(--text-muted);">Загрузка...</div>
     </div>
 
+    <!-- МОДАЛКА АДМИНКИ -->
     <div class="modal" id="adminModal">
         <div class="modal-content">
             <span class="close-modal" onclick="closeAdmin()">×</span>
@@ -412,15 +503,41 @@
         </div>
     </div>
 
+    <!-- МОДАЛКА БЕТА-РЕГИСТРАЦИИ -->
+    <div class="modal" id="betaModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeBetaModal()">×</span>
+            <h2>🎮 Запись на бета-тест</h2>
+            <p style="color:var(--text-muted);font-size:14px;margin-bottom:12px;">Твои данные сохраняются и будут переданы администратору.</p>
+            <input type="text" id="betaName" placeholder="Твоё имя...">
+            <input type="text" id="betaTelegram" placeholder="@username (или ссылка на Telegram)...">
+            <button class="btn" onclick="registerBeta()">✅ Записаться</button>
+        </div>
+    </div>
+
     <div class="footer">
         BattleZ © 2026 • <a href="https://t.me/StarWayLaboratory">@StarWayLaboratory</a>
+        <br>
+        <a href="#" class="share-btn" onclick="shareBattleZ()">📤 Поделиться</a>
     </div>
 
     <script>
-        // ===== ПАРОЛЬ АДМИНКИ =====
+        // ===== ПАРОЛЬ =====
         const ADMIN_PASSWORD = "123456";
 
-        // ===== ПЕРЕКЛЮЧЕНИЕ СТРАНИЦ =====
+        // ===== ТЕМА =====
+        function toggleTheme() {
+            document.body.classList.toggle('light-mode');
+            const btn = document.querySelector('.theme-toggle');
+            btn.textContent = document.body.classList.contains('light-mode') ? '☀️ Тема' : '🌙 Тема';
+            localStorage.setItem('theme', document.body.classList.contains('light-mode') ? 'light' : 'dark');
+        }
+        if (localStorage.getItem('theme') === 'light') {
+            document.body.classList.add('light-mode');
+            document.querySelector('.theme-toggle').textContent = '☀️ Тема';
+        }
+
+        // ===== СТРАНИЦЫ =====
         function switchPage(id) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById('page-' + id).classList.add('active');
@@ -430,60 +547,96 @@
             if (id === 'events') document.querySelector('.nav-links a:nth-child(3)').classList.add('active');
         }
 
-        // ===== ОТКРЫТИЕ АДМИНКИ =====
-        function openAdmin() {
-            document.getElementById('adminModal').classList.add('open');
+        // ===== ОНЛАЙН =====
+        let onlineCount = parseInt(localStorage.getItem('onlineCount')) || 42;
+        document.getElementById('onlineCount').textContent = onlineCount;
+        setInterval(() => {
+            onlineCount += Math.floor(Math.random() * 3) - 1;
+            if (onlineCount < 10) onlineCount = 10;
+            document.getElementById('onlineCount').textContent = onlineCount;
+            localStorage.setItem('onlineCount', onlineCount);
+        }, 8000);
+
+        // ===== БЕТА-РЕГИСТРАЦИЯ =====
+        function openBetaModal() {
+            const isRegistered = localStorage.getItem('beta_registered') === 'true';
+            if (isRegistered) return;
+            document.getElementById('betaModal').classList.add('open');
         }
-        function closeAdmin() {
-            document.getElementById('adminModal').classList.remove('open');
+        function closeBetaModal() {
+            document.getElementById('betaModal').classList.remove('open');
         }
+        function registerBeta() {
+            const name = document.getElementById('betaName').value.trim();
+            const tg = document.getElementById('betaTelegram').value.trim();
+            if (!name || !tg) return alert('Заполни все поля!');
+            const users = JSON.parse(localStorage.getItem('beta_users') || '[]');
+            users.push({ name, tg, date: new Date().toLocaleString() });
+            localStorage.setItem('beta_users', JSON.stringify(users));
+            localStorage.setItem('beta_registered', 'true');
+            closeBetaModal();
+            const btn = document.getElementById('betaBtn');
+            btn.className = 'beta-btn registered';
+            btn.textContent = '✅ Вы зарегистрированы на бета-тест';
+            alert('🎉 Ты записан! Администратор свяжется с тобой.');
+        }
+
+        // ===== АДМИНКА =====
+        function openAdmin() { document.getElementById('adminModal').classList.add('open'); }
+        function closeAdmin() { document.getElementById('adminModal').classList.remove('open'); }
         function checkPassword() {
             const input = document.getElementById('adminPassword').value;
             if (input === ADMIN_PASSWORD) {
                 closeAdmin();
                 document.getElementById('adminPanel').classList.add('open');
                 document.getElementById('adminPassword').value = '';
+                renderBetaList();
                 alert('✅ Админка открыта!');
-            } else {
-                alert('❌ Неверный пароль!');
-            }
+            } else { alert('❌ Неверный пароль!'); }
         }
-        function closeAdminPanel() {
-            document.getElementById('adminPanel').classList.remove('open');
+        function closeAdminPanel() { document.getElementById('adminPanel').classList.remove('open'); }
+
+        // ===== БЕТА-СПИСОК В АДМИНКЕ =====
+        function renderBetaList() {
+            const users = JSON.parse(localStorage.getItem('beta_users') || '[]');
+            const container = document.getElementById('betaList');
+            if (users.length === 0) {
+                container.innerHTML = 'Пока никто не записался.';
+                return;
+            }
+            container.innerHTML = users.map(u => 
+                `<div style="background:rgba(255,255,255,0.03);padding:8px;border-radius:8px;margin-bottom:6px;">
+                    <b>${u.name}</b> — ${u.tg} (${u.date})
+                </div>`
+            ).join('');
         }
 
-        // ===== ЗВУК =====
-        function playSound() {
-            try {
-                const ctx = new (window.AudioContext || window.webkitAudioContext)();
-                const osc = ctx.createOscillator();
-                const gain = ctx.createGain();
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(880, ctx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(1320, ctx.currentTime + 0.1);
-                gain.gain.setValueAtTime(0.3, ctx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
-                osc.connect(gain);
-                gain.connect(ctx.destination);
-                osc.start();
-                osc.stop(ctx.currentTime + 0.3);
-            } catch (e) {}
+        // ===== ДЕНЬ РОЖДЕНИЯ =====
+        const birthday = localStorage.getItem('birthday');
+        if (!birthday) {
+            const bd = prompt('Введите дату рождения (например, 15.08):');
+            if (bd) localStorage.setItem('birthday', bd);
+        }
+        const today = new Date().toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit' });
+        if (today === localStorage.getItem('birthday')) {
+            document.querySelector('.header h1').innerHTML = '🎉 С днём рождения! ⚔️';
+        }
+
+        // ===== ПОДЕЛИТЬСЯ =====
+        function shareBattleZ() {
+            const url = encodeURIComponent(window.location.href);
+            const text = encodeURIComponent('⚔️ BattleZ — новый игровой проект в Telegram!');
+            window.open(`https://t.me/share/url?url=${url}&text=${text}`, '_blank');
         }
 
         // ===== ТАЙМЕР =====
         function updateTimer() {
             const saved = localStorage.getItem('launchDate');
-            if (!saved) {
-                document.getElementById('timerDisplay').textContent = 'Дата не установлена';
-                return;
-            }
+            if (!saved) { document.getElementById('timerDisplay').textContent = 'Дата не установлена'; return; }
             const target = new Date(saved).getTime();
             const now = new Date().getTime();
             const diff = target - now;
-            if (diff < 0) {
-                document.getElementById('timerDisplay').textContent = '🚀 Запущен!';
-                return;
-            }
+            if (diff < 0) { document.getElementById('timerDisplay').textContent = '🚀 Запущен!'; return; }
             const d = Math.floor(diff / (1000 * 60 * 60 * 24));
             const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
@@ -495,109 +648,70 @@
             if (!date) return alert('Выбери дату!');
             localStorage.setItem('launchDate', date);
             updateTimer();
-            playSound();
             alert('✅ Дата установлена!');
         }
 
         // ===== НОВОСТИ =====
         function loadNews() {
             const saved = localStorage.getItem('news');
-            if (saved) {
-                document.getElementById('newsContainer').innerHTML = saved;
-            } else {
-                document.getElementById('newsContainer').innerHTML = `
-                    <div class="news-item">
-                        <div class="content">
-                            <div class="date">11 августа 2026</div>
-                            <div class="text">🚀 BattleZ перешёл в стадию закрытого бета-тестирования!</div>
-                        </div>
-                        <button class="delete-btn" onclick="deleteNews(this)">🗑️</button>
-                    </div>
-                `;
-            }
+            document.getElementById('newsContainer').innerHTML = saved || `
+                <div class="news-item"><div class="content"><div class="date">11 августа 2026</div><div class="text">🚀 BattleZ перешёл в стадию закрытого бета-тестирования!</div></div><button class="delete-btn" onclick="deleteNews(this)">🗑️</button></div>
+            `;
         }
         function addNews() {
             const text = document.getElementById('newsInput').value;
             if (!text) return alert('Введи текст новости');
             const today = new Date().toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' });
-            const item = `
-                <div class="news-item">
-                    <div class="content">
-                        <div class="date">${today}</div>
-                        <div class="text">${text}</div>
-                    </div>
-                    <button class="delete-btn" onclick="deleteNews(this)">🗑️</button>
-                </div>
-            `;
+            const item = `<div class="news-item"><div class="content"><div class="date">${today}</div><div class="text">${text}</div></div><button class="delete-btn" onclick="deleteNews(this)">🗑️</button></div>`;
             const container = document.getElementById('newsContainer');
             container.innerHTML = item + container.innerHTML;
             localStorage.setItem('news', container.innerHTML);
             document.getElementById('newsInput').value = '';
-            playSound();
             alert('✅ Новость добавлена!');
         }
         function deleteNews(btn) {
             if (!confirm('Удалить новость?')) return;
-            const item = btn.closest('.news-item');
-            item.remove();
+            btn.closest('.news-item').remove();
             localStorage.setItem('news', document.getElementById('newsContainer').innerHTML);
-            playSound();
         }
 
         // ===== ИВЕНТЫ =====
         function loadEvents() {
             const saved = localStorage.getItem('events');
-            if (saved) {
-                document.getElementById('eventsContainer').innerHTML = saved;
-            } else {
-                document.getElementById('eventsContainer').innerHTML = `
-                    <div class="event-item">
-                        <div class="content">
-                            <div class="date">Скоро</div>
-                            <div class="title">🔥 Закрытый тест</div>
-                            <div class="desc">Первые тестировщики получат эксклюзивные бонусы при запуске.</div>
-                        </div>
-                        <button class="delete-btn" onclick="deleteEvent(this)">🗑️</button>
-                    </div>
-                `;
-            }
+            document.getElementById('eventsContainer').innerHTML = saved || `
+                <div class="event-item"><div class="content"><div class="date">Скоро</div><div class="title">🔥 Закрытый тест</div><div class="desc">Первые тестировщики получат эксклюзивные бонусы при запуске.</div></div><button class="delete-btn" onclick="deleteEvent(this)">🗑️</button></div>
+            `;
         }
         function addEvent() {
             const title = document.getElementById('eventTitleInput').value;
             const desc = document.getElementById('eventDescInput').value;
             if (!title || !desc) return alert('Заполни все поля');
             const today = new Date().toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' });
-            const item = `
-                <div class="event-item">
-                    <div class="content">
-                        <div class="date">${today}</div>
-                        <div class="title">${title}</div>
-                        <div class="desc">${desc}</div>
-                    </div>
-                    <button class="delete-btn" onclick="deleteEvent(this)">🗑️</button>
-                </div>
-            `;
+            const item = `<div class="event-item"><div class="content"><div class="date">${today}</div><div class="title">${title}</div><div class="desc">${desc}</div></div><button class="delete-btn" onclick="deleteEvent(this)">🗑️</button></div>`;
             const container = document.getElementById('eventsContainer');
             container.innerHTML = item + container.innerHTML;
             localStorage.setItem('events', container.innerHTML);
             document.getElementById('eventTitleInput').value = '';
             document.getElementById('eventDescInput').value = '';
-            playSound();
             alert('✅ Ивент добавлен!');
         }
         function deleteEvent(btn) {
             if (!confirm('Удалить ивент?')) return;
-            const item = btn.closest('.event-item');
-            item.remove();
+            btn.closest('.event-item').remove();
             localStorage.setItem('events', document.getElementById('eventsContainer').innerHTML);
-            playSound();
         }
 
         // ===== ЗАПУСК =====
+        // Проверяем, зарегистрирован ли уже пользователь
+        if (localStorage.getItem('beta_registered') === 'true') {
+            const btn = document.getElementById('betaBtn');
+            btn.className = 'beta-btn registered';
+            btn.textContent = '✅ Вы зарегистрированы на бета-тест';
+        }
         loadNews();
         loadEvents();
         updateTimer();
         setInterval(updateTimer, 1000);
     </script>
 </body>
-            </html>
+                    </html>
