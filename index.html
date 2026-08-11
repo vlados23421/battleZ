@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BattleZ — Новый проект</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>BattleZ — Новый игровой проект</title>
     <style>
-        /* ===== БАЗОВЫЕ НАСТРОЙКИ ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
@@ -16,7 +18,7 @@
             overflow-x: hidden;
         }
 
-        /* ===== 3D-ФОН (ВРАЩАЮЩИЕСЯ ЗВЁЗДЫ) ===== */
+        /* ===== 3D-ФОН ===== */
         body::before {
             content: '';
             position: fixed;
@@ -40,7 +42,6 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* ===== КОНТЕЙНЕР ===== */
         .container { max-width: 800px; margin: 0 auto; }
 
         /* ===== ЗАГОЛОВОК ===== */
@@ -55,7 +56,7 @@
         }
         .header p { color: #8b949e; font-size: 16px; margin-top: 4px; }
 
-        /* ===== ТАЙМЕР ДО ЗАПУСКА ===== */
+        /* ===== ТАЙМЕР ===== */
         .timer-section {
             background: rgba(255, 215, 0, 0.05);
             border: 1px solid rgba(255, 215, 0, 0.15);
@@ -116,7 +117,7 @@
         .event-item .title { color: #ffd700; font-weight: 600; font-size: 16px; }
         .event-item .desc { color: #f0f6fc; font-size: 14px; margin-top: 4px; }
 
-        /* ===== ДОРОЖНАЯ КАРТА (Roadmap) ===== */
+        /* ===== ДОРОЖНАЯ КАРТА ===== */
         .roadmap-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -157,18 +158,6 @@
         }
         .btn:hover { transform: scale(1.02); }
 
-        /* ===== КНОПКА ПОДПИСАТЬСЯ ===== */
-        .btn-channel {
-            background: rgba(255, 255, 255, 0.08);
-            color: #f0f6fc;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            text-decoration: none;
-            display: inline-block;
-            padding: 12px 24px;
-            border-radius: 50px;
-        }
-        .btn-channel:hover { background: rgba(255, 255, 255, 0.15); }
-
         /* ===== POP-UP ===== */
         .popup {
             display: none;
@@ -205,6 +194,16 @@
             cursor: pointer;
             font-size: 14px;
         }
+        .btn-channel {
+            background: rgba(255, 255, 255, 0.08);
+            color: #f0f6fc;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            text-decoration: none;
+            display: inline-block;
+            padding: 12px 24px;
+            border-radius: 50px;
+        }
+        .btn-channel:hover { background: rgba(255, 255, 255, 0.15); }
 
         /* ===== АДМИНКА ===== */
         .admin-panel {
@@ -235,15 +234,6 @@
             color: #f0f6fc;
             border: 1px solid rgba(255, 255, 255, 0.08);
         }
-
-        /* ===== ФУТЕР ===== */
-        .footer {
-            text-align: center;
-            color: #586069;
-            font-size: 12px;
-            padding: 30px 0;
-        }
-        .footer a { color: #ffd700; text-decoration: none; }
 
         /* ===== МОДАЛКА ПАРОЛЯ ===== */
         .modal {
@@ -290,6 +280,15 @@
             font-size: 24px;
             color: #8b949e;
         }
+
+        /* ===== ФУТЕР ===== */
+        .footer {
+            text-align: center;
+            color: #586069;
+            font-size: 12px;
+            padding: 30px 0;
+        }
+        .footer a { color: #ffd700; text-decoration: none; }
     </style>
 </head>
 <body>
@@ -298,27 +297,24 @@
         <div class="popup-content">
             <h2>🌟 Не пропусти запуск!</h2>
             <p>
-                Подпишись на канал <strong>@CoinFlowNews</strong>, чтобы первым узнать о релизе и получить эксклюзивные бонусы.
+                Подпишись на новостной канал, чтобы первым узнать о релизе и получить эксклюзивные бонусы.
             </p>
-            <a href="https://t.me/CoinFlowNews" class="btn-channel" style="margin-top:12px;">📢 Подписаться</a>
-            <button class="close-popup" onclick="document.getElementById('subscribePopup').classList.remove('open')">Закрыть</button>
+            <a href="https://t.me/StarWayBuyStarsNews" class="btn-channel" style="margin-top:12px;">📢 Подписаться</a>
+            <button class="close-popup" onclick="closePopup()">Закрыть</button>
         </div>
     </div>
 
     <div class="container">
-        <!-- ЗАГОЛОВОК -->
         <div class="header">
             <h1>⚔️ BattleZ</h1>
             <p>Новый игровой проект в Telegram</p>
         </div>
 
-        <!-- ТАЙМЕР -->
         <div class="timer-section">
             <div class="label">⏳ До запуска</div>
-            <div class="time" id="timerDisplay">Загрузка...</div>
+            <div class="time" id="timerDisplay">00д 00ч 00м 00с</div>
         </div>
 
-        <!-- АНОНС -->
         <div class="card">
             <h2 style="margin-bottom: 12px;">📢 Мы готовим нечто большое</h2>
             <p style="color: #8b949e; line-height: 1.7;">
@@ -327,39 +323,21 @@
             </p>
         </div>
 
-        <!-- НОВОСТИ -->
         <div class="card" id="newsSection">
             <div class="card-header">
                 <h2>📰 Новости</h2>
                 <button onclick="openAdmin()" style="background:none;border:none;color:#ffd700;cursor:pointer;font-size:14px;">🔧 Админка</button>
             </div>
-            <div id="newsContainer">
-                <div class="news-item">
-                    <div class="date">11 августа 2026</div>
-                    <div class="text">🚀 BattleZ перешёл в стадию закрытого бета-тестирования!</div>
-                </div>
-                <div class="news-item">
-                    <div class="date">10 августа 2026</div>
-                    <div class="text">🔮 Анонс нового игрового проекта BattleZ!</div>
-                </div>
-            </div>
+            <div id="newsContainer"></div>
         </div>
 
-        <!-- ИВЕНТЫ -->
         <div class="card">
             <div class="card-header">
                 <h2>🎮 Ивенты</h2>
             </div>
-            <div id="eventsContainer">
-                <div class="event-item">
-                    <div class="date">Скоро</div>
-                    <div class="title">🔥 Закрытый тест</div>
-                    <div class="desc">Первые тестировщики получат эксклюзивные бонусы при запуске.</div>
-                </div>
-            </div>
+            <div id="eventsContainer"></div>
         </div>
 
-        <!-- ДОРОЖНАЯ КАРТА -->
         <div class="card">
             <div class="card-header">
                 <h2>🗺️ Что вас ждёт</h2>
@@ -388,22 +366,20 @@
             </div>
         </div>
 
-        <!-- ССЫЛКИ -->
         <div class="card">
             <h2 style="margin-bottom: 12px;">🔗 Полезные ссылки</h2>
             <p style="color: #8b949e; line-height: 1.7;">
-                📢 Канал: <a href="https://t.me/CoinFlowNews" style="color: #ffd700; text-decoration: none;">@CoinFlowNews</a><br>
+                🔬 Лаборатория разработки: <a href="https://t.me/StarWayLaboratory" style="color: #ffd700; text-decoration: none;">@StarWayLaboratory</a><br>
+                📢 Новостной канал: <a href="https://t.me/StarWayBuyStarsNews" style="color: #ffd700; text-decoration: none;">@StarWayBuyStarsNews</a><br>
                 💬 Чат: <a href="https://t.me/PrsAdvertisementMy" style="color: #ffd700; text-decoration: none;">@PrsAdvertisementMy</a>
             </p>
         </div>
 
-        <!-- ПОДВАЛ -->
         <div class="footer">
-            BattleZ © 2026 • <a href="https://t.me/CoinFlowNews">@CoinFlowNews</a>
+            BattleZ © 2026 • <a href="https://t.me/StarWayLaboratory">@StarWayLaboratory</a>
         </div>
     </div>
 
-    <!-- МОДАЛКА АДМИНКИ -->
     <div class="modal" id="adminModal">
         <div class="modal-content">
             <span class="close-modal" onclick="closeAdmin()">×</span>
@@ -413,7 +389,6 @@
         </div>
     </div>
 
-    <!-- ПАНЕЛЬ АДМИНКИ -->
     <div class="admin-panel" id="adminPanel">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
             <h3 style="color:#ffd700;">👑 Админ-панель</h3>
@@ -422,16 +397,20 @@
 
         <input type="text" class="admin-input" id="newsInput" placeholder="Текст новости...">
         <button class="btn-admin" onclick="addNews()" style="width:100%;margin-top:0;">➕ Добавить новость</button>
-
         <div style="height:12px;"></div>
 
         <input type="text" class="admin-input" id="eventTitleInput" placeholder="Название ивента...">
         <input type="text" class="admin-input" id="eventDescInput" placeholder="Описание ивента...">
         <button class="btn-admin" onclick="addEvent()" style="width:100%;">➕ Добавить ивент</button>
+        <div style="height:12px;"></div>
+
+        <h4 style="color:#ffd700; margin-bottom:8px;">⏱️ Таймер</h4>
+        <input type="date" class="admin-input" id="timerDateInput">
+        <button class="btn-admin" onclick="setTimer()" style="width:100%;">Установить дату запуска</button>
     </div>
 
     <script>
-        // ===== ЗВУК ПРИ ДОБАВЛЕНИИ =====
+        // ===== ЗВУК =====
         function playSound() {
             try {
                 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -450,28 +429,46 @@
         }
 
         // ===== ТАЙМЕР =====
-        function startTimer() {
-            const launchDate = new Date('2026-09-01T00:00:00').getTime();
-            const timer = setInterval(() => {
-                const now = new Date().getTime();
-                const diff = launchDate - now;
-                if (diff < 0) {
-                    clearInterval(timer);
-                    document.getElementById('timerDisplay').textContent = '🚀 Запущен!';
-                    return;
-                }
-                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-                document.getElementById('timerDisplay').textContent = `${days}д ${hours}ч ${minutes}м ${seconds}с`;
-            }, 1000);
+        function updateTimer() {
+            const savedDate = localStorage.getItem('launchDate');
+            if (!savedDate) {
+                document.getElementById('timerDisplay').textContent = 'Дата не установлена';
+                return;
+            }
+            const target = new Date(savedDate).getTime();
+            const now = new Date().getTime();
+            const diff = target - now;
+            if (diff < 0) {
+                document.getElementById('timerDisplay').textContent = '🚀 Запущен!';
+                return;
+            }
+            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((diff % (1000 * 60)) / 1000);
+            document.getElementById('timerDisplay').textContent = `${d}д ${h}ч ${m}м ${s}с`;
+        }
+
+        function setTimer() {
+            const date = document.getElementById('timerDateInput').value;
+            if (!date) return alert('Выбери дату!');
+            localStorage.setItem('launchDate', date);
+            updateTimer();
+            playSound();
+            alert('✅ Дата запуска установлена!');
         }
 
         // ===== POP-UP =====
-        setTimeout(() => {
-            document.getElementById('subscribePopup').classList.add('open');
-        }, 5000);
+        if (!localStorage.getItem('popupShown')) {
+            setTimeout(() => {
+                document.getElementById('subscribePopup').classList.add('open');
+                localStorage.setItem('popupShown', 'true');
+            }, 5000);
+        }
+
+        function closePopup() {
+            document.getElementById('subscribePopup').classList.remove('open');
+        }
 
         // ===== ПАРОЛЬ АДМИНКИ =====
         const ADMIN_PASSWORD = "123456";
@@ -504,6 +501,13 @@
             const saved = localStorage.getItem('news');
             if (saved) {
                 document.getElementById('newsContainer').innerHTML = saved;
+            } else {
+                document.getElementById('newsContainer').innerHTML = `
+                    <div class="news-item">
+                        <div class="date">11 августа 2026</div>
+                        <div class="text">🚀 BattleZ перешёл в стадию закрытого бета-тестирования!</div>
+                    </div>
+                `;
             }
         }
 
@@ -530,6 +534,14 @@
             const saved = localStorage.getItem('events');
             if (saved) {
                 document.getElementById('eventsContainer').innerHTML = saved;
+            } else {
+                document.getElementById('eventsContainer').innerHTML = `
+                    <div class="event-item">
+                        <div class="date">Скоро</div>
+                        <div class="title">🔥 Закрытый тест</div>
+                        <div class="desc">Первые тестировщики получат эксклюзивные бонусы при запуске.</div>
+                    </div>
+                `;
             }
         }
 
@@ -555,9 +567,10 @@
         }
 
         // ===== ЗАПУСК =====
-        startTimer();
         loadNews();
         loadEvents();
+        updateTimer();
+        setInterval(updateTimer, 1000);
     </script>
 </body>
     </html>
