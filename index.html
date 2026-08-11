@@ -41,7 +41,6 @@
         }
         .container { max-width: 800px; margin: 0 auto; }
 
-        /* ===== МЕНЮ ===== */
         .navbar {
             display: flex;
             justify-content: space-between;
@@ -75,7 +74,7 @@
             color: #ffd700;
         }
 
-        /* ===== АДМИН-КНОПКА (появляется только у админа) ===== */
+        /* ===== АДМИН-КНОПКА (всегда видна) ===== */
         .navbar .nav-admin {
             background: rgba(255, 215, 0, 0.1);
             padding: 4px 14px;
@@ -83,13 +82,12 @@
             color: #ffd700;
             font-size: 13px;
             cursor: pointer;
-            display: none;
+            transition: background 0.2s;
         }
-        .navbar .nav-admin.visible {
-            display: inline-block;
+        .navbar .nav-admin:hover {
+            background: rgba(255, 215, 0, 0.2);
         }
 
-        /* ===== СТРАНИЦЫ ===== */
         .page { display: none; animation: fade 0.4s ease; }
         .page.active { display: block; }
         @keyframes fade {
@@ -97,7 +95,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* ===== ЗАГОЛОВОК ===== */
         .header { text-align: center; padding: 20px 0; }
         .header h1 {
             font-size: 42px;
@@ -108,7 +105,6 @@
         }
         .header p { color: #8b949e; font-size: 16px; margin-top: 4px; }
 
-        /* ===== ТАЙМЕР ===== */
         .timer-section {
             background: rgba(255, 215, 0, 0.05);
             border: 1px solid rgba(255, 215, 0, 0.15);
@@ -124,7 +120,6 @@
             margin-top: 4px;
         }
 
-        /* ===== КАРТОЧКИ ===== */
         .card {
             background: rgba(22, 27, 34, 0.6);
             border: 1px solid rgba(255, 255, 255, 0.06);
@@ -141,7 +136,6 @@
         }
         .card-header h2 { font-size: 20px; font-weight: 700; }
 
-        /* ===== НОВОСТИ ===== */
         .news-item {
             background: rgba(255, 255, 255, 0.03);
             border-radius: 12px;
@@ -163,11 +157,8 @@
             border-radius: 8px;
             cursor: pointer;
             font-size: 12px;
-            transition: background 0.2s;
         }
-        .news-item .delete-btn:hover { background: rgba(255, 0, 0, 0.2); }
 
-        /* ===== ИВЕНТЫ ===== */
         .event-item {
             background: rgba(255, 215, 0, 0.05);
             border: 1px solid rgba(255, 215, 0, 0.15);
@@ -192,7 +183,6 @@
             font-size: 12px;
         }
 
-        /* ===== ДОРОЖНАЯ КАРТА ===== */
         .roadmap-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -211,7 +201,6 @@
         .roadmap-item .name { color: #f0f6fc; font-weight: 600; margin-top: 4px; }
         .roadmap-item .desc { color: #8b949e; font-size: 13px; margin-top: 2px; }
 
-        /* ===== КНОПКИ ===== */
         .btn {
             display: block;
             width: 100%;
@@ -238,7 +227,6 @@
             font-size: 14px;
         }
 
-        /* ===== АДМИНКА ===== */
         .admin-panel {
             background: rgba(255, 215, 0, 0.05);
             border: 1px solid rgba(255, 215, 0, 0.15);
@@ -262,7 +250,6 @@
         }
         .admin-input:focus { border-color: #ffd700; outline: none; }
 
-        /* ===== МОДАЛКА ПАРОЛЯ ===== */
         .modal {
             display: none;
             position: fixed;
@@ -308,7 +295,6 @@
             color: #8b949e;
         }
 
-        /* ===== ФУТЕР ===== */
         .footer {
             text-align: center;
             color: #586069;
@@ -325,7 +311,7 @@
             <a href="#" class="active" onclick="switchPage('home')">Главная</a>
             <a href="#" onclick="switchPage('news')">📰 Новости</a>
             <a href="#" onclick="switchPage('events')">🎮 Ивенты</a>
-            <span class="nav-admin" id="adminBtn" onclick="openAdmin()">🔧 Админка</span>
+            <span class="nav-admin" onclick="openAdmin()">🔧 Админка</span>
         </div>
     </nav>
 
@@ -431,25 +417,8 @@
     </div>
 
     <script>
-        // ===== ПАРОЛЬ АДМИНА =====
+        // ===== ПАРОЛЬ АДМИНКИ =====
         const ADMIN_PASSWORD = "123456";
-
-        // ===== КНОПКА АДМИНКИ (скрыта от всех, пока не введён пароль) =====
-        function unlockAdmin() {
-            const input = prompt("Введите пароль администратора:");
-            if (input === ADMIN_PASSWORD) {
-                document.getElementById('adminBtn').classList.add('visible');
-                localStorage.setItem('isAdmin', 'true');
-                alert("✅ Админ-режим активирован!");
-            } else {
-                alert("❌ Неверный пароль!");
-            }
-        }
-
-        // При загрузке проверяем, активирован ли уже админ-режим
-        if (localStorage.getItem('isAdmin') === 'true') {
-            document.getElementById('adminBtn').classList.add('visible');
-        }
 
         // ===== ПЕРЕКЛЮЧЕНИЕ СТРАНИЦ =====
         function switchPage(id) {
@@ -461,7 +430,7 @@
             if (id === 'events') document.querySelector('.nav-links a:nth-child(3)').classList.add('active');
         }
 
-        // ===== АДМИНКА =====
+        // ===== ОТКРЫТИЕ АДМИНКИ =====
         function openAdmin() {
             document.getElementById('adminModal').classList.add('open');
         }
@@ -474,6 +443,7 @@
                 closeAdmin();
                 document.getElementById('adminPanel').classList.add('open');
                 document.getElementById('adminPassword').value = '';
+                alert('✅ Админка открыта!');
             } else {
                 alert('❌ Неверный пароль!');
             }
@@ -624,18 +594,10 @@
         }
 
         // ===== ЗАПУСК =====
-        // Если админ-режим ещё не активирован, показываем запрос при клике на кнопку
-        document.getElementById('adminBtn').addEventListener('click', function(e) {
-            if (!this.classList.contains('visible')) {
-                e.preventDefault();
-                unlockAdmin();
-            }
-        });
-
         loadNews();
         loadEvents();
         updateTimer();
         setInterval(updateTimer, 1000);
     </script>
 </body>
-                            </html>
+            </html>
