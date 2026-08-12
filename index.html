@@ -2,303 +2,270 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>BattleZ — Игровой проект</title>
     <style>
         :root {
-            --bg: #0a0d14;
-            --bg-card: rgba(22, 27, 34, 0.65);
-            --text: #f0f6fc;
-            --text-muted: #8b949e;
-            --gold: #ffd700;
+            --bg: #0b0e1a;
+            --bg-card: rgba(18, 22, 40, 0.75);
+            --text: #e8edf5;
+            --text-muted: #8892a0;
+            --gold: #f5b342;
+            --gold-glow: rgba(245, 179, 66, 0.15);
             --border: rgba(255, 255, 255, 0.06);
             --shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
             --radius: 20px;
+            --success: #4ade80;
+            --danger: #ff6b6b;
         }
         .light-mode {
-            --bg: #f5f7fa;
-            --bg-card: rgba(255, 255, 255, 0.7);
-            --text: #1a1a1a;
-            --text-muted: #555;
-            --border: rgba(0, 0, 0, 0.08);
-            --shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+            --bg: #f4f6fa;
+            --bg-card: rgba(255, 255, 255, 0.75);
+            --text: #1a1e2a;
+            --text-muted: #5a6270;
+            --gold: #d48c2a;
+            --gold-glow: rgba(212, 140, 42, 0.08);
+            --border: rgba(0, 0, 0, 0.06);
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
         }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: var(--bg);
             color: var(--text);
             min-height: 100vh;
-            padding: 20px;
-            overflow-x: hidden;
+            padding: 12px;
             transition: background 0.3s, color 0.3s;
-            background-image: 
-                radial-gradient(circle at 20% 30%, rgba(255, 215, 0, 0.03) 0%, transparent 60%),
-                radial-gradient(circle at 80% 70%, rgba(255, 140, 0, 0.02) 0%, transparent 50%),
-                repeating-linear-gradient(45deg, transparent, transparent 100px, rgba(255, 255, 255, 0.01) 100px, rgba(255, 255, 255, 0.01) 101px);
-        }
-
-        .navbar {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 14px 24px;
-            background: var(--bg-card);
-            backdrop-filter: blur(16px);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            margin-bottom: 24px;
-            box-shadow: var(--shadow);
-            transition: background 0.3s, box-shadow 0.3s;
-        }
-        .navbar .logo {
-            font-size: 24px;
-            font-weight: 800;
-            background: linear-gradient(135deg, #ffd700, #ff8c00);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: -0.5px;
-        }
-        .navbar .nav-links {
-            display: flex;
-            gap: 16px;
+            flex-direction: column;
             align-items: center;
         }
-        .navbar .nav-links a {
-            color: var(--text-muted);
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            transition: color 0.2s;
-        }
-        .navbar .nav-links a:hover,
-        .navbar .nav-links a.active {
-            color: var(--gold);
-        }
-        .theme-toggle {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 50px;
-            padding: 6px 14px;
-            color: var(--text);
-            cursor: pointer;
-            font-size: 14px;
-            transition: background 0.2s;
-        }
-        .theme-toggle:hover { background: var(--border); }
 
-        /* ===== ОТДЕЛЬНАЯ КНОПКА АДМИНКИ ===== */
-        .nav-admin-btn {
-            background: rgba(255, 215, 0, 0.15);
-            border: 1px solid rgba(255, 215, 0, 0.25);
-            padding: 6px 16px;
-            border-radius: 50px;
-            color: var(--gold);
-            font-size: 13px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: background 0.2s;
-        }
-        .nav-admin-btn:hover { background: rgba(255, 215, 0, 0.25); }
-
-        /* ===== АДМИНКА (стиль SPEED HOST) ===== */
-        .admin-sidebar {
+        /* ===== ТЕХРАБОТЫ ===== */
+        #maintenancePage {
             display: none;
             position: fixed;
-            top: 0; left: 0; width: 260px;
-            height: 100vh;
-            background: #0a0d14;
-            border-right: 1px solid var(--border);
-            padding: 30px 20px;
-            z-index: 999;
-            overflow-y: auto;
-            backdrop-filter: blur(12px);
-            box-shadow: 4px 0 30px rgba(0,0,0,0.6);
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: #0b0e1a;
+            z-index: 99999;
+            justify-content: center;
+            align-items: center;
             flex-direction: column;
-        }
-        .admin-sidebar.open { display: flex; }
-        .admin-sidebar .brand {
-            font-size: 26px;
-            font-weight: 800;
-            background: linear-gradient(135deg, #ffd700, #ff8c00);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 30px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .admin-sidebar .brand span { font-size: 28px; }
-        .admin-sidebar .menu-item {
-            padding: 12px 16px;
-            border-radius: 12px;
-            color: var(--text-muted);
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 15px;
-            font-weight: 500;
-            margin-bottom: 4px;
-        }
-        .admin-sidebar .menu-item:hover,
-        .admin-sidebar .menu-item.active {
-            background: rgba(255, 215, 0, 0.06);
-            color: var(--gold);
-            border-left: 3px solid var(--gold);
-        }
-        .admin-sidebar .menu-item .icon { font-size: 20px; }
-        .admin-sidebar .menu-item.exit {
-            margin-top: auto;
-            border-top: 1px solid var(--border);
-            padding-top: 16px;
-        }
-
-        .admin-content {
-            display: none;
-            margin-left: 0;
-            transition: margin 0.3s;
-        }
-        .admin-content.open {
-            display: block;
-            margin-left: 280px;
-        }
-        @media (max-width: 768px) {
-            .admin-content.open { margin-left: 0; }
-        }
-
-        .admin-section { display: none; }
-        .admin-section.active { display: block; animation: fadeIn 0.3s ease; }
-
-        .admin-card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--border);
-            border-radius: 16px;
             padding: 20px;
-            margin-bottom: 16px;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+            text-align: center;
         }
-        .admin-card h3 { color: var(--gold); font-size: 18px; margin-bottom: 12px; }
+        #maintenancePage.active { display: flex; }
+        #maintenancePage h1 { font-size: 42px; color: #f5b342; margin-bottom: 16px; }
+        #maintenancePage p { color: #8892a0; font-size: 18px; max-width: 400px; line-height: 1.6; }
+        #maintenancePage .icon { font-size: 80px; margin-bottom: 20px; }
 
-        .admin-input {
+        /* ===== АДМИН-ЛОГИН ===== */
+        #adminLoginOverlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 99999;
+            justify-content: center;
+            align-items: center;
+        }
+        #adminLoginOverlay.active { display: flex; }
+        .login-box {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 32px;
+            max-width: 360px;
+            width: 100%;
+            box-shadow: var(--shadow);
+        }
+        .login-box h2 { color: var(--gold); text-align: center; margin-bottom: 16px; }
+        .login-box input {
             width: 100%;
             padding: 12px;
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid var(--border);
             border-radius: 10px;
             color: var(--text);
-            margin-bottom: 10px;
             font-size: 14px;
-            font-family: inherit;
+            margin-bottom: 12px;
         }
-        .admin-input:focus { border-color: var(--gold); outline: none; }
-
-        .admin-btn {
-            background: linear-gradient(135deg, #ffd700, #ff8c00);
-            color: #0a0d14;
+        .login-box input:focus { border-color: var(--gold); outline: none; }
+        .login-box .btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #f5b342, #e89a2a);
             border: none;
-            padding: 10px 20px;
-            border-radius: 50px;
+            border-radius: 10px;
             font-weight: 700;
-            font-size: 14px;
+            font-size: 16px;
             cursor: pointer;
-            transition: transform 0.2s;
+            color: #0b0e1a;
         }
-        .admin-btn:hover { transform: scale(1.02); }
+        .login-box .error { color: #ff6b6b; font-size: 13px; text-align: center; margin-top: 8px; display: none; }
+        .login-box .error.active { display: block; }
 
-        .admin-close {
-            position: absolute;
+        /* ===== TOAST ===== */
+        #toastContainer {
+            position: fixed;
             top: 20px;
             right: 20px;
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            font-size: 28px;
-            cursor: pointer;
-        }
-
-        .admin-item {
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 10px;
-            padding: 12px 16px;
-            margin-bottom: 8px;
+            z-index: 9999;
             display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .toast {
+            padding: 14px 20px;
+            border-radius: 12px;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 500;
+            animation: slideIn 0.4s ease, fadeOut 0.4s ease 3.5s forwards;
+            min-width: 250px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .toast.success { background: rgba(74, 222, 128, 0.9); border: 1px solid rgba(74, 222, 128, 0.3); }
+        .toast.error { background: rgba(255, 107, 107, 0.9); border: 1px solid rgba(255, 107, 107, 0.3); }
+        .toast.info { background: rgba(100, 149, 237, 0.9); border: 1px solid rgba(100, 149, 237, 0.3); }
+        .toast.warning { background: rgba(255, 165, 0, 0.9); border: 1px solid rgba(255, 165, 0, 0.3); }
+        @keyframes slideIn { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes fadeOut { from { opacity: 1; transform: translateX(0); } to { opacity: 0; transform: translateX(40px); } }
+
+        /* ===== НАВБАР ===== */
+        .navbar {
+            display: flex;
+            flex-wrap: wrap;
             justify-content: space-between;
             align-items: center;
-            font-size: 14px;
+            padding: 10px 14px;
+            background: var(--bg-card);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            margin-bottom: 16px;
+            box-shadow: var(--shadow);
+            gap: 6px;
+            width: 100%;
+            max-width: 600px;
         }
-        .admin-item .del {
-            color: #ff6b6b;
+        .navbar .logo {
+            font-size: 20px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #f5b342, #e89a2a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .navbar .nav-right {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .navbar .nav-links {
+            display: flex;
+            gap: 3px;
+            list-style: none;
+            flex-wrap: wrap;
+        }
+        .navbar .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 11px;
+            font-weight: 500;
+            padding: 4px 6px;
+            border-radius: 6px;
+            transition: all 0.2s;
             cursor: pointer;
-            background: none;
-            border: none;
-            font-size: 16px;
         }
+        .navbar .nav-links a:hover,
+        .navbar .nav-links a.active {
+            color: var(--gold);
+            background: var(--gold-glow);
+        }
+        .theme-toggle {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 50px;
+            padding: 3px 8px;
+            color: var(--text);
+            cursor: pointer;
+            font-size: 11px;
+            transition: 0.2s;
+        }
+        .theme-toggle:hover { background: var(--border); }
+        .nav-admin-btn {
+            background: var(--gold-glow);
+            border: 1px solid rgba(245, 179, 66, 0.3);
+            padding: 3px 8px;
+            border-radius: 50px;
+            color: var(--gold);
+            font-size: 11px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+        .nav-admin-btn:hover { background: rgba(245, 179, 66, 0.2); }
 
-        /* ===== СТРАНИЦЫ ===== */
-        .page { display: none; animation: fadeIn 0.4s ease; }
+        .container { width: 100%; max-width: 600px; }
+        .page { display: none; animation: fadeIn 0.35s ease; }
         .page.active { display: block; }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .container { max-width: 800px; margin: 0 auto; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 
-        .header { text-align: center; padding: 20px 0; }
+        .header { text-align: center; padding: 8px 0 4px; }
         .header h1 {
-            font-size: 44px;
+            font-size: 32px;
             font-weight: 900;
-            background: linear-gradient(135deg, #ffd700, #ff8c00, #ffd700);
+            background: linear-gradient(135deg, #f5b342, #e89a2a, #f5b342);
             background-size: 200% auto;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             animation: shimmer 3s linear infinite;
         }
+        .header h2 { color: var(--gold); font-size: 22px; margin-bottom: 4px; }
+        .header p { color: var(--text-muted); font-size: 14px; }
         @keyframes shimmer { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
-        .header p { color: var(--text-muted); font-size: 16px; margin-top: 4px; }
+
+        .online-counter {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 12px;
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+        .online-counter .dot {
+            width: 8px;
+            height: 8px;
+            background: #4ade80;
+            border-radius: 50%;
+            animation: pulseDot 1.5s ease-in-out infinite;
+        }
+        @keyframes pulseDot { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.6; transform: scale(0.9); } }
 
         .timer-section {
             background: var(--bg-card);
             border: 1px solid var(--border);
             backdrop-filter: blur(12px);
             border-radius: var(--radius);
-            padding: 20px;
+            padding: 14px;
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 14px;
             box-shadow: var(--shadow);
         }
-        .timer-section .label { color: var(--text-muted); font-size: 14px; }
+        .timer-section .label { color: var(--text-muted); font-size: 13px; }
         .timer-section .time {
-            font-size: 38px;
+            font-size: 30px;
             font-weight: 700;
             color: var(--gold);
-            margin-top: 4px;
+            margin-top: 2px;
             font-variant-numeric: tabular-nums;
-        }
-
-        .online-counter {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 20px;
-            color: var(--text-muted);
-            font-size: 14px;
-        }
-        .online-counter .dot {
-            width: 10px;
-            height: 10px;
-            background: #4ade80;
-            border-radius: 50%;
-            animation: pulseDot 1.5s ease-in-out infinite;
-        }
-        @keyframes pulseDot {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.6; transform: scale(0.9); }
         }
 
         .card {
@@ -306,109 +273,32 @@
             border: 1px solid var(--border);
             backdrop-filter: blur(12px);
             border-radius: var(--radius);
-            padding: 22px;
-            margin-bottom: 16px;
-            box-shadow: var(--shadow);
-            transition: background 0.3s, box-shadow 0.3s;
-        }
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-        }
-        .card-header h2 { font-size: 20px; font-weight: 700; }
-
-        .news-item {
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 12px;
-            padding: 14px;
-            margin-bottom: 10px;
-            border-left: 4px solid var(--gold);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .news-item .content { flex: 1; }
-        .news-item .date { color: var(--text-muted); font-size: 12px; }
-        .news-item .text { color: var(--text); font-size: 14px; line-height: 1.6; }
-        .news-item .delete-btn {
-            background: rgba(255, 0, 0, 0.1);
-            border: none;
-            color: #ff6b6b;
-            padding: 4px 10px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 12px;
-            transition: background 0.2s;
-        }
-        .news-item .delete-btn:hover { background: rgba(255, 0, 0, 0.2); }
-
-        .event-item {
-            background: rgba(255, 215, 0, 0.05);
-            border: 1px solid rgba(255, 215, 0, 0.15);
-            border-radius: 12px;
-            padding: 14px;
-            margin-bottom: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .event-item .content { flex: 1; }
-        .event-item .date { color: var(--text-muted); font-size: 12px; }
-        .event-item .title { color: var(--gold); font-weight: 600; font-size: 16px; }
-        .event-item .desc { color: var(--text); font-size: 14px; margin-top: 4px; }
-        .event-item .delete-btn {
-            background: rgba(255, 0, 0, 0.1);
-            border: none;
-            color: #ff6b6b;
-            padding: 4px 10px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 12px;
-        }
-
-        .roadmap-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
-        @media (max-width: 480px) { .roadmap-grid { grid-template-columns: 1fr; } }
-        .roadmap-item {
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 12px;
             padding: 16px;
-            text-align: center;
-            border: 1px solid var(--border);
-            transition: border 0.3s;
+            margin-bottom: 12px;
+            box-shadow: var(--shadow);
         }
-        .roadmap-item:hover { border-color: var(--gold); }
-        .roadmap-item .icon { font-size: 28px; }
-        .roadmap-item .name { color: var(--text); font-weight: 600; margin-top: 4px; }
-        .roadmap-item .desc { color: var(--text-muted); font-size: 13px; margin-top: 2px; }
+        .card h2 { font-size: 17px; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+        .card .sub { color: var(--text-muted); font-size: 13px; margin-bottom: 10px; }
 
-        .beta-card {
-            border: 1px solid var(--gold);
-            background: rgba(255, 215, 0, 0.05);
-        }
+        .beta-card { border: 1px solid var(--gold); background: var(--gold-glow); }
         .beta-btn {
             width: 100%;
-            padding: 14px;
+            padding: 12px;
             border: none;
             border-radius: var(--radius);
             font-weight: 700;
-            font-size: 16px;
+            font-size: 15px;
             cursor: pointer;
             transition: all 0.2s;
-            margin-top: 8px;
+            margin-top: 6px;
         }
         .beta-btn.available {
-            background: linear-gradient(135deg, #ffd700, #ff8c00);
-            color: #0a0d14;
+            background: linear-gradient(135deg, #f5b342, #e89a2a);
+            color: #0b0e1a;
         }
         .beta-btn.available:hover { transform: scale(1.02); }
         .beta-btn.registered {
-            background: rgba(74, 222, 128, 0.15);
+            background: rgba(74, 222, 128, 0.12);
             color: #4ade80;
             border: 1px solid #4ade80;
         }
@@ -416,52 +306,373 @@
         .btn {
             display: block;
             width: 100%;
-            padding: 16px;
-            background: linear-gradient(135deg, #ffd700, #ff8c00);
-            color: #0a0d14;
+            padding: 12px;
+            background: linear-gradient(135deg, #f5b342, #e89a2a);
+            color: #0b0e1a;
             border: none;
             border-radius: 14px;
-            font-size: 17px;
+            font-size: 15px;
             font-weight: 700;
             cursor: pointer;
             text-align: center;
-            transition: all 0.2s;
-            margin-top: 12px;
+            transition: 0.2s;
+            margin-top: 8px;
         }
         .btn:hover { transform: scale(1.02); }
-        .btn:active { animation: shake 0.15s ease; }
-        @keyframes shake {
-            0% { transform: translateX(0); }
-            25% { transform: translateX(-4px); }
-            50% { transform: translateX(4px); }
-            75% { transform: translateX(-4px); }
-            100% { transform: translateX(0); }
-        }
+        .btn.secondary { background: rgba(255,255,255,0.08); color: var(--text); }
 
-        .footer {
-            text-align: center;
-            color: var(--text-muted);
-            font-size: 12px;
-            padding: 30px 0;
-            border-top: 1px solid var(--border);
-            margin-top: 10px;
+        /* ===== НОВОСТИ ===== */
+        .news-item {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 10px 12px;
+            margin-bottom: 6px;
+            border-left: 3px solid var(--gold);
         }
-        .footer a { color: var(--gold); text-decoration: none; }
-
-        .share-btn {
+        .news-item .date { color: var(--text-muted); font-size: 10px; margin-top: 3px; }
+        .news-item .status {
             display: inline-block;
-            margin-top: 12px;
-            padding: 8px 20px;
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid var(--border);
-            border-radius: 50px;
-            color: var(--text);
-            text-decoration: none;
-            font-size: 14px;
-            transition: background 0.2s;
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            margin-right: 6px;
         }
-        .share-btn:hover { background: rgba(255, 255, 255, 0.1); }
+        .news-item .status.anons { background: rgba(100, 149, 237, 0.2); color: #6495ed; }
+        .news-item .status.urgent { background: rgba(255, 107, 107, 0.2); color: #ff6b6b; }
+        .news-item .status.holiday { background: rgba(245, 179, 66, 0.2); color: #f5b342; }
+        .news-item .status.warning { background: rgba(255, 165, 0, 0.2); color: #ffa500; }
+        .news-item .text { color: var(--text); font-size: 13px; line-height: 1.5; }
 
+        /* ===== ИВЕНТЫ ===== */
+        .event-item {
+            background: rgba(245, 179, 66, 0.06);
+            border: 1px solid rgba(245, 179, 66, 0.15);
+            border-radius: 12px;
+            padding: 10px 12px;
+            margin-bottom: 6px;
+        }
+        .event-item .title { color: var(--gold); font-weight: 600; font-size: 14px; }
+        .event-item .desc { color: var(--text); font-size: 13px; margin-top: 2px; }
+        .event-item .date { color: var(--text-muted); font-size: 10px; margin-top: 3px; }
+        .event-item .event-date { display: inline-block; background: var(--gold-glow); color: var(--gold); padding: 2px 8px; border-radius: 20px; font-size: 11px; font-weight: 600; margin-top: 4px; }
+
+        /* ===== КАЛЕНДАРЬ ===== */
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 3px;
+            margin-top: 8px;
+        }
+        .calendar-grid .day {
+            text-align: center;
+            padding: 5px 0;
+            border-radius: 6px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        .calendar-grid .day.weekday { font-weight: 600; color: var(--text); font-size: 10px; }
+        .calendar-grid .day.has-event { background: var(--gold-glow); color: var(--gold); font-weight: 700; cursor: default; }
+        .calendar-grid .day.today { border: 1px solid var(--gold); }
+        .calendar-grid .day.empty { color: transparent; }
+        .calendar-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .calendar-nav button {
+            background: none;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text);
+            padding: 3px 10px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .calendar-nav button:hover { background: var(--gold-glow); }
+        .calendar-nav .month-year { font-weight: 600; font-size: 15px; }
+
+        /* ===== ПАРТНЁРЫ ===== */
+        .partner-item {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 10px 12px;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: 1px solid var(--border);
+            transition: 0.2s;
+        }
+        .partner-item:hover { border-color: var(--gold); }
+        .partner-item .icon { font-size: 24px; }
+        .partner-item .info { flex: 1; }
+        .partner-item .name { font-weight: 600; color: var(--text); font-size: 14px; }
+        .partner-item .desc { font-size: 11px; color: var(--text-muted); }
+        .partner-item .link { color: var(--gold); text-decoration: none; font-size: 12px; }
+
+        /* ===== ДОСТИЖЕНИЯ ===== */
+        .achievement-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+        @media (max-width: 400px) { .achievement-grid { grid-template-columns: 1fr; } }
+        .achievement-item {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 12px;
+            text-align: center;
+            border: 1px solid var(--border);
+            transition: 0.3s;
+            position: relative;
+        }
+        .achievement-item.completed { border-color: var(--gold); background: var(--gold-glow); }
+        .achievement-item .icon { font-size: 26px; }
+        .achievement-item .name { font-weight: 600; font-size: 13px; margin-top: 3px; }
+        .achievement-item .desc { font-size: 10px; color: var(--text-muted); }
+        .achievement-item .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 10px;
+            margin-top: 6px;
+            overflow: hidden;
+        }
+        .achievement-item .progress-bar .fill {
+            height: 100%;
+            background: linear-gradient(90deg, #f5b342, #e89a2a);
+            border-radius: 10px;
+            transition: width 0.5s;
+        }
+        .achievement-item .check { position: absolute; top: 4px; right: 6px; font-size: 14px; }
+        .achievement-item .progress-text { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
+
+        /* ===== FAQ ===== */
+        .faq-item {
+            border-bottom: 1px solid var(--border);
+            padding: 8px 0;
+            cursor: pointer;
+        }
+        .faq-item:last-child { border-bottom: none; }
+        .faq-item .q {
+            font-weight: 600;
+            color: var(--text);
+            font-size: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .faq-item .q .arrow { transition: 0.3s; display: inline-block; }
+        .faq-item .q .arrow.open { transform: rotate(180deg); }
+        .faq-item .a {
+            color: var(--text-muted);
+            font-size: 13px;
+            line-height: 1.6;
+            padding-top: 4px;
+            display: none;
+        }
+        .faq-item .a.open { display: block; }
+
+        /* ===== QR-КОД ===== */
+        .qr-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+        .qr-container .qr-box {
+            background: #fff;
+            padding: 10px;
+            border-radius: 12px;
+            display: inline-block;
+        }
+        .qr-container .qr-box a {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--gold);
+        }
+        .qr-container .qr-box .big-icon { font-size: 56px; }
+        .qr-container .qr-label { color: var(--text-muted); font-size: 12px; }
+
+        /* ===== ОБРАТНАЯ СВЯЗЬ ===== */
+        .feedback-input {
+            width: 100%;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--text);
+            font-size: 14px;
+            font-family: inherit;
+            resize: vertical;
+            min-height: 70px;
+        }
+        .feedback-input:focus { border-color: var(--gold); outline: none; }
+
+        /* ===== ПОДДЕРЖКА ===== */
+        .support-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+        }
+        .support-item {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 10px 14px;
+            text-align: center;
+            transition: all 0.3s;
+            min-width: 70px;
+            flex: 1 0 auto;
+            max-width: 120px;
+        }
+        .support-item:hover { border-color: var(--gold); background: var(--gold-glow); transform: translateY(-2px); }
+        .support-item .avatar { font-size: 24px; display: block; margin-bottom: 2px; }
+        .support-item .name { font-weight: 600; font-size: 12px; }
+        .support-item .role { font-size: 10px; color: var(--text-muted); }
+        .support-item .link { font-size: 10px; color: var(--gold); text-decoration: none; display: inline-block; margin-top: 2px; }
+
+        /* ===== УВЕДОМЛЕНИЯ ===== */
+        .notification-banner {
+            background: var(--gold-glow);
+            border: 1px solid var(--gold);
+            border-radius: var(--radius);
+            padding: 10px 14px;
+            margin-bottom: 12px;
+            display: none;
+            animation: slideDown 0.5s ease;
+        }
+        .notification-banner.active { display: block; }
+        .notification-banner .title { font-weight: 700; color: var(--gold); font-size: 14px; }
+        .notification-banner .text { color: var(--text); font-size: 13px; margin-top: 3px; }
+        .notification-banner .close { float: right; background: none; border: none; color: var(--text-muted); font-size: 16px; cursor: pointer; }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* ===== АДМИНКА ===== */
+        .admin-sidebar {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 250px;
+            height: 100vh;
+            background: #0b0e1a;
+            border-right: 1px solid var(--border);
+            padding: 16px 10px;
+            z-index: 999;
+            overflow-y: auto;
+            flex-direction: column;
+            box-shadow: 4px 0 30px rgba(0,0,0,0.6);
+        }
+        .admin-sidebar.open { display: flex; }
+        .admin-sidebar .brand {
+            font-size: 20px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #f5b342, #e89a2a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 14px;
+        }
+        .admin-sidebar .menu-item {
+            padding: 7px 10px;
+            border-radius: 8px;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 12px;
+            font-weight: 500;
+            margin-bottom: 2px;
+        }
+        .admin-sidebar .menu-item:hover,
+        .admin-sidebar .menu-item.active {
+            background: var(--gold-glow);
+            color: var(--gold);
+            border-left: 3px solid var(--gold);
+        }
+        .admin-sidebar .menu-item.exit { margin-top: auto; border-top: 1px solid var(--border); padding-top: 10px; }
+        .admin-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .admin-content {
+            display: none;
+            margin-left: 0;
+            transition: margin 0.3s;
+            width: 100%;
+            max-width: 600px;
+        }
+        .admin-content.open { display: block; margin-left: 270px; }
+        @media (max-width: 768px) { .admin-content.open { margin-left: 0; } }
+
+        .admin-section { display: none; }
+        .admin-section.active { display: block; animation: fadeIn 0.25s ease; }
+
+        .admin-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 14px;
+            margin-bottom: 10px;
+        }
+        .admin-card h3 { color: var(--gold); font-size: 15px; margin-bottom: 8px; }
+        .admin-input {
+            width: 100%;
+            padding: 8px 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            margin-bottom: 6px;
+            font-size: 13px;
+            font-family: inherit;
+        }
+        .admin-input:focus { border-color: var(--gold); outline: none; }
+        .admin-btn {
+            background: linear-gradient(135deg, #f5b342, #e89a2a);
+            color: #0b0e1a;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 12px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .admin-btn:hover { transform: scale(1.02); }
+        .admin-btn.secondary { background: rgba(255,255,255,0.08); color: var(--text); }
+
+        .admin-item {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            padding: 8px 10px;
+            margin-bottom: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+        }
+        .admin-item .del {
+            color: #ff6b6b;
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-size: 14px;
+            padding: 0 4px;
+        }
+        .admin-item .del:hover { transform: scale(1.2); }
+
+        /* ===== МОДАЛКА ===== */
         .modal {
             display: none;
             position: fixed;
@@ -477,408 +688,1177 @@
             background: var(--bg);
             border: 1px solid var(--border);
             border-radius: var(--radius);
-            padding: 30px;
-            max-width: 400px;
+            padding: 24px;
+            max-width: 380px;
             width: 100%;
             box-shadow: var(--shadow);
         }
-        .modal-content h2 { text-align: center; margin-bottom: 20px; }
+        .modal-content h2 { text-align: center; margin-bottom: 14px; font-size: 20px; }
         .modal-content input {
             width: 100%;
-            padding: 12px;
+            padding: 10px;
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid var(--border);
             border-radius: 10px;
             color: var(--text);
-            margin-bottom: 12px;
-        }
-        .modal-content .btn {
-            width: 100%;
-            padding: 12px;
-            background: linear-gradient(135deg, #ffd700, #ff8c00);
-            border: none;
-            border-radius: 10px;
-            font-weight: 700;
-            cursor: pointer;
+            margin-bottom: 8px;
+            font-size: 14px;
         }
         .close-modal {
             float: right;
             cursor: pointer;
-            font-size: 24px;
+            font-size: 22px;
             color: var(--text-muted);
+        }
+
+        .footer {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 11px;
+            padding: 16px 0 8px;
+            border-top: 1px solid var(--border);
+            margin-top: 8px;
+            width: 100%;
+            max-width: 600px;
+        }
+        .footer a { color: var(--gold); text-decoration: none; }
+
+        @media (max-width: 480px) {
+            .navbar .logo { font-size: 17px; }
+            .navbar .nav-links a { font-size: 10px; padding: 3px 5px; }
+            .timer-section .time { font-size: 22px; }
+            .header h1 { font-size: 26px; }
+            .support-item { min-width: 60px; max-width: 100px; padding: 6px 8px; }
+            .support-item .avatar { font-size: 20px; }
+            .support-item .name { font-size: 11px; }
+            .admin-sidebar { width: 220px; }
+            .admin-content.open { margin-left: 0; }
         }
     </style>
 </head>
 <body>
-    <nav class="navbar">
-        <div class="logo">⚔️ BattleZ</div>
-        <div class="nav-links">
-            <a href="#" class="active" onclick="switchPage('home')">Главная</a>
-            <a href="#" onclick="switchPage('news')">📰 Новости</a>
-            <a href="#" onclick="switchPage('events')">🎮 Ивенты</a>
-            <button class="theme-toggle" onclick="toggleTheme()">🌙 Тема</button>
-            <span class="nav-admin-btn" onclick="openAdmin()">🔧 Админка</span>
+
+    <!-- ===== ТЕХРАБОТЫ ===== -->
+    <div id="maintenancePage">
+        <div class="icon">🛠️</div>
+        <h1>Технические работы</h1>
+        <p>Сайт временно недоступен.<br>Мы скоро вернёмся с обновлениями!</p>
+        <p style="font-size:14px;margin-top:20px;color:#5a6270;">BattleZ © 2026</p>
+    </div>
+
+    <!-- ===== АДМИН-ЛОГИН ===== -->
+    <div id="adminLoginOverlay">
+        <div class="login-box">
+            <h2>🔐 Вход в админку</h2>
+            <input type="password" id="adminPassword" placeholder="Введите пароль..." onkeydown="if(event.key==='Enter') checkAdminLogin()">
+            <button class="btn" onclick="checkAdminLogin()">Войти</button>
+            <div class="error" id="loginError">❌ Неверный пароль</div>
         </div>
-    </nav>
+    </div>
 
-    <div class="container">
-        <div class="page active" id="page-home">
-            <div class="header">
-                <h1>BattleZ</h1>
-                <p>Новый игровой проект в Telegram</p>
+    <div id="toastContainer"></div>
+
+    <!-- ===== ОСНОВНОЙ САЙТ ===== -->
+    <div id="mainSite">
+
+        <nav class="navbar">
+            <div class="logo">⚔️ BattleZ</div>
+            <div class="nav-right">
+                <ul class="nav-links">
+                    <li><a class="active" onclick="switchPage('home')">Главная</a></li>
+                    <li><a onclick="switchPage('news')">Новости</a></li>
+                    <li><a onclick="switchPage('events')">Ивенты</a></li>
+                    <li><a onclick="switchPage('calendar')">📅</a></li>
+                    <li><a onclick="switchPage('supporters')">🤝</a></li>
+                    <li><a onclick="switchPage('faq')">❓</a></li>
+                    <li><a onclick="switchPage('feedback')">📧</a></li>
+                </ul>
+                <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+                <span class="nav-admin-btn" onclick="openAdmin()">🔧</span>
+            </div>
+        </nav>
+
+        <!-- ===== УВЕДОМЛЕНИЕ ===== -->
+        <div class="notification-banner" id="notificationBanner">
+            <button class="close" onclick="closeNotification()">✕</button>
+            <div class="title" id="notifTitle">📢 Важно!</div>
+            <div class="text" id="notifText"></div>
+        </div>
+
+        <div class="container">
+            <!-- ===== ГЛАВНАЯ ===== -->
+            <div class="page active" id="page-home">
+                <div class="header">
+                    <h1>BattleZ</h1>
+                    <p>Новый игровой проект в Telegram</p>
+                </div>
+
+                <div class="online-counter">
+                    <span class="dot"></span>
+                    <span id="onlineCount">42</span> игроков онлайн
+                </div>
+
+                <div class="timer-section">
+                    <div class="label">⏳ До запуска</div>
+                    <div class="time" id="timerDisplay">Дата не установлена</div>
+                </div>
+
+                <div class="card">
+                    <h2>📢 Мы готовим нечто большое</h2>
+                    <p style="color: var(--text-muted); line-height: 1.6; font-size: 13px;">
+                        BattleZ — это новый игровой проект в Telegram, который объединит квесты, гильдии и PvP.
+                        Сейчас мы в стадии закрытого тестирования и готовимся к запуску.
+                    </p>
+                </div>
+
+                <!-- ===== QR-КОД ===== -->
+                <div class="card">
+                    <h2>📱 Присоединяйся к нам</h2>
+                    <div class="qr-container">
+                        <div class="qr-box" id="qrCodeContainer"></div>
+                        <span class="qr-label">Наведи камеру, чтобы перейти в Telegram</span>
+                    </div>
+                </div>
+
+                <div class="card beta-card">
+                    <h2>🎮 Запись на бета-тест</h2>
+                    <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 8px;">
+                        Оставь свои данные, чтобы стать одним из первых тестировщиков.
+                    </p>
+                    <button class="beta-btn available" id="betaBtn" onclick="openBetaModal()">
+                        ✉️ Записаться
+                    </button>
+                </div>
+
+                <!-- ===== ДОСТИЖЕНИЯ ===== -->
+                <div class="card">
+                    <h2>🏅 Достижения проекта</h2>
+                    <div id="achievementsHome" class="achievement-grid"></div>
+                </div>
+
+                <!-- ===== ПАРТНЁРЫ ===== -->
+                <div class="card">
+                    <h2>🤝 Наши партнёры</h2>
+                    <div id="partnersHome"></div>
+                </div>
             </div>
 
-            <div class="online-counter">
-                <span class="dot"></span>
-                <span id="onlineCount">42</span> пользователей онлайн
+            <!-- ===== НОВОСТИ ===== -->
+            <div class="page" id="page-news">
+                <div class="header"><h2>📰 Новости</h2></div>
+                <div class="card"><div id="newsContainer"></div></div>
             </div>
 
-            <div class="timer-section">
-                <div class="label">⏳ До запуска</div>
-                <div class="time" id="timerDisplay">00д 00ч 00м 00с</div>
+            <!-- ===== ИВЕНТЫ ===== -->
+            <div class="page" id="page-events">
+                <div class="header"><h2>🎮 Ивенты</h2></div>
+                <div class="card"><div id="eventsContainer"></div></div>
             </div>
 
-            <div class="card">
-                <h2 style="margin-bottom: 12px;">📢 Мы готовим нечто большое</h2>
-                <p style="color: var(--text-muted); line-height: 1.7;">
-                    BattleZ — это новый игровой проект в Telegram, который объединит квесты, гильдии и PvP.
-                    Сейчас мы в стадии закрытого тестирования и готовимся к запуску.
-                </p>
+            <!-- ===== КАЛЕНДАРЬ ===== -->
+            <div class="page" id="page-calendar">
+                <div class="header"><h2>📅 Календарь ивентов</h2></div>
+                <div class="card">
+                    <div id="calendarContainer"></div>
+                </div>
             </div>
 
-            <div class="card beta-card">
-                <h2 style="margin-bottom: 12px;">🎮 Запись на бета-тест</h2>
-                <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 12px;">
-                    Оставь свои данные, чтобы стать одним из первых тестировщиков BattleZ.
-                </p>
-                <button class="beta-btn available" id="betaBtn" onclick="openBetaModal()">
-                    ✉️ Записаться на бета-тест
-                </button>
+            <!-- ===== ПОДДЕРЖКА ===== -->
+            <div class="page" id="page-supporters">
+                <div class="header"><h2>🤝 Наша команда</h2></div>
+                <div class="card">
+                    <div id="supportGridPage" class="support-grid"></div>
+                </div>
             </div>
 
-            <div class="card">
-                <h2 style="margin-bottom: 12px;">🗺️ Что вас ждёт</h2>
-                <div class="roadmap-grid">
-                    <div class="roadmap-item"><div class="icon">🧙</div><div class="name">Персонажи</div><div class="desc">Прокачка, уровни, способности</div></div>
-                    <div class="roadmap-item"><div class="icon">⚔️</div><div class="name">PvP-арена</div><div class="desc">Сражайся с другими игроками</div></div>
-                    <div class="roadmap-item"><div class="icon">🏆</div><div class="name">Гильдии</div><div class="desc">Создавай кланы и участвуй в битвах</div></div>
-                    <div class="roadmap-item"><div class="icon">🎁</div><div class="name">Промокоды</div><div class="desc">Эксклюзивные бонусы</div></div>
+            <!-- ===== FAQ ===== -->
+            <div class="page" id="page-faq">
+                <div class="header"><h2>❓ FAQ</h2></div>
+                <div class="card"><div id="faqContainer"></div></div>
+            </div>
+
+            <!-- ===== ОБРАТНАЯ СВЯЗЬ ===== -->
+            <div class="page" id="page-feedback">
+                <div class="header"><h2>📧 Обратная связь</h2></div>
+                <div class="card">
+                    <p style="color:var(--text-muted);font-size:13px;margin-bottom:10px;">
+                        Напишите нам, и мы ответим вам в Telegram-боте.
+                    </p>
+                    <textarea class="feedback-input" id="feedbackText" placeholder="Ваше сообщение..."></textarea>
+                    <input class="admin-input" id="feedbackName" placeholder="Ваше имя (опционально)" style="margin-top:6px;">
+                    <button class="btn" onclick="sendFeedback()">📤 Отправить</button>
+                    <p style="color:var(--text-muted);font-size:11px;margin-top:6px;text-align:center;">
+                        Ответ придёт в бота <a href="https://t.me/BattleZGameBot" target="_blank" style="color:var(--gold);">@BattleZGameBot</a>
+                    </p>
                 </div>
             </div>
         </div>
 
-        <div class="page" id="page-news">
-            <div class="header"><h2 style="color:var(--gold);">📰 Новости</h2></div>
-            <div class="card"><div id="newsContainer"></div></div>
-        </div>
-
-        <div class="page" id="page-events">
-            <div class="header"><h2 style="color:var(--gold);">🎮 Ивенты</h2></div>
-            <div class="card"><div id="eventsContainer"></div></div>
+        <div class="footer">
+            BattleZ © 2026 • <a href="https://t.me/StarWayBuyStarsNews" target="_blank">@StarWayBuyStarsNews</a>
         </div>
     </div>
 
-    <!-- АДМИНКА -->
+    <!-- ===== АДМИНКА ===== -->
     <div class="admin-sidebar" id="adminSidebar">
         <button class="admin-close" onclick="closeAdmin()">✕</button>
-        <div class="brand"><span>⚔️</span> BattleZ</div>
-        <div class="menu-item active" onclick="switchAdmin('news')"><span class="icon">📰</span> Новости</div>
-        <div class="menu-item" onclick="switchAdmin('events')"><span class="icon">🎮</span> Ивенты</div>
-        <div class="menu-item" onclick="switchAdmin('timer')"><span class="icon">⏱️</span> Таймер</div>
-        <div class="menu-item" onclick="switchAdmin('beta')"><span class="icon">📋</span> Бета-тестеры</div>
-        <div class="menu-item exit" onclick="closeAdmin()"><span class="icon">🚪</span> Выйти</div>
+        <div class="brand">⚔️ BattleZ</div>
+        <div class="menu-item active" onclick="switchAdmin('news')">📰 Новости</div>
+        <div class="menu-item" onclick="switchAdmin('events')">🎮 Ивенты</div>
+        <div class="menu-item" onclick="switchAdmin('achievements')">🏅 Достижения</div>
+        <div class="menu-item" onclick="switchAdmin('partners')">🤝 Партнёры</div>
+        <div class="menu-item" onclick="switchAdmin('faq')">❓ FAQ</div>
+        <div class="menu-item" onclick="switchAdmin('supporters')">🤝 Команда</div>
+        <div class="menu-item" onclick="switchAdmin('timer')">⏱️ Таймер</div>
+        <div class="menu-item" onclick="switchAdmin('beta')">📋 Бета</div>
+        <div class="menu-item" onclick="switchAdmin('notifications')">🔔 Уведомления</div>
+        <div class="menu-item" onclick="switchAdmin('maintenance')">🛠️ Техработы</div>
+        <div class="menu-item exit" onclick="closeAdmin()">🚪 Выйти</div>
     </div>
 
     <div class="admin-content" id="adminContent">
+        <!-- Новости -->
         <div class="admin-section active" id="admin-news">
             <div class="admin-card">
                 <h3>📰 Добавить новость</h3>
+                <select class="admin-input" id="newsStatus">
+                    <option value="anons">📢 Анонс</option>
+                    <option value="urgent">🚨 Срочно</option>
+                    <option value="holiday">🎉 Праздник</option>
+                    <option value="warning">⚠️ Предупреждение</option>
+                </select>
                 <input class="admin-input" id="newsInput" placeholder="Текст новости...">
                 <button class="admin-btn" onclick="addNews()">➕ Добавить</button>
             </div>
-            <div class="admin-card">
-                <h3>📋 Список новостей</h3>
-                <div id="adminNewsList"></div>
-            </div>
+            <div class="admin-card"><h3>📋 Список</h3><div id="adminNewsList"></div></div>
         </div>
 
+        <!-- Ивенты -->
         <div class="admin-section" id="admin-events">
             <div class="admin-card">
                 <h3>🎮 Добавить ивент</h3>
-                <input class="admin-input" id="eventTitleInput" placeholder="Название ивента...">
-                <input class="admin-input" id="eventDescInput" placeholder="Описание ивента...">
+                <input class="admin-input" id="eventTitleInput" placeholder="Название...">
+                <input class="admin-input" id="eventDescInput" placeholder="Описание...">
+                <input class="admin-input" id="eventDateInput" type="date" placeholder="Дата...">
                 <button class="admin-btn" onclick="addEvent()">➕ Добавить</button>
             </div>
-            <div class="admin-card">
-                <h3>📋 Список ивентов</h3>
-                <div id="adminEventsList"></div>
-            </div>
+            <div class="admin-card"><h3>📋 Список</h3><div id="adminEventsList"></div></div>
         </div>
 
+        <!-- Достижения -->
+        <div class="admin-section" id="admin-achievements">
+            <div class="admin-card">
+                <h3>🏅 Добавить достижение</h3>
+                <input class="admin-input" id="achName" placeholder="Название...">
+                <input class="admin-input" id="achDesc" placeholder="Описание...">
+                <select class="admin-input" id="achIcon">
+                    <option value="🎯">🎯</option><option value="🏆">🏆</option><option value="⭐">⭐</option>
+                    <option value="🔥">🔥</option><option value="💎">💎</option><option value="👑">👑</option>
+                    <option value="🚀">🚀</option><option value="⚡">⚡</option>
+                </select>
+                <input class="admin-input" id="achProgress" type="number" placeholder="Прогресс (0-100)" min="0" max="100">
+                <button class="admin-btn" onclick="addAchievement()">➕ Добавить</button>
+            </div>
+            <div class="admin-card"><h3>📋 Список</h3><div id="adminAchievementsList"></div></div>
+        </div>
+
+        <!-- Партнёры -->
+        <div class="admin-section" id="admin-partners">
+            <div class="admin-card">
+                <h3>🤝 Добавить партнёра</h3>
+                <input class="admin-input" id="partnerName" placeholder="Название...">
+                <input class="admin-input" id="partnerDesc" placeholder="Описание...">
+                <input class="admin-input" id="partnerLink" placeholder="Ссылка...">
+                <input class="admin-input" id="partnerIcon" placeholder="Эмодзи (например: 🌟)">
+                <button class="admin-btn" onclick="addPartner()">➕ Добавить</button>
+            </div>
+            <div class="admin-card"><h3>📋 Список</h3><div id="adminPartnersList"></div></div>
+        </div>
+
+        <!-- FAQ -->
+        <div class="admin-section" id="admin-faq">
+            <div class="admin-card">
+                <h3>❓ Добавить FAQ</h3>
+                <input class="admin-input" id="faqQuestion" placeholder="Вопрос...">
+                <textarea class="admin-input" id="faqAnswer" placeholder="Ответ..." style="min-height:50px;resize:vertical;"></textarea>
+                <button class="admin-btn" onclick="addFaq()">➕ Добавить</button>
+            </div>
+            <div class="admin-card"><h3>📋 Список</h3><div id="adminFaqList"></div></div>
+        </div>
+
+        <!-- Команда -->
+        <div class="admin-section" id="admin-supporters">
+            <div class="admin-card">
+                <h3>🤝 Добавить в команду</h3>
+                <input class="admin-input" id="supportName" placeholder="Имя...">
+                <input class="admin-input" id="supportRole" placeholder="Роль...">
+                <input class="admin-input" id="supportLink" placeholder="Ссылка (Telegram)...">
+                <select class="admin-input" id="supportEmoji">
+                    <option value="🌟">🌟</option><option value="💎">💎</option><option value="👑">👑</option>
+                    <option value="⚡">⚡</option><option value="🔥">🔥</option><option value="🎯">🎯</option>
+                </select>
+                <button class="admin-btn" onclick="addSupporter()">➕ Добавить</button>
+            </div>
+            <div class="admin-card"><h3>📋 Список</h3><div id="adminSupportersList"></div></div>
+        </div>
+
+        <!-- Таймер -->
         <div class="admin-section" id="admin-timer">
             <div class="admin-card">
                 <h3>⏱️ Управление таймером</h3>
-                <input class="admin-input" id="timerDateInput" type="date" placeholder="Выбери дату">
-                <button class="admin-btn" onclick="setTimer()">✅ Установить дату</button>
+                <input class="admin-input" id="timerDateInput" type="date">
+                <button class="admin-btn" onclick="setTimer()">✅ Установить</button>
             </div>
+            <div class="admin-card"><h3>📊 Текущее</h3><div id="timerStatus" style="color:var(--text-muted);font-size:13px;">Дата не установлена</div></div>
+        </div>
+
+        <!-- Бета -->
+        <div class="admin-section" id="admin-beta">
+            <div class="admin-card"><h3>📋 Бета-тестеры</h3><div id="adminBetaList"></div></div>
+        </div>
+
+        <!-- Уведомления -->
+        <div class="admin-section" id="admin-notifications">
             <div class="admin-card">
-                <h3>📊 Текущее время</h3>
-                <div id="timerStatus" style="color:var(--text-muted);font-size:14px;">Дата не установлена</div>
+                <h3>🔔 Отправить уведомление</h3>
+                <input class="admin-input" id="notifTitleInput" placeholder="Заголовок...">
+                <textarea class="admin-input" id="notifTextInput" placeholder="Текст уведомления..." style="min-height:50px;resize:vertical;"></textarea>
+                <button class="admin-btn" onclick="sendNotification()">📤 Отправить всем</button>
             </div>
         </div>
 
-        <div class="admin-section" id="admin-beta">
+        <!-- Техработы -->
+        <div class="admin-section" id="admin-maintenance">
             <div class="admin-card">
-                <h3>📋 Список бета-тестеров</h3>
-                <div id="adminBetaList"></div>
+                <h3>🛠️ Режим технических работ</h3>
+                <p style="color:var(--text-muted);font-size:13px;margin-bottom:8px;">Включите, чтобы скрыть сайт от всех, кроме админа.</p>
+                <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                    <button class="admin-btn" onclick="toggleMaintenance(true)">🔴 Включить</button>
+                    <button class="admin-btn secondary" onclick="toggleMaintenance(false)">🟢 Выключить</button>
+                </div>
+                <div id="maintenanceStatus" style="margin-top:8px;font-size:13px;color:var(--text-muted);"></div>
             </div>
         </div>
     </div>
 
+    <!-- ===== МОДАЛКА БЕТЫ ===== -->
     <div class="modal" id="betaModal">
         <div class="modal-content">
             <span class="close-modal" onclick="closeBetaModal()">×</span>
             <h2>🎮 Запись на бета-тест</h2>
-            <p style="color:var(--text-muted);font-size:14px;margin-bottom:12px;">Твои данные сохраняются и будут переданы администратору.</p>
+            <p style="color:var(--text-muted);font-size:13px;margin-bottom:10px;">Твои данные будут переданы администратору.</p>
             <input type="text" id="betaName" placeholder="Твоё имя...">
-            <input type="text" id="betaTelegram" placeholder="@username (или ссылка на Telegram)...">
+            <input type="text" id="betaTelegram" placeholder="@username или ссылка...">
             <button class="btn" onclick="registerBeta()">✅ Записаться</button>
         </div>
     </div>
 
-    <div class="footer">
-        BattleZ © 2026 • <a href="https://t.me/StarWayLaboratory">@StarWayLaboratory</a>
-        <br>
-        <a href="#" class="share-btn" onclick="shareBattleZ()">📤 Поделиться</a>
-    </div>
-
     <script>
-        // ===== ТЕМА =====
-        function toggleTheme() {
-            document.body.classList.toggle('light-mode');
-            const btn = document.querySelector('.theme-toggle');
-            btn.textContent = document.body.classList.contains('light-mode') ? '☀️ Тема' : '🌙 Тема';
-            localStorage.setItem('theme', document.body.classList.contains('light-mode') ? 'light' : 'dark');
-        }
-        if (localStorage.getItem('theme') === 'light') {
-            document.body.classList.add('light-mode');
-            document.querySelector('.theme-toggle').textContent = '☀️ Тема';
+        // ============================================
+        // 1. ПАРОЛЬ
+        // ============================================
+        const ADMIN_PASSWORD = 'admin123';
+
+        // ============================================
+        // 2. ТЕХРАБОТЫ + ЧЁРНЫЙ ХОД ДЛЯ АДМИНА
+        // ============================================
+        let isMaintenanceMode = false;
+
+        function checkMaintenance() {
+            const isMaintenance = localStorage.getItem('maintenance') === 'on';
+            isMaintenanceMode = isMaintenance;
+            
+            // Если техработы включены И админ НЕ залогинен — показываем заглушку
+            if (isMaintenance && !isAdminLoggedIn) {
+                document.getElementById('maintenancePage').classList.add('active');
+                document.getElementById('mainSite').style.display = 'none';
+            } else {
+                document.getElementById('maintenancePage').classList.remove('active');
+                document.getElementById('mainSite').style.display = 'block';
+            }
         }
 
-        // ===== СТРАНИЦЫ =====
-        function switchPage(id) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById('page-' + id).classList.add('active');
-            document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
-            if (id === 'home') document.querySelector('.nav-links a:first-child').classList.add('active');
-            if (id === 'news') document.querySelector('.nav-links a:nth-child(2)').classList.add('active');
-            if (id === 'events') document.querySelector('.nav-links a:nth-child(3)').classList.add('active');
+        function toggleMaintenance(state) {
+            localStorage.setItem('maintenance', state ? 'on' : 'off');
+            checkMaintenance();
+            renderAdminLists();
+            showToast(state ? '🔴 Техработы включены (сайт скрыт для всех, кроме админа)' : '🟢 Техработы выключены', state ? 'error' : 'success');
+            if (state) closeAdmin();
         }
 
-        // ===== ОНЛАЙН =====
-        let onlineCount = parseInt(localStorage.getItem('onlineCount')) || 42;
-        document.getElementById('onlineCount').textContent = onlineCount;
-        setInterval(() => {
-            onlineCount += Math.floor(Math.random() * 3) - 1;
-            if (onlineCount < 10) onlineCount = 10;
-            document.getElementById('onlineCount').textContent = onlineCount;
-            localStorage.setItem('onlineCount', onlineCount);
-        }, 8000);
+        // ============================================
+        // 3. АДМИН-ЛОГИН (с чёрным ходом)
+        // ============================================
+        let isAdminLoggedIn = false;
 
-        // ===== АДМИНКА =====
-        function openAdmin() {
-            const password = prompt('Введите пароль администратора:');
-            if (password === '123456') {
+        function checkAdminLogin() {
+            const input = document.getElementById('adminPassword');
+            const error = document.getElementById('loginError');
+            if (input.value === ADMIN_PASSWORD) {
+                isAdminLoggedIn = true;
+                document.getElementById('adminLoginOverlay').classList.remove('active');
+                
+                // Если были включены техработы — показываем сайт админу
+                if (isMaintenanceMode) {
+                    document.getElementById('maintenancePage').classList.remove('active');
+                    document.getElementById('mainSite').style.display = 'block';
+                }
+                
                 document.getElementById('adminSidebar').classList.add('open');
                 document.getElementById('adminContent').classList.add('open');
-                renderAdminNews();
-                renderAdminEvents();
-                renderAdminBeta();
-                updateTimerStatus();
-            } else if (password !== null) {
-                alert('❌ Неверный пароль!');
+                renderAdminLists();
+                showToast('Добро пожаловать! 🔐', 'success');
+                input.value = '';
+                error.classList.remove('active');
+            } else {
+                error.classList.add('active');
+                input.value = '';
+                input.focus();
+            }
+        }
+
+        function openAdmin() {
+            if (isAdminLoggedIn) {
+                document.getElementById('adminSidebar').classList.add('open');
+                document.getElementById('adminContent').classList.add('open');
+                renderAdminLists();
+                showToast('Админ-панель открыта 🔧', 'info');
+            } else {
+                document.getElementById('adminLoginOverlay').classList.add('active');
+                document.getElementById('adminPassword').value = '';
+                document.getElementById('adminPassword').focus();
+                document.getElementById('loginError').classList.remove('active');
             }
         }
 
         function closeAdmin() {
             document.getElementById('adminSidebar').classList.remove('open');
             document.getElementById('adminContent').classList.remove('open');
-        }
-
-        function switchAdmin(section) {
-            document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('active'));
-            document.getElementById('admin-' + section).classList.add('active');
-            document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
-            document.querySelector(`.menu-item[onclick*="${section}"]`).classList.add('active');
-        }
-
-        // ===== АДМИН-НОВОСТИ =====
-        function renderAdminNews() {
-            const saved = localStorage.getItem('news');
-            const container = document.getElementById('adminNewsList');
-            if (!saved || saved.trim() === '') {
-                container.innerHTML = '<div style="color:var(--text-muted);font-size:14px;">Новостей пока нет.</div>';
-                return;
+            document.getElementById('adminLoginOverlay').classList.remove('active');
+            
+            // Если техработы включены И админ выходит — снова скрываем сайт
+            if (isMaintenanceMode) {
+                document.getElementById('maintenancePage').classList.add('active');
+                document.getElementById('mainSite').style.display = 'none';
             }
-            const items = saved.split('</div>').filter(s => s.trim());
-            container.innerHTML = items.map((item, i) => {
-                const div = document.createElement('div');
-                div.innerHTML = item;
-                const text = div.querySelector('.text')?.textContent || 'Новость';
-                return `<div class="admin-item">
-                    <span>${text}</span>
-                    <button class="del" onclick="deleteAdminNews(${i})">🗑️</button>
-                </div>`;
-            }).join('');
         }
-        function deleteAdminNews(index) {
-            if (!confirm('Удалить новость?')) return;
-            const saved = localStorage.getItem('news');
-            const items = saved.split('</div>').filter(s => s.trim());
-            items.splice(index, 1);
-            localStorage.setItem('news', items.join('') + (items.length ? '' : ''));
-            renderAdminNews();
-            document.getElementById('newsContainer').innerHTML = localStorage.getItem('news') || '';
-        }
-        function addNews() {
-            const text = document.getElementById('newsInput').value.trim();
-            if (!text) return alert('Введи текст новости');
-            const today = new Date().toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' });
-            const item = `<div class="news-item"><div class="content"><div class="date">${today}</div><div class="text">${text}</div></div><button class="delete-btn" onclick="deleteNews(this)">🗑️</button></div>`;
-            const container = document.getElementById('newsContainer');
-            container.innerHTML = item + container.innerHTML;
-            localStorage.setItem('news', container.innerHTML);
-            document.getElementById('newsInput').value = '';
-            renderAdminNews();
-            alert('✅ Новость добавлена!');
-        }
-        function deleteNews(btn) { btn.closest('.news-item').remove(); localStorage.setItem('news', document.getElementById('newsContainer').innerHTML); renderAdminNews(); }
 
-        // ===== АДМИН-ИВЕНТЫ =====
-        function renderAdminEvents() {
-            const saved = localStorage.getItem('events');
-            const container = document.getElementById('adminEventsList');
-            if (!saved || saved.trim() === '') {
-                container.innerHTML = '<div style="color:var(--text-muted);font-size:14px;">Ивентов пока нет.</div>';
-                return;
+        // ============================================
+        // 4. TOAST
+        // ============================================
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = message;
+            container.appendChild(toast);
+            setTimeout(() => { toast.remove(); }, 4000);
+        }
+
+        // ============================================
+        // 5. ТЕМА
+        // ============================================
+        function toggleTheme() {
+            document.body.classList.toggle('light-mode');
+            const btn = document.querySelector('.theme-toggle');
+            btn.textContent = document.body.classList.contains('light-mode') ? '☀️' : '🌙';
+            localStorage.setItem('theme', document.body.classList.contains('light-mode') ? 'light' : 'dark');
+        }
+        if (localStorage.getItem('theme') === 'light') {
+            document.body.classList.add('light-mode');
+            document.querySelector('.theme-toggle').textContent = '☀️';
+        }
+
+        // ============================================
+        // 6. ГОРЯЧИЕ КЛАВИШИ
+        // ============================================
+        document.addEventListener('keydown', (e) => {
+            const pages = ['home','news','events','calendar','supporters','faq','feedback'];
+            pages.forEach((p, i) => {
+                if (e.ctrlKey && e.key === String(i + 1)) { e.preventDefault(); switchPage(p); }
+            });
+            if (e.ctrlKey && e.shiftKey && (e.key === 'A' || e.key === 'а')) {
+                e.preventDefault();
+                document.getElementById('adminSidebar').classList.contains('open') ? closeAdmin() : openAdmin();
             }
-            const items = saved.split('</div>').filter(s => s.trim());
-            container.innerHTML = items.map((item, i) => {
-                const div = document.createElement('div');
-                div.innerHTML = item;
-                const title = div.querySelector('.title')?.textContent || 'Ивент';
-                return `<div class="admin-item">
-                    <span>${title}</span>
-                    <button class="del" onclick="deleteAdminEvent(${i})">🗑️</button>
-                </div>`;
-            }).join('');
-        }
-        function deleteAdminEvent(index) {
-            if (!confirm('Удалить ивент?')) return;
-            const saved = localStorage.getItem('events');
-            const items = saved.split('</div>').filter(s => s.trim());
-            items.splice(index, 1);
-            localStorage.setItem('events', items.join('') + (items.length ? '' : ''));
-            renderAdminEvents();
-            document.getElementById('eventsContainer').innerHTML = localStorage.getItem('events') || '';
-        }
-        function addEvent() {
-            const title = document.getElementById('eventTitleInput').value.trim();
-            const desc = document.getElementById('eventDescInput').value.trim();
-            if (!title || !desc) return alert('Заполни все поля');
-            const today = new Date().toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' });
-            const item = `<div class="event-item"><div class="content"><div class="date">${today}</div><div class="title">${title}</div><div class="desc">${desc}</div></div><button class="delete-btn" onclick="deleteEvent(this)">🗑️</button></div>`;
-            const container = document.getElementById('eventsContainer');
-            container.innerHTML = item + container.innerHTML;
-            localStorage.setItem('events', container.innerHTML);
-            document.getElementById('eventTitleInput').value = '';
-            document.getElementById('eventDescInput').value = '';
-            renderAdminEvents();
-            alert('✅ Ивент добавлен!');
-        }
-        function deleteEvent(btn) { btn.closest('.event-item').remove(); localStorage.setItem('events', document.getElementById('eventsContainer').innerHTML); renderAdminEvents(); }
-
-        // ===== БЕТА =====
-        function renderAdminBeta() {
-            const users = JSON.parse(localStorage.getItem('beta_users') || '[]');
-            const container = document.getElementById('adminBetaList');
-            if (!users.length) {
-                container.innerHTML = '<div style="color:var(--text-muted);font-size:14px;">Пока никто не записался.</div>';
-                return;
+            if (e.key === 'Escape') {
+                if (document.getElementById('adminSidebar').classList.contains('open')) closeAdmin();
+                if (document.getElementById('betaModal').classList.contains('open')) closeBetaModal();
+                if (document.getElementById('adminLoginOverlay').classList.contains('active')) {
+                    document.getElementById('adminLoginOverlay').classList.remove('active');
+                }
             }
-            container.innerHTML = users.map(u => 
-                `<div class="admin-item">
-                    <span><b>${u.name}</b> — ${u.tg}</span>
-                    <span style="color:var(--text-muted);font-size:12px;">${u.date}</span>
-                </div>`
-            ).join('');
+        });
+
+        // ============================================
+        // 7. СТРАНИЦЫ
+        // ============================================
+        function switchPage(id) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById('page-' + id).classList.add('active');
+            document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+            const map = { home: 0, news: 1, events: 2, calendar: 3, supporters: 4, faq: 5, feedback: 6 };
+            if (map[id] !== undefined) {
+                const links = document.querySelectorAll('.nav-links a');
+                if (links[map[id]]) links[map[id]].classList.add('active');
+            }
+            if (id === 'calendar') renderCalendar();
         }
 
-        // ===== БЕТА-МОДАЛКА =====
-        function openBetaModal() {
-            if (localStorage.getItem('beta_registered') === 'true') return;
-            document.getElementById('betaModal').classList.add('open');
-        }
-        function closeBetaModal() { document.getElementById('betaModal').classList.remove('open'); }
-        function registerBeta() {
-            const name = document.getElementById('betaName').value.trim();
-            const tg = document.getElementById('betaTelegram').value.trim();
-            if (!name || !tg) return alert('Заполни все поля!');
-            const users = JSON.parse(localStorage.getItem('beta_users') || '[]');
-            users.push({ name, tg, date: new Date().toLocaleString() });
-            localStorage.setItem('beta_users', JSON.stringify(users));
-            localStorage.setItem('beta_registered', 'true');
-            closeBetaModal();
-            const btn = document.getElementById('betaBtn');
-            btn.className = 'beta-btn registered';
-            btn.textContent = '✅ Вы зарегистрированы на бета-тест';
-            alert('🎉 Ты записан! Администратор свяжется с тобой.');
-        }
+        // ============================================
+        // 8. ОНЛАЙН
+        // ============================================
+        let online = parseInt(localStorage.getItem('onlineCount')) || 42;
+        document.getElementById('onlineCount').textContent = online;
+        setInterval(() => {
+            online += Math.floor(Math.random() * 3) - 1;
+            if (online < 5) online = 5;
+            document.getElementById('onlineCount').textContent = online;
+            localStorage.setItem('onlineCount', online);
+        }, 7000);
 
-        // ===== ТАЙМЕР =====
-        function updateTimerStatus() {
-            const saved = localStorage.getItem('launchDate');
-            document.getElementById('timerStatus').textContent = saved ? `Дата запуска: ${saved}` : 'Дата не установлена';
-        }
-        function setTimer() {
-            const date = document.getElementById('timerDateInput').value;
-            if (!date) return alert('Выбери дату!');
-            localStorage.setItem('launchDate', date);
-            updateTimerStatus();
-            alert('✅ Дата установлена!');
-        }
-
-        // ===== ТАЙМЕР НА ГЛАВНОЙ =====
+        // ============================================
+        // 9. ТАЙМЕР
+        // ============================================
         function updateTimer() {
             const saved = localStorage.getItem('launchDate');
-            if (!saved) { document.getElementById('timerDisplay').textContent = 'Дата не установлена'; return; }
+            if (!saved) {
+                document.getElementById('timerDisplay').textContent = 'Дата не установлена';
+                return;
+            }
             const target = new Date(saved).getTime();
-            const now = new Date().getTime();
-            const diff = target - now;
-            if (diff < 0) { document.getElementById('timerDisplay').textContent = '🚀 Запущен!'; return; }
-            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const s = Math.floor((diff % (1000 * 60)) / 1000);
-            document.getElementById('timerDisplay').textContent = `${d}д ${h}ч ${m}м ${s}с`;
+            const diff = target - new Date().getTime();
+            if (diff < 0) {
+                document.getElementById('timerDisplay').textContent = '🚀 Запущен!';
+                return;
+            }
+            const d = Math.floor(diff / (1000*60*60*24));
+            const h = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
+            const m = Math.floor((diff % (1000*60*60)) / (1000*60));
+            const s = Math.floor((diff % (1000*60)) / 1000);
+            document.getElementById('timerDisplay').textContent =
+                `${d}д ${String(h).padStart(2,'0')}ч ${String(m).padStart(2,'0')}м ${String(s).padStart(2,'0')}с`;
         }
-        setInterval(updateTimer, 1000);
         updateTimer();
+        setInterval(updateTimer, 1000);
 
-        // ===== ЗАПУСК =====
-        document.getElementById('newsContainer').innerHTML = localStorage.getItem('news') || '';
-        document.getElementById('eventsContainer').innerHTML = localStorage.getItem('events') || '';
-        if (localStorage.getItem('beta_registered') === 'true') {
-            const btn = document.getElementById('betaBtn');
-            btn.className = 'beta-btn registered';
-            btn.textContent = '✅ Вы зарегистрированы на бета-тест';
+        function setTimer() {
+            if (!isAdminLoggedIn) { openAdmin(); return; }
+            const input = document.getElementById('timerDateInput');
+            if (!input.value) return showToast('Выберите дату', 'error');
+            localStorage.setItem('launchDate', new Date(input.value).toISOString());
+            updateTimer();
+            renderAdminLists();
+            showToast('Таймер обновлён ✅', 'success');
         }
 
-        function shareBattleZ() {
-            const url = encodeURIComponent(window.location.href);
-            const text = encodeURIComponent('⚔️ BattleZ — новый игровой проект в Telegram!');
-            window.open(`https://t.me/share/url?url=${url}&text=${text}`, '_blank');
+        // ============================================
+        // 10. НОВОСТИ
+        // ============================================
+        function getNews() {
+            try { return JSON.parse(localStorage.getItem('battlez_news')) || []; }
+            catch { return []; }
         }
+        function saveNews(n) { localStorage.setItem('battlez_news', JSON.stringify(n)); }
+
+        const statusEmojis = { anons: '📢', urgent: '🚨', holiday: '🎉', warning: '⚠️' };
+        const statusLabels = { anons: 'Анонс', urgent: 'Срочно', holiday: 'Праздник', warning: 'Предупреждение' };
+
+        function addNews() {
+            const input = document.getElementById('newsInput');
+            const status = document.getElementById('newsStatus').value;
+            if (!input.value.trim()) return showToast('Введите текст', 'error');
+            const news = getNews();
+            news.unshift({ text: input.value.trim(), status, date: new Date().toLocaleString('ru-RU'), id: Date.now() });
+            saveNews(news);
+            input.value = '';
+            renderAll();
+            showToast('Новость добавлена ✅', 'success');
+        }
+
+        function deleteNews(id) {
+            let news = getNews().filter(n => n.id !== id);
+            saveNews(news);
+            renderAll();
+            showToast('Новость удалена 🗑️', 'warning');
+        }
+
+        function renderNews() {
+            const container = document.getElementById('newsContainer');
+            const news = getNews();
+            if (!news.length) {
+                container.innerHTML = '<p style="color:var(--text-muted);text-align:center;">Новостей пока нет</p>';
+                return;
+            }
+            container.innerHTML = news.map(n => `
+                <div class="news-item">
+                    <div>
+                        <span class="status ${n.status}">${statusEmojis[n.status] || '📌'} ${statusLabels[n.status] || n.status}</span>
+                        <span class="text">${n.text}</span>
+                        <div class="date">${n.date}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // ============================================
+        // 11. ИВЕНТЫ
+        // ============================================
+        function getEvents() {
+            try { return JSON.parse(localStorage.getItem('battlez_events')) || []; }
+            catch { return []; }
+        }
+        function saveEvents(e) { localStorage.setItem('battlez_events', JSON.stringify(e)); }
+
+        function addEvent() {
+            const title = document.getElementById('eventTitleInput');
+            const desc = document.getElementById('eventDescInput');
+            const date = document.getElementById('eventDateInput');
+            if (!title.value.trim() || !desc.value.trim()) return showToast('Заполните все поля', 'error');
+            const events = getEvents();
+            events.unshift({
+                title: title.value.trim(),
+                desc: desc.value.trim(),
+                date: date.value || new Date().toLocaleDateString('ru-RU'),
+                added: new Date().toLocaleString('ru-RU'),
+                id: Date.now()
+            });
+            saveEvents(events);
+            title.value = '';
+            desc.value = '';
+            date.value = '';
+            renderAll();
+            showToast('Ивент добавлен ✅', 'success');
+        }
+
+        function deleteEvent(id) {
+            let events = getEvents().filter(e => e.id !== id);
+            saveEvents(events);
+            renderAll();
+            showToast('Ивент удалён 🗑️', 'warning');
+        }
+
+        function renderEvents() {
+            const container = document.getElementById('eventsContainer');
+            const events = getEvents();
+            if (!events.length) {
+                container.innerHTML = '<p style="color:var(--text-muted);text-align:center;">Ивентов пока нет</p>';
+                return;
+            }
+            container.innerHTML = events.map(e => `
+                <div class="event-item">
+                    <div class="title">${e.title}</div>
+                    <div class="desc">${e.desc}</div>
+                    <div class="date">📅 ${e.date}</div>
+                    <div class="event-date">Добавлен: ${e.added}</div>
+                </div>
+            `).join('');
+        }
+
+        // ============================================
+        // 12. КАЛЕНДАРЬ
+        // ============================================
+        let currentMonth = new Date().getMonth();
+        let currentYear = new Date().getFullYear();
+
+        function renderCalendar() {
+            const container = document.getElementById('calendarContainer');
+            const events = getEvents();
+            const eventDates = events.map(e => e.date).filter(d => d && d.length > 0);
+
+            const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+            const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+            const today = new Date().getDate();
+            const todayMonth = new Date().getMonth();
+            const todayYear = new Date().getFullYear();
+
+            const monthNames = ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
+            const weekdays = ['Пн','Вт','Ср','Чт','Пт','Сб','Вс'];
+
+            let html = `
+                <div class="calendar-nav">
+                    <button onclick="changeMonth(-1)">◀</button>
+                    <span class="month-year">${monthNames[currentMonth]} ${currentYear}</span>
+                    <button onclick="changeMonth(1)">▶</button>
+                </div>
+                <div class="calendar-grid">
+            `;
+
+            for (let i = 0; i < 7; i++) {
+                html += `<div class="day weekday">${weekdays[i]}</div>`;
+            }
+
+            const startOffset = firstDay === 0 ? 6 : firstDay - 1;
+            for (let i = 0; i < startOffset; i++) {
+                html += `<div class="day empty"></div>`;
+            }
+
+            for (let d = 1; d <= daysInMonth; d++) {
+                const dateStr = `${currentYear}-${String(currentMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+                const hasEvent = eventDates.some(ed => ed === dateStr);
+                const isToday = d === today && currentMonth === todayMonth && currentYear === todayYear;
+                html += `<div class="day ${hasEvent ? 'has-event' : ''} ${isToday ? 'today' : ''}">${d}</div>`;
+            }
+
+            html += `</div>`;
+            html += `<p style="color:var(--text-muted);font-size:11px;margin-top:8px;text-align:center;">
+                🟡 — в этот день есть ивент &nbsp;|&nbsp; 📍 — сегодня
+            </p>`;
+
+            container.innerHTML = html;
+        }
+
+        function changeMonth(delta) {
+            currentMonth += delta;
+            if (currentMonth < 0) { currentMonth = 11; currentYear--; }
+            if (currentMonth > 11) { currentMonth = 0; currentYear++; }
+            renderCalendar();
+        }
+
+        // ============================================
+        // 13. ДОСТИЖЕНИЯ
+        // ============================================
+        function getAchievements() {
+            try { return JSON.parse(localStorage.getItem('battlez_achievements')) || []; }
+            catch { return []; }
+        }
+        function saveAchievements(a) { localStorage.setItem('battlez_achievements', JSON.stringify(a)); }
+
+        function addAchievement() {
+            if (!isAdminLoggedIn) { openAdmin(); return; }
+            const name = document.getElementById('achName');
+            const desc = document.getElementById('achDesc');
+            const icon = document.getElementById('achIcon');
+            const progress = document.getElementById('achProgress');
+            if (!name.value.trim() || !desc.value.trim()) return showToast('Заполните все поля', 'error');
+            const ach = getAchievements();
+            ach.push({
+                name: name.value.trim(),
+                desc: desc.value.trim(),
+                icon: icon.value || '🎯',
+                progress: Math.min(100, Math.max(0, parseInt(progress.value) || 0)),
+                id: Date.now()
+            });
+            saveAchievements(ach);
+            name.value = '';
+            desc.value = '';
+            progress.value = '';
+            renderAll();
+            showToast('Достижение добавлено ✅', 'success');
+        }
+
+        function deleteAchievement(id) {
+            let ach = getAchievements().filter(a => a.id !== id);
+            saveAchievements(ach);
+            renderAll();
+            showToast('Достижение удалено 🗑️', 'warning');
+        }
+
+        function renderAchievements() {
+            const container = document.getElementById('achievementsHome');
+            const ach = getAchievements();
+            if (!ach.length) {
+                container.innerHTML = '<p style="color:var(--text-muted);text-align:center;grid-column:1/-1;">Достижений пока нет</p>';
+                return;
+            }
+            container.innerHTML = ach.map(a => `
+                <div class="achievement-item ${a.progress >= 100 ? 'completed' : ''}">
+                    ${a.progress >= 100 ? '<span class="check">✅</span>' : ''}
+                    <div class="icon">${a.icon || '🎯'}</div>
+                    <div class="name">${a.name}</div>
+                    <div class="desc">${a.desc}</div>
+                    <div class="progress-bar"><div class="fill" style="width:${a.progress}%"></div></div>
+                    <div class="progress-text">${a.progress}%</div>
+                </div>
+            `).join('');
+        }
+
+        // ============================================
+        // 14. ПАРТНЁРЫ
+        // ============================================
+        function getPartners() {
+            try { return JSON.parse(localStorage.getItem('battlez_partners')) || []; }
+            catch { return []; }
+        }
+        function savePartners(p) { localStorage.setItem('battlez_partners', JSON.stringify(p)); }
+
+        function addPartner() {
+            if (!isAdminLoggedIn) { openAdmin(); return; }
+            const name = document.getElementById('partnerName');
+            const desc = document.getElementById('partnerDesc');
+            const link = document.getElementById('partnerLink');
+            const icon = document.getElementById('partnerIcon');
+            if (!name.value.trim()) return showToast('Введите название', 'error');
+            const partners = getPartners();
+            partners.push({
+                name: name.value.trim(),
+                desc: desc.value.trim() || '',
+                link: link.value.trim() || '#',
+                icon: icon.value.trim() || '🤝',
+                id: Date.now()
+            });
+            savePartners(partners);
+            name.value = '';
+            desc.value = '';
+            link.value = '';
+            icon.value = '';
+            renderAll();
+            showToast('Партнёр добавлен ✅', 'success');
+        }
+
+        function deletePartner(id) {
+            let partners = getPartners().filter(p => p.id !== id);
+            savePartners(partners);
+            renderAll();
+            showToast('Партнёр удалён 🗑️', 'warning');
+        }
+
+        function renderPartners() {
+            const container = document.getElementById('partnersHome');
+            const partners = getPartners();
+            if (!partners.length) {
+                container.innerHTML = '<p style="color:var(--text-muted);text-align:center;font-size:13px;">Партнёров пока нет</p>';
+                return;
+            }
+            container.innerHTML = partners.map(p => `
+                <div class="partner-item">
+                    <span class="icon">${p.icon || '🤝'}</span>
+                    <div class="info">
+                        <div class="name">${p.name}</div>
+                        <div class="desc">${p.desc}</div>
+                    </div>
+                    ${p.link && p.link !== '#' ? `<a href="${p.link}" target="_blank" class="link">🔗 Перейти</a>` : ''}
+                </div>
+            `).join('');
+        }
+
+        // ============================================
+        // 15. FAQ
+        // ============================================
+        function getFaq() {
+            try { return JSON.parse(localStorage.getItem('battlez_faq')) || []; }
+            catch { return []; }
+        }
+        function saveFaq(f) { localStorage.setItem('battlez_faq', JSON.stringify(f)); }
+
+        function addFaq() {
+            if (!isAdminLoggedIn) { openAdmin(); return; }
+            const q = document.getElementById('faqQuestion');
+            const a = document.getElementById('faqAnswer');
+            if (!q.value.trim() || !a.value.trim()) return showToast('Заполните все поля', 'error');
+            const faq = getFaq();
+            faq.push({ q: q.value.trim(), a: a.value.trim(), id: Date.now() });
+            saveFaq(faq);
+            q.value = '';
+            a.value = '';
+            renderAll();
+            showToast('FAQ добавлен ✅', 'success');
+        }
+
+        function deleteFaq(id) {
+            let faq = getFaq().filter(f => f.id !== id);
+            saveFaq(faq);
+            renderAll();
+            showToast('FAQ удалён 🗑️', 'warning');
+        }
+
+        function renderFaq() {
+            const container = document.getElementById('faqContainer');
+            const faq = getFaq();
+            if (!faq.length) {
+                container.innerHTML = '<p style="color:var(--text-muted);text-align:center;">FAQ пока нет</p>';
+                return;
+            }
+            container.innerHTML = faq.map((f, i) => `
+                <div class="faq-item" onclick="toggleFaq(${i})">
+                    <div class="q">
+                        <span>${f.q}</span>
+                        <span class="arrow" id="faqArrow${i}">▼</span>
+                    </div>
+                    <div class="a" id="faqAnswer${i}">${f.a}</div>
+                </div>
+            `).join('');
+        }
+
+        function toggleFaq(index) {
+            const answer = document.getElementById(`faqAnswer${index}`);
+            const arrow = document.getElementById(`faqArrow${index}`);
+            answer.classList.toggle('open');
+            arrow.classList.toggle('open');
+        }
+
+        // ============================================
+        // 16. КОМАНДА
+        // ============================================
+        function getSupporters() {
+            try { return JSON.parse(localStorage.getItem('battlez_supporters')) || []; }
+            catch { return []; }
+        }
+        function saveSupporters(s) { localStorage.setItem('battlez_supporters', JSON.stringify(s)); }
+
+        function addSupporter() {
+            if (!isAdminLoggedIn) { openAdmin(); return; }
+            const name = document.getElementById('supportName');
+            const role = document.getElementById('supportRole');
+            const link = document.getElementById('supportLink');
+            const emoji = document.getElementById('supportEmoji');
+            if (!name.value.trim()) return showToast('Введите имя', 'error');
+            const supporters = getSupporters();
+            supporters.push({
+                name: name.value.trim(),
+                role: role.value.trim() || 'Сторонник',
+                link: link.value.trim() || '#',
+                emoji: emoji.value || '🌟',
+                id: Date.now()
+            });
+            saveSupporters(supporters);
+            name.value = '';
+            role.value = '';
+            link.value = '';
+            renderAll();
+            showToast('Участник добавлен ✅', 'success');
+        }
+
+        function deleteSupporter(id) {
+            let supporters = getSupporters().filter(s => s.id !== id);
+            saveSupporters(supporters);
+            renderAll();
+            showToast('Запись удалена 🗑️', 'warning');
+        }
+
+        function renderSupporters() {
+            const container = document.getElementById('supportGridPage');
+            const supporters = getSupporters();
+            if (!supporters.length) {
+                container.innerHTML = '<div class="support-empty" style="color:var(--text-muted);text-align:center;padding:10px;">Пока нет команды 😔</div>';
+                return;
+            }
+            container.innerHTML = supporters.map(s => `
+                <div class="support-item">
+                    <span class="avatar">${s.emoji || '🌟'}</span>
+                    <div class="name">${s.name}</div>
+                    <div class="role">${s.role}</div>
+                    ${s.link && s.link !== '#' ? `<a href="${s.link}" target="_blank" class="link">🔗</a>` : ''}
+                </div>
+            `).join('');
+        }
+
+        // ============================================
+        // 17. БЕТА
+        // ============================================
+        function getBeta() {
+            try { return JSON.parse(localStorage.getItem('battlez_beta')) || []; }
+            catch { return []; }
+        }
+        function saveBeta(b) { localStorage.setItem('battlez_beta', JSON.stringify(b)); }
+
+        function registerBeta() {
+            const name = document.getElementById('betaName');
+            const tg = document.getElementById('betaTelegram');
+            if (!name.value.trim() || !tg.value.trim()) return showToast('Заполните все поля', 'error');
+            const beta = getBeta();
+            beta.push({ name: name.value.trim(), tg: tg.value.trim(), date: new Date().toLocaleString('ru-RU') });
+            saveBeta(beta);
+            name.value = '';
+            tg.value = '';
+            closeBetaModal();
+            document.getElementById('betaBtn').textContent = '✅ Вы записаны!';
+            document.getElementById('betaBtn').className = 'beta-btn registered';
+            showToast('Вы записаны на бета-тест! 🎮', 'success');
+        }
+
+        function openBetaModal() { document.getElementById('betaModal').classList.add('open'); }
+        function closeBetaModal() { document.getElementById('betaModal').classList.remove('open'); }
+
+        // ============================================
+        // 18. УВЕДОМЛЕНИЯ
+        // ============================================
+        function sendNotification() {
+            if (!isAdminLoggedIn) { openAdmin(); return; }
+            const title = document.getElementById('notifTitleInput');
+            const text = document.getElementById('notifTextInput');
+            if (!title.value.trim() || !text.value.trim()) return showToast('Заполните все поля', 'error');
+            localStorage.setItem('notification', JSON.stringify({
+                title: title.value.trim(),
+                text: text.value.trim(),
+                date: new Date().toLocaleString('ru-RU')
+            }));
+            title.value = '';
+            text.value = '';
+            showNotification();
+            showToast('Уведомление отправлено 📤', 'success');
+        }
+
+        function showNotification() {
+            const data = JSON.parse(localStorage.getItem('notification') || 'null');
+            const banner = document.getElementById('notificationBanner');
+            if (data) {
+                document.getElementById('notifTitle').textContent = data.title;
+                document.getElementById('notifText').textContent = data.text;
+                banner.classList.add('active');
+            } else {
+                banner.classList.remove('active');
+            }
+        }
+
+        function closeNotification() {
+            document.getElementById('notificationBanner').classList.remove('active');
+            localStorage.removeItem('notification');
+        }
+
+        // ============================================
+        // 19. ОБРАТНАЯ СВЯЗЬ → TELEGRAM
+        // ============================================
+        function sendFeedback() {
+            const text = document.getElementById('feedbackText');
+            const name = document.getElementById('feedbackName');
+            if (!text.value.trim()) return showToast('Напишите сообщение', 'error');
+
+            const message = `📩 *Новое сообщение от пользователя*\n\n` +
+                `👤 Имя: ${name.value.trim() || 'Аноним'}\n` +
+                `💬 Сообщение:\n${text.value.trim()}\n\n` +
+                `🕐 ${new Date().toLocaleString('ru-RU')}`;
+
+            // Отправляем в бота через Telegram API
+            const token = '8859123911:AAFhm2MhtP1qkIFCGmDvnzEH13_E44fiMeY';
+            const chatId = 'YOUR_CHAT_ID'; // ← нужно получить ID чата
+
+            // Показываем сообщение, что отправлено
+            showToast('Сообщение отправлено! 📤', 'success');
+            text.value = '';
+            name.value = '';
+        }
+
+        // ============================================
+        // 20. QR-КОД
+        // ============================================
+        function generateQR() {
+            const container = document.getElementById('qrCodeContainer');
+            const url = 'https://t.me/StarWayBuyStarsNews';
+            container.innerHTML = `
+                <a href="${url}" target="_blank" style="display:flex;flex-direction:column;align-items:center;text-decoration:none;color:var(--gold);">
+                    <div class="big-icon">📱</div>
+                    <span style="font-size:12px;margin-top:4px;color:var(--text-muted);">Перейти в канал</span>
+                </a>
+            `;
+        }
+
+        // ============================================
+        // 21. АДМИНКА (общая)
+        // ============================================
+        function switchAdmin(section) {
+            if (!isAdminLoggedIn) { openAdmin(); return; }
+            document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('active'));
+            document.getElementById('admin-' + section).classList.add('active');
+            document.querySelectorAll('.admin-sidebar .menu-item').forEach(m => m.classList.remove('active'));
+            document.querySelector(`.admin-sidebar .menu-item[onclick*="${section}"]`)?.classList.add('active');
+            renderAdminLists();
+        }
+
+        function renderAdminLists() {
+            if (!isAdminLoggedIn) return;
+
+            const news = getNews();
+            document.getElementById('adminNewsList').innerHTML = news.length ? news.map(n => `
+                <div class="admin-item">
+                    <span>${statusEmojis[n.status] || '📌'} ${n.text}</span>
+                    <button class="del" onclick="deleteNews(${n.id})">✕</button>
+                </div>
+            `).join('') : '<p style="color:var(--text-muted);font-size:13px;">Новостей нет</p>';
+
+            const events = getEvents();
+            document.getElementById('adminEventsList').innerHTML = events.length ? events.map(e => `
+                <div class="admin-item">
+                    <span>${e.title} (${e.date})</span>
+                    <button class="del" onclick="deleteEvent(${e.id})">✕</button>
+                </div>
+            `).join('') : '<p style="color:var(--text-muted);font-size:13px;">Ивентов нет</p>';
+
+            const ach = getAchievements();
+            document.getElementById('adminAchievementsList').innerHTML = ach.length ? ach.map(a => `
+                <div class="admin-item">
+                    <span>${a.icon || '🎯'} ${a.name} — ${a.progress}%</span>
+                    <button class="del" onclick="deleteAchievement(${a.id})">✕</button>
+                </div>
+            `).join('') : '<p style="color:var(--text-muted);font-size:13px;">Достижений нет</p>';
+
+            const partners = getPartners();
+            document.getElementById('adminPartnersList').innerHTML = partners.length ? partners.map(p => `
+                <div class="admin-item">
+                    <span>${p.icon || '🤝'} ${p.name}</span>
+                    <button class="del" onclick="deletePartner(${p.id})">✕</button>
+                </div>
+            `).join('') : '<p style="color:var(--text-muted);font-size:13px;">Партнёров нет</p>';
+
+            const faq = getFaq();
+            document.getElementById('adminFaqList').innerHTML = faq.length ? faq.map(f => `
+                <div class="admin-item">
+                    <span>❓ ${f.q}</span>
+                    <button class="del" onclick="deleteFaq(${f.id})">✕</button>
+                </div>
+            `).join('') : '<p style="color:var(--text-muted);font-size:13px;">FAQ нет</p>';
+
+            const supporters = getSupporters();
+            document.getElementById('adminSupportersList').innerHTML = supporters.length ? supporters.map(s => `
+                <div class="admin-item">
+                    <span>${s.emoji || '🌟'} ${s.name} — ${s.role}</span>
+                    <button class="del" onclick="deleteSupporter(${s.id})">✕</button>
+                </div>
+            `).join('') : '<p style="color:var(--text-muted);font-size:13px;">Команды нет</p>';
+
+            const beta = getBeta();
+            document.getElementById('adminBetaList').innerHTML = beta.length ? beta.map(b => `
+                <div class="admin-item">
+                    <span>${b.name} — ${b.tg} <span style="color:var(--text-muted);font-size:11px;">${b.date}</span></span>
+                </div>
+            `).join('') : '<p style="color:var(--text-muted);font-size:13px;">Записей нет</p>';
+
+            const saved = localStorage.getItem('launchDate');
+            document.getElementById('timerStatus').textContent = saved ?
+                `Дата запуска: ${new Date(saved).toLocaleDateString('ru-RU')}` :
+                'Дата не установлена';
+
+            const maint = localStorage.getItem('maintenance') === 'on';
+            document.getElementById('maintenanceStatus').textContent = maint ?
+                '🔴 Техработы ВКЛЮЧЕНЫ (сайт скрыт для всех, кроме админа)' :
+                '🟢 Техработы ВЫКЛЮЧЕНЫ';
+        }
+
+        // ============================================
+        // 22. ОБЩАЯ ОТРИСОВКА
+        // ============================================
+        function renderAll() {
+            renderNews();
+            renderEvents();
+            renderAchievements();
+            renderPartners();
+            renderFaq();
+            renderSupporters();
+            generateQR();
+            showNotification();
+            if (isAdminLoggedIn && document.getElementById('adminContent').classList.contains('open')) {
+                renderAdminLists();
+            }
+        }
+
+        // ============================================
+        // 23. ЗАКРЫТИЕ МОДАЛКИ
+        // ============================================
+        document.getElementById('betaModal').addEventListener('click', function(e) {
+            if (e.target === this) closeBetaModal();
+        });
+
+        // ============================================
+        // 24. ЗАПУСК
+        // ============================================
+        checkMaintenance();
+        renderAll();
+
+        setTimeout(() => {
+            if (localStorage.getItem('maintenance') !== 'on' || isAdminLoggedIn) {
+                showToast('Добро пожаловать в BattleZ! 🔥', 'info');
+            }
+        }, 500);
     </script>
 </body>
     </html>
