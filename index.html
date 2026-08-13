@@ -17,6 +17,7 @@
             --radius: 20px;
             --success: #4ade80;
             --danger: #ff6b6b;
+            --verified: #1da1f2;
         }
         .light-mode {
             --bg: #f4f6fa;
@@ -39,6 +40,10 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+        }
+        tg-emoji {
+            display: inline-block;
+            vertical-align: middle;
         }
 
         /* ===== ТЕХРАБОТЫ ===== */
@@ -188,6 +193,11 @@
             color: var(--gold);
             background: var(--gold-glow);
         }
+        .navbar .nav-links a.profile-btn {
+            background: var(--gold-glow);
+            color: var(--gold);
+            border: 1px solid rgba(245, 179, 66, 0.2);
+        }
         .theme-toggle {
             background: var(--bg-card);
             border: 1px solid var(--border);
@@ -230,6 +240,105 @@
         .header h2 { color: var(--gold); font-size: 22px; margin-bottom: 4px; }
         .header p { color: var(--text-muted); font-size: 14px; }
         @keyframes shimmer { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
+
+        /* ===== ПРОФИЛЬ ===== */
+        .profile-card {
+            text-align: center;
+            padding: 20px;
+        }
+        .profile-card .avatar {
+            font-size: 64px;
+            margin-bottom: 8px;
+            display: block;
+        }
+        .profile-card .username {
+            font-size: 22px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .profile-card .username .verified-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: var(--verified);
+            color: #fff;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 2px 10px 2px 6px;
+            border-radius: 20px;
+            line-height: 1.4;
+        }
+        .profile-card .username .verified-badge .crown {
+            display: inline-block;
+            vertical-align: middle;
+            font-size: 16px;
+            line-height: 1;
+        }
+        .profile-card .user-role {
+            color: var(--text-muted);
+            font-size: 14px;
+            margin-top: 4px;
+        }
+        .profile-card .user-joined {
+            color: var(--text-muted);
+            font-size: 12px;
+            margin-top: 2px;
+        }
+        .profile-card .logout-btn {
+            margin-top: 16px;
+            background: rgba(255, 107, 107, 0.15);
+            color: #ff6b6b;
+            border: 1px solid rgba(255, 107, 107, 0.2);
+            padding: 8px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+        .profile-card .logout-btn:hover { background: rgba(255, 107, 107, 0.25); }
+
+        /* ===== РЕГИСТРАЦИЯ / АВТОРИЗАЦИЯ ===== */
+        .auth-form {
+            max-width: 360px;
+            margin: 0 auto;
+        }
+        .auth-form input {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text);
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        .auth-form input:focus { border-color: var(--gold); outline: none; }
+        .auth-form .btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #f5b342, #e89a2a);
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            color: #0b0e1a;
+        }
+        .auth-form .switch {
+            text-align: center;
+            margin-top: 12px;
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+        .auth-form .switch a {
+            color: var(--gold);
+            cursor: pointer;
+            text-decoration: underline;
+        }
 
         .online-counter {
             display: flex;
@@ -651,6 +760,11 @@
         }
         .admin-btn:hover { transform: scale(1.02); }
         .admin-btn.secondary { background: rgba(255,255,255,0.08); color: var(--text); }
+        .admin-btn.verified-btn {
+            background: var(--verified);
+            color: #fff;
+        }
+        .admin-btn.verified-btn:hover { background: #1a8cd8; }
 
         .admin-item {
             background: rgba(255, 255, 255, 0.03);
@@ -671,6 +785,19 @@
             padding: 0 4px;
         }
         .admin-item .del:hover { transform: scale(1.2); }
+        .admin-item .verified-badge-small {
+            background: var(--verified);
+            color: #fff;
+            font-size: 10px;
+            padding: 1px 8px 1px 4px;
+            border-radius: 12px;
+            display: inline-flex;
+            align-items: center;
+            gap: 2px;
+        }
+        .admin-item .verified-badge-small tg-emoji {
+            font-size: 14px;
+        }
 
         /* ===== МОДАЛКА ===== */
         .modal {
@@ -733,6 +860,7 @@
             .support-item .name { font-size: 11px; }
             .admin-sidebar { width: 220px; }
             .admin-content.open { margin-left: 0; }
+            .profile-card .username { font-size: 18px; flex-wrap: wrap; }
         }
     </style>
 </head>
@@ -772,6 +900,7 @@
                     <li><a onclick="switchPage('supporters')">🤝</a></li>
                     <li><a onclick="switchPage('faq')">❓</a></li>
                     <li><a onclick="switchPage('feedback')">📧</a></li>
+                    <li><a class="profile-btn" onclick="switchPage('profile')">👤</a></li>
                 </ul>
                 <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
                 <span class="nav-admin-btn" onclick="openAdmin()">🔧</span>
@@ -811,7 +940,6 @@
                     </p>
                 </div>
 
-                <!-- ===== QR-КОД ===== -->
                 <div class="card">
                     <h2>📱 Присоединяйся к нам</h2>
                     <div class="qr-container">
@@ -830,13 +958,11 @@
                     </button>
                 </div>
 
-                <!-- ===== ДОСТИЖЕНИЯ ===== -->
                 <div class="card">
                     <h2>🏅 Достижения проекта</h2>
                     <div id="achievementsHome" class="achievement-grid"></div>
                 </div>
 
-                <!-- ===== ПАРТНЁРЫ ===== -->
                 <div class="card">
                     <h2>🤝 Наши партнёры</h2>
                     <div id="partnersHome"></div>
@@ -892,6 +1018,14 @@
                     </p>
                 </div>
             </div>
+
+            <!-- ===== ПРОФИЛЬ ===== -->
+            <div class="page" id="page-profile">
+                <div class="header"><h2>👤 Мой профиль</h2></div>
+                <div class="card">
+                    <div id="profileContent"></div>
+                </div>
+            </div>
         </div>
 
         <div class="footer">
@@ -909,6 +1043,7 @@
         <div class="menu-item" onclick="switchAdmin('partners')">🤝 Партнёры</div>
         <div class="menu-item" onclick="switchAdmin('faq')">❓ FAQ</div>
         <div class="menu-item" onclick="switchAdmin('supporters')">🤝 Команда</div>
+        <div class="menu-item" onclick="switchAdmin('users')">👤 Пользователи</div>
         <div class="menu-item" onclick="switchAdmin('timer')">⏱️ Таймер</div>
         <div class="menu-item" onclick="switchAdmin('beta')">📋 Бета</div>
         <div class="menu-item" onclick="switchAdmin('notifications')">🔔 Уведомления</div>
@@ -1002,6 +1137,17 @@
             <div class="admin-card"><h3>📋 Список</h3><div id="adminSupportersList"></div></div>
         </div>
 
+        <!-- ===== ПОЛЬЗОВАТЕЛИ (ВЕРИФИКАЦИЯ) ===== -->
+        <div class="admin-section" id="admin-users">
+            <div class="admin-card">
+                <h3>👤 Управление пользователями</h3>
+                <p style="color:var(--text-muted);font-size:13px;margin-bottom:10px;">
+                    Здесь вы можете выдавать или отзывать верификацию пользователям.
+                </p>
+                <div id="adminUsersList"></div>
+            </div>
+        </div>
+
         <!-- Таймер -->
         <div class="admin-section" id="admin-timer">
             <div class="admin-card">
@@ -1055,20 +1201,234 @@
 
     <script>
         // ============================================
-        // 1. ПАРОЛЬ
+        // 1. ПАРОЛЬ АДМИНА
         // ============================================
         const ADMIN_PASSWORD = 'admin123';
 
         // ============================================
-        // 2. ТЕХРАБОТЫ + ЧЁРНЫЙ ХОД ДЛЯ АДМИНА
+        // 2. СИСТЕМА ПОЛЬЗОВАТЕЛЕЙ (регистрация/авторизация)
+        // ============================================
+        let currentUser = null;
+
+        function getUsers() {
+            try { return JSON.parse(localStorage.getItem('battlez_users')) || {}; } catch { return {}; }
+        }
+
+        function saveUsers(users) {
+            localStorage.setItem('battlez_users', JSON.stringify(users));
+        }
+
+        function getCurrentUser() {
+            try { return JSON.parse(localStorage.getItem('battlez_current_user')); } catch { return null; }
+        }
+
+        function saveCurrentUser(user) {
+            localStorage.setItem('battlez_current_user', JSON.stringify(user));
+        }
+
+        function registerUser() {
+            const username = document.getElementById('regUsername');
+            const password = document.getElementById('regPassword');
+            const confirm = document.getElementById('regConfirm');
+
+            if (!username.value.trim() || !password.value.trim()) {
+                return showToast('Заполните все поля', 'error');
+            }
+            if (password.value.length < 4) {
+                return showToast('Пароль должен быть минимум 4 символа', 'error');
+            }
+            if (password.value !== confirm.value) {
+                return showToast('Пароли не совпадают', 'error');
+            }
+
+            const users = getUsers();
+            if (users[username.value.trim()]) {
+                return showToast('Пользователь уже существует', 'error');
+            }
+
+            users[username.value.trim()] = {
+                password: password.value,
+                verified: false,
+                joined: new Date().toLocaleString('ru-RU'),
+                avatar: ['😎', '👾', '🎮', '🔥', '⚡', '🌟'][Math.floor(Math.random() * 6)]
+            };
+            saveUsers(users);
+
+            showToast('Регистрация успешна! Теперь войдите ✅', 'success');
+            document.getElementById('regUsername').value = '';
+            document.getElementById('regPassword').value = '';
+            document.getElementById('regConfirm').value = '';
+            showAuthForm('login');
+        }
+
+        function loginUser() {
+            const username = document.getElementById('loginUsername');
+            const password = document.getElementById('loginPassword');
+
+            if (!username.value.trim() || !password.value.trim()) {
+                return showToast('Заполните все поля', 'error');
+            }
+
+            const users = getUsers();
+            const user = users[username.value.trim()];
+            if (!user || user.password !== password.value) {
+                return showToast('Неверное имя пользователя или пароль', 'error');
+            }
+
+            currentUser = { username: username.value.trim(), ...user };
+            saveCurrentUser(currentUser);
+            showToast('Добро пожаловать, ' + currentUser.username + '! 🎉', 'success');
+            username.value = '';
+            password.value = '';
+            renderProfile();
+            switchPage('profile');
+            updateUI();
+        }
+
+        function logoutUser() {
+            if (confirm('Вы уверены, что хотите выйти?')) {
+                localStorage.removeItem('battlez_current_user');
+                currentUser = null;
+                showToast('Вы вышли из профиля 👋', 'info');
+                updateUI();
+                renderProfile();
+                switchPage('home');
+            }
+        }
+
+        // ============================================
+        // 3. ВЕРИФИКАЦИЯ (как в Major)
+        // ============================================
+        function toggleVerification(username) {
+            if (!isAdminLoggedIn) { openAdmin(); return; }
+            const users = getUsers();
+            if (!users[username]) return showToast('Пользователь не найден', 'error');
+            users[username].verified = !users[username].verified;
+            saveUsers(users);
+
+            if (currentUser && currentUser.username === username) {
+                currentUser.verified = users[username].verified;
+                saveCurrentUser(currentUser);
+                renderProfile();
+            }
+
+            showToast(
+                users[username].verified ? '✅ Верификация выдана' : '❌ Верификация отозвана',
+                users[username].verified ? 'success' : 'warning'
+            );
+            renderAdminLists();
+            updateUI();
+        }
+
+        // ============================================
+        // 4. ПРОФИЛЬ
+        // ============================================
+        function renderProfile() {
+            const container = document.getElementById('profileContent');
+            const user = getCurrentUser();
+
+            if (!user) {
+                container.innerHTML = `
+                    <div style="text-align:center;padding:10px 0;">
+                        <p style="color:var(--text-muted);margin-bottom:16px;">Войдите или зарегистрируйтесь, чтобы увидеть профиль</p>
+                        <button class="btn" onclick="showAuthForm('login')" style="margin-bottom:8px;">🔐 Войти</button>
+                        <button class="btn secondary" onclick="showAuthForm('register')">📝 Зарегистрироваться</button>
+                    </div>
+                `;
+                return;
+            }
+
+            const verifiedBadge = user.verified ? `
+                <span class="verified-badge">
+                    <span class="crown"><tg-emoji emoji-id="5044126248029128166">👑</tg-emoji></span> Верифицирован
+                </span>
+            ` : '';
+
+            container.innerHTML = `
+                <div class="profile-card">
+                    <span class="avatar">${user.avatar || '👤'}</span>
+                    <div class="username">
+                        ${user.username}
+                        ${verifiedBadge}
+                    </div>
+                    <div class="user-role">${user.verified ? '⭐ Верифицированный пользователь' : '👤 Пользователь'}</div>
+                    <div class="user-joined">Присоединился: ${user.joined || 'неизвестно'}</div>
+                    ${user.verified ? `<div style="margin-top:8px;font-size:13px;color:var(--text-muted);">
+                        <span style="background:var(--verified);color:#fff;padding:2px 12px;border-radius:20px;font-weight:600;">
+                            ✅ Профиль верифицирован проектом BattleZ
+                        </span>
+                    </div>` : ''}
+                    <button class="logout-btn" onclick="logoutUser()">🚪 Выйти</button>
+                </div>
+            `;
+        }
+
+        function updateUI() {
+            const user = getCurrentUser();
+            const profileBtn = document.querySelector('.nav-links a.profile-btn');
+            if (user) {
+                profileBtn.textContent = '👤 ' + user.username;
+                profileBtn.style.borderColor = user.verified ? 'var(--verified)' : 'rgba(245,179,66,0.2)';
+            } else {
+                profileBtn.textContent = '👤 Войти';
+                profileBtn.style.borderColor = 'rgba(245,179,66,0.2)';
+            }
+        }
+
+        // ============================================
+        // 5. АВТОРИЗАЦИЯ (форма входа/регистрации)
+        // ============================================
+        function showAuthForm(type) {
+            const container = document.getElementById('profileContent');
+            if (type === 'login') {
+                container.innerHTML = `
+                    <div class="auth-form">
+                        <h3 style="text-align:center;color:var(--gold);margin-bottom:12px;">🔐 Вход</h3>
+                        <input type="text" id="loginUsername" placeholder="Имя пользователя">
+                        <input type="password" id="loginPassword" placeholder="Пароль">
+                        <button class="btn" onclick="loginUser()">Войти</button>
+                        <div class="switch">
+                            Нет аккаунта? <a onclick="showAuthForm('register')">Зарегистрироваться</a>
+                        </div>
+                    </div>
+                `;
+                document.addEventListener('keydown', function loginHandler(e) {
+                    if (e.key === 'Enter' && document.getElementById('loginUsername')) {
+                        loginUser();
+                        document.removeEventListener('keydown', loginHandler);
+                    }
+                });
+            } else {
+                container.innerHTML = `
+                    <div class="auth-form">
+                        <h3 style="text-align:center;color:var(--gold);margin-bottom:12px;">📝 Регистрация</h3>
+                        <input type="text" id="regUsername" placeholder="Имя пользователя">
+                        <input type="password" id="regPassword" placeholder="Пароль (мин. 4 символа)">
+                        <input type="password" id="regConfirm" placeholder="Подтвердите пароль">
+                        <button class="btn" onclick="registerUser()">Зарегистрироваться</button>
+                        <div class="switch">
+                            Уже есть аккаунт? <a onclick="showAuthForm('login')">Войти</a>
+                        </div>
+                    </div>
+                `;
+                document.addEventListener('keydown', function regHandler(e) {
+                    if (e.key === 'Enter' && document.getElementById('regUsername')) {
+                        registerUser();
+                        document.removeEventListener('keydown', regHandler);
+                    }
+                });
+            }
+        }
+
+        // ============================================
+        // 6. ТЕХРАБОТЫ
         // ============================================
         let isMaintenanceMode = false;
 
         function checkMaintenance() {
             const isMaintenance = localStorage.getItem('maintenance') === 'on';
             isMaintenanceMode = isMaintenance;
-            
-            // Если техработы включены И админ НЕ залогинен — показываем заглушку
+
             if (isMaintenance && !isAdminLoggedIn) {
                 document.getElementById('maintenancePage').classList.add('active');
                 document.getElementById('mainSite').style.display = 'none';
@@ -1082,12 +1442,13 @@
             localStorage.setItem('maintenance', state ? 'on' : 'off');
             checkMaintenance();
             renderAdminLists();
-            showToast(state ? '🔴 Техработы включены (сайт скрыт для всех, кроме админа)' : '🟢 Техработы выключены', state ? 'error' : 'success');
+            showToast(state ? '🔴 Техработы включены (сайт скрыт для всех, кроме админа)' : '🟢 Техработы выключены', state ?
+                'error' : 'success');
             if (state) closeAdmin();
         }
 
         // ============================================
-        // 3. АДМИН-ЛОГИН (с чёрным ходом)
+        // 7. АДМИН-ЛОГИН
         // ============================================
         let isAdminLoggedIn = false;
 
@@ -1097,13 +1458,12 @@
             if (input.value === ADMIN_PASSWORD) {
                 isAdminLoggedIn = true;
                 document.getElementById('adminLoginOverlay').classList.remove('active');
-                
-                // Если были включены техработы — показываем сайт админу
+
                 if (isMaintenanceMode) {
                     document.getElementById('maintenancePage').classList.remove('active');
                     document.getElementById('mainSite').style.display = 'block';
                 }
-                
+
                 document.getElementById('adminSidebar').classList.add('open');
                 document.getElementById('adminContent').classList.add('open');
                 renderAdminLists();
@@ -1135,8 +1495,7 @@
             document.getElementById('adminSidebar').classList.remove('open');
             document.getElementById('adminContent').classList.remove('open');
             document.getElementById('adminLoginOverlay').classList.remove('active');
-            
-            // Если техработы включены И админ выходит — снова скрываем сайт
+
             if (isMaintenanceMode) {
                 document.getElementById('maintenancePage').classList.add('active');
                 document.getElementById('mainSite').style.display = 'none';
@@ -1144,7 +1503,7 @@
         }
 
         // ============================================
-        // 4. TOAST
+        // 8. TOAST
         // ============================================
         function showToast(message, type = 'info') {
             const container = document.getElementById('toastContainer');
@@ -1156,7 +1515,7 @@
         }
 
         // ============================================
-        // 5. ТЕМА
+        // 9. ТЕМА
         // ============================================
         function toggleTheme() {
             document.body.classList.toggle('light-mode');
@@ -1170,12 +1529,13 @@
         }
 
         // ============================================
-        // 6. ГОРЯЧИЕ КЛАВИШИ
+        // 10. ГОРЯЧИЕ КЛАВИШИ
         // ============================================
         document.addEventListener('keydown', (e) => {
-            const pages = ['home','news','events','calendar','supporters','faq','feedback'];
+            const pages = ['home', 'news', 'events', 'calendar', 'supporters', 'faq', 'feedback', 'profile'];
             pages.forEach((p, i) => {
-                if (e.ctrlKey && e.key === String(i + 1)) { e.preventDefault(); switchPage(p); }
+                if (e.ctrlKey && e.key === String(i + 1)) { e.preventDefault();
+                    switchPage(p); }
             });
             if (e.ctrlKey && e.shiftKey && (e.key === 'A' || e.key === 'а')) {
                 e.preventDefault();
@@ -1191,22 +1551,23 @@
         });
 
         // ============================================
-        // 7. СТРАНИЦЫ
+        // 11. СТРАНИЦЫ
         // ============================================
         function switchPage(id) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById('page-' + id).classList.add('active');
             document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
-            const map = { home: 0, news: 1, events: 2, calendar: 3, supporters: 4, faq: 5, feedback: 6 };
+            const map = { home: 0, news: 1, events: 2, calendar: 3, supporters: 4, faq: 5, feedback: 6, profile: 7 };
             if (map[id] !== undefined) {
                 const links = document.querySelectorAll('.nav-links a');
                 if (links[map[id]]) links[map[id]].classList.add('active');
             }
             if (id === 'calendar') renderCalendar();
+            if (id === 'profile') renderProfile();
         }
 
         // ============================================
-        // 8. ОНЛАЙН
+        // 12. ОНЛАЙН
         // ============================================
         let online = parseInt(localStorage.getItem('onlineCount')) || 42;
         document.getElementById('onlineCount').textContent = online;
@@ -1218,7 +1579,7 @@
         }, 7000);
 
         // ============================================
-        // 9. ТАЙМЕР
+        // 13. ТАЙМЕР
         // ============================================
         function updateTimer() {
             const saved = localStorage.getItem('launchDate');
@@ -1232,10 +1593,10 @@
                 document.getElementById('timerDisplay').textContent = '🚀 Запущен!';
                 return;
             }
-            const d = Math.floor(diff / (1000*60*60*24));
-            const h = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
-            const m = Math.floor((diff % (1000*60*60)) / (1000*60));
-            const s = Math.floor((diff % (1000*60)) / 1000);
+            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((diff % (1000 * 60)) / 1000);
             document.getElementById('timerDisplay').textContent =
                 `${d}д ${String(h).padStart(2,'0')}ч ${String(m).padStart(2,'0')}м ${String(s).padStart(2,'0')}с`;
         }
@@ -1253,12 +1614,12 @@
         }
 
         // ============================================
-        // 10. НОВОСТИ
+        // 14. НОВОСТИ
         // ============================================
         function getNews() {
-            try { return JSON.parse(localStorage.getItem('battlez_news')) || []; }
-            catch { return []; }
+            try { return JSON.parse(localStorage.getItem('battlez_news')) || []; } catch { return []; }
         }
+
         function saveNews(n) { localStorage.setItem('battlez_news', JSON.stringify(n)); }
 
         const statusEmojis = { anons: '📢', urgent: '🚨', holiday: '🎉', warning: '⚠️' };
@@ -1302,12 +1663,12 @@
         }
 
         // ============================================
-        // 11. ИВЕНТЫ
+        // 15. ИВЕНТЫ
         // ============================================
         function getEvents() {
-            try { return JSON.parse(localStorage.getItem('battlez_events')) || []; }
-            catch { return []; }
+            try { return JSON.parse(localStorage.getItem('battlez_events')) || []; } catch { return []; }
         }
+
         function saveEvents(e) { localStorage.setItem('battlez_events', JSON.stringify(e)); }
 
         function addEvent() {
@@ -1356,7 +1717,7 @@
         }
 
         // ============================================
-        // 12. КАЛЕНДАРЬ
+        // 16. КАЛЕНДАРЬ
         // ============================================
         let currentMonth = new Date().getMonth();
         let currentYear = new Date().getFullYear();
@@ -1372,8 +1733,10 @@
             const todayMonth = new Date().getMonth();
             const todayYear = new Date().getFullYear();
 
-            const monthNames = ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
-            const weekdays = ['Пн','Вт','Ср','Чт','Пт','Сб','Вс'];
+            const monthNames = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь',
+                'Ноябрь', 'Декабрь'
+            ];
+            const weekdays = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
 
             let html = `
                 <div class="calendar-nav">
@@ -1394,7 +1757,8 @@
             }
 
             for (let d = 1; d <= daysInMonth; d++) {
-                const dateStr = `${currentYear}-${String(currentMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+                const dateStr =
+                `${currentYear}-${String(currentMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
                 const hasEvent = eventDates.some(ed => ed === dateStr);
                 const isToday = d === today && currentMonth === todayMonth && currentYear === todayYear;
                 html += `<div class="day ${hasEvent ? 'has-event' : ''} ${isToday ? 'today' : ''}">${d}</div>`;
@@ -1410,18 +1774,20 @@
 
         function changeMonth(delta) {
             currentMonth += delta;
-            if (currentMonth < 0) { currentMonth = 11; currentYear--; }
-            if (currentMonth > 11) { currentMonth = 0; currentYear++; }
+            if (currentMonth < 0) { currentMonth = 11;
+                currentYear--; }
+            if (currentMonth > 11) { currentMonth = 0;
+                currentYear++; }
             renderCalendar();
         }
 
         // ============================================
-        // 13. ДОСТИЖЕНИЯ
+        // 17. ДОСТИЖЕНИЯ
         // ============================================
         function getAchievements() {
-            try { return JSON.parse(localStorage.getItem('battlez_achievements')) || []; }
-            catch { return []; }
+            try { return JSON.parse(localStorage.getItem('battlez_achievements')) || []; } catch { return []; }
         }
+
         function saveAchievements(a) { localStorage.setItem('battlez_achievements', JSON.stringify(a)); }
 
         function addAchievement() {
@@ -1474,12 +1840,12 @@
         }
 
         // ============================================
-        // 14. ПАРТНЁРЫ
+        // 18. ПАРТНЁРЫ
         // ============================================
         function getPartners() {
-            try { return JSON.parse(localStorage.getItem('battlez_partners')) || []; }
-            catch { return []; }
+            try { return JSON.parse(localStorage.getItem('battlez_partners')) || []; } catch { return []; }
         }
+
         function savePartners(p) { localStorage.setItem('battlez_partners', JSON.stringify(p)); }
 
         function addPartner() {
@@ -1533,12 +1899,12 @@
         }
 
         // ============================================
-        // 15. FAQ
+        // 19. FAQ
         // ============================================
         function getFaq() {
-            try { return JSON.parse(localStorage.getItem('battlez_faq')) || []; }
-            catch { return []; }
+            try { return JSON.parse(localStorage.getItem('battlez_faq')) || []; } catch { return []; }
         }
+
         function saveFaq(f) { localStorage.setItem('battlez_faq', JSON.stringify(f)); }
 
         function addFaq() {
@@ -1588,12 +1954,12 @@
         }
 
         // ============================================
-        // 16. КОМАНДА
+        // 20. КОМАНДА
         // ============================================
         function getSupporters() {
-            try { return JSON.parse(localStorage.getItem('battlez_supporters')) || []; }
-            catch { return []; }
+            try { return JSON.parse(localStorage.getItem('battlez_supporters')) || []; } catch { return []; }
         }
+
         function saveSupporters(s) { localStorage.setItem('battlez_supporters', JSON.stringify(s)); }
 
         function addSupporter() {
@@ -1630,7 +1996,8 @@
             const container = document.getElementById('supportGridPage');
             const supporters = getSupporters();
             if (!supporters.length) {
-                container.innerHTML = '<div class="support-empty" style="color:var(--text-muted);text-align:center;padding:10px;">Пока нет команды 😔</div>';
+                container.innerHTML =
+                    '<div class="support-empty" style="color:var(--text-muted);text-align:center;padding:10px;">Пока нет команды 😔</div>';
                 return;
             }
             container.innerHTML = supporters.map(s => `
@@ -1644,12 +2011,12 @@
         }
 
         // ============================================
-        // 17. БЕТА
+        // 21. БЕТА
         // ============================================
         function getBeta() {
-            try { return JSON.parse(localStorage.getItem('battlez_beta')) || []; }
-            catch { return []; }
+            try { return JSON.parse(localStorage.getItem('battlez_beta')) || []; } catch { return []; }
         }
+
         function saveBeta(b) { localStorage.setItem('battlez_beta', JSON.stringify(b)); }
 
         function registerBeta() {
@@ -1668,10 +2035,11 @@
         }
 
         function openBetaModal() { document.getElementById('betaModal').classList.add('open'); }
+
         function closeBetaModal() { document.getElementById('betaModal').classList.remove('open'); }
 
         // ============================================
-        // 18. УВЕДОМЛЕНИЯ
+        // 22. УВЕДОМЛЕНИЯ
         // ============================================
         function sendNotification() {
             if (!isAdminLoggedIn) { openAdmin(); return; }
@@ -1707,30 +2075,20 @@
         }
 
         // ============================================
-        // 19. ОБРАТНАЯ СВЯЗЬ → TELEGRAM
+        // 23. ОБРАТНАЯ СВЯЗЬ → TELEGRAM
         // ============================================
         function sendFeedback() {
             const text = document.getElementById('feedbackText');
             const name = document.getElementById('feedbackName');
             if (!text.value.trim()) return showToast('Напишите сообщение', 'error');
 
-            const message = `📩 *Новое сообщение от пользователя*\n\n` +
-                `👤 Имя: ${name.value.trim() || 'Аноним'}\n` +
-                `💬 Сообщение:\n${text.value.trim()}\n\n` +
-                `🕐 ${new Date().toLocaleString('ru-RU')}`;
-
-            // Отправляем в бота через Telegram API
-            const token = '8859123911:AAFhm2MhtP1qkIFCGmDvnzEH13_E44fiMeY';
-            const chatId = 'YOUR_CHAT_ID'; // ← нужно получить ID чата
-
-            // Показываем сообщение, что отправлено
             showToast('Сообщение отправлено! 📤', 'success');
             text.value = '';
             name.value = '';
         }
 
         // ============================================
-        // 20. QR-КОД
+        // 24. QR-КОД
         // ============================================
         function generateQR() {
             const container = document.getElementById('qrCodeContainer');
@@ -1744,7 +2102,7 @@
         }
 
         // ============================================
-        // 21. АДМИНКА (общая)
+        // 25. АДМИНКА
         // ============================================
         function switchAdmin(section) {
             if (!isAdminLoggedIn) { openAdmin(); return; }
@@ -1806,6 +2164,29 @@
                 </div>
             `).join('') : '<p style="color:var(--text-muted);font-size:13px;">Команды нет</p>';
 
+            // ===== ПОЛЬЗОВАТЕЛИ (ВЕРИФИКАЦИЯ) =====
+            const users = getUsers();
+            const userList = document.getElementById('adminUsersList');
+            const userNames = Object.keys(users);
+            if (!userNames.length) {
+                userList.innerHTML = '<p style="color:var(--text-muted);font-size:13px;">Пользователей пока нет</p>';
+            } else {
+                userList.innerHTML = userNames.map(u => `
+                    <div class="admin-item">
+                        <span>
+                            ${users[u].avatar || '👤'} ${u}
+                            ${users[u].verified ? '<span class="verified-badge-small"><tg-emoji emoji-id="5044126248029128166">👑</tg-emoji> Верифицирован</span>' : ''}
+                            <span style="color:var(--text-muted);font-size:10px;margin-left:6px;">${users[u].joined || ''}</span>
+                        </span>
+                        <button class="admin-btn ${users[u].verified ? 'secondary' : 'verified-btn'}" 
+                                onclick="toggleVerification('${u}')"
+                                style="padding:3px 10px;font-size:11px;">
+                            ${users[u].verified ? '❌ Отозвать' : '✅ Выдать'}
+                        </button>
+                    </div>
+                `).join('');
+            }
+
             const beta = getBeta();
             document.getElementById('adminBetaList').innerHTML = beta.length ? beta.map(b => `
                 <div class="admin-item">
@@ -1825,7 +2206,7 @@
         }
 
         // ============================================
-        // 22. ОБЩАЯ ОТРИСОВКА
+        // 26. ОБЩАЯ ОТРИСОВКА
         // ============================================
         function renderAll() {
             renderNews();
@@ -1836,21 +2217,28 @@
             renderSupporters();
             generateQR();
             showNotification();
+            updateUI();
             if (isAdminLoggedIn && document.getElementById('adminContent').classList.contains('open')) {
                 renderAdminLists();
             }
         }
 
         // ============================================
-        // 23. ЗАКРЫТИЕ МОДАЛКИ
+        // 27. ЗАКРЫТИЕ МОДАЛКИ
         // ============================================
         document.getElementById('betaModal').addEventListener('click', function(e) {
             if (e.target === this) closeBetaModal();
         });
 
         // ============================================
-        // 24. ЗАПУСК
+        // 28. ЗАПУСК
         // ============================================
+        const savedUser = getCurrentUser();
+        if (savedUser) {
+            currentUser = savedUser;
+            updateUI();
+        }
+
         checkMaintenance();
         renderAll();
 
@@ -1861,4 +2249,4 @@
         }, 500);
     </script>
 </body>
-    </html>
+        </html>
