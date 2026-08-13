@@ -241,6 +241,216 @@
         .header p { color: var(--text-muted); font-size: 14px; }
         @keyframes shimmer { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
 
+        /* ===== БАННЕР / LANDING ===== */
+        .hero {
+            background: linear-gradient(135deg, rgba(245, 179, 66, 0.08), rgba(232, 154, 42, 0.02));
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 28px 20px;
+            text-align: center;
+            margin-bottom: 16px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 40%, rgba(245, 179, 66, 0.06), transparent 60%);
+            animation: heroGlow 8s ease-in-out infinite;
+        }
+        @keyframes heroGlow {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(5%, 5%) scale(1.1); }
+        }
+        .hero .hero-icon { font-size: 56px; margin-bottom: 8px; position: relative; z-index: 1; }
+        .hero .hero-title {
+            font-size: 34px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #f5b342, #e89a2a, #f5b342);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shimmer 3s linear infinite;
+            position: relative;
+            z-index: 1;
+        }
+        .hero .hero-subtitle {
+            color: var(--text-muted);
+            font-size: 15px;
+            margin-top: 4px;
+            position: relative;
+            z-index: 1;
+        }
+        .hero .hero-btn {
+            display: inline-block;
+            margin-top: 14px;
+            padding: 12px 32px;
+            background: linear-gradient(135deg, #f5b342, #e89a2a);
+            color: #0b0e1a;
+            border: none;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 4px 20px rgba(245, 179, 66, 0.3);
+        }
+        .hero .hero-btn:hover { transform: scale(1.05); box-shadow: 0 6px 30px rgba(245, 179, 66, 0.5); }
+
+        /* ===== СОЦИАЛЬНЫЕ КНОПКИ ===== */
+        .social-links {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 8px;
+        }
+        .social-links .social-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--text);
+        }
+        .social-links .social-btn:hover {
+            transform: translateY(-2px);
+            background: var(--gold-glow);
+            border-color: var(--gold);
+        }
+        .social-links .social-btn .icon { font-size: 18px; }
+        .social-links .social-btn.telegram { border-color: rgba(100, 149, 237, 0.3); }
+        .social-links .social-btn.telegram:hover { background: rgba(100, 149, 237, 0.15); border-color: #6495ed; }
+        .social-links .social-btn.bot { border-color: rgba(74, 222, 128, 0.2); }
+        .social-links .social-btn.bot:hover { background: rgba(74, 222, 128, 0.1); border-color: #4ade80; }
+        .social-links .social-btn .badge {
+            font-size: 10px;
+            background: rgba(255, 165, 0, 0.2);
+            color: #ffa500;
+            padding: 1px 8px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        /* ===== ПРОГРЕСС РАЗРАБОТКИ (ROADMAP) ===== */
+        .roadmap-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .roadmap-item:last-child { border-bottom: none; }
+        .roadmap-item .step {
+            min-width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-muted);
+            flex-shrink: 0;
+        }
+        .roadmap-item .step.done {
+            background: var(--gold-glow);
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+        .roadmap-item .step.current {
+            background: var(--gold);
+            color: #0b0e1a;
+            border-color: var(--gold);
+            animation: pulseStep 2s ease-in-out infinite;
+        }
+        @keyframes pulseStep {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(245, 179, 66, 0.4); }
+            50% { box-shadow: 0 0 0 8px rgba(245, 179, 66, 0); }
+        }
+        .roadmap-item .info { flex: 1; }
+        .roadmap-item .info .title {
+            font-weight: 600;
+            color: var(--text);
+            font-size: 14px;
+        }
+        .roadmap-item .info .desc {
+            color: var(--text-muted);
+            font-size: 12px;
+            margin-top: 2px;
+        }
+        .roadmap-item .info .date {
+            color: var(--text-muted);
+            font-size: 10px;
+            margin-top: 2px;
+        }
+        .roadmap-item .info .status-badge {
+            display: inline-block;
+            font-size: 10px;
+            font-weight: 600;
+            padding: 1px 10px;
+            border-radius: 20px;
+            margin-top: 4px;
+        }
+        .roadmap-item .info .status-badge.done {
+            background: rgba(74, 222, 128, 0.15);
+            color: #4ade80;
+        }
+        .roadmap-item .info .status-badge.in-progress {
+            background: rgba(245, 179, 66, 0.15);
+            color: #f5b342;
+        }
+        .roadmap-item .info .status-badge.pending {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-muted);
+        }
+
+        /* ===== ЧАСЫ РАБОТЫ ===== */
+        .work-hours {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4px 16px;
+            font-size: 13px;
+        }
+        .work-hours .day {
+            color: var(--text-muted);
+        }
+        .work-hours .day.weekend {
+            color: var(--danger);
+        }
+        .work-hours .time {
+            color: var(--text);
+            text-align: right;
+        }
+        .work-hours .time.closed {
+            color: var(--danger);
+            font-weight: 600;
+        }
+        .work-hours .time.now {
+            color: #4ade80;
+            font-weight: 600;
+        }
+        .work-hours .time.break {
+            color: var(--text-muted);
+            font-size: 11px;
+        }
+
         /* ===== ПРОФИЛЬ ===== */
         .profile-card {
             text-align: center;
@@ -861,6 +1071,13 @@
             .admin-sidebar { width: 220px; }
             .admin-content.open { margin-left: 0; }
             .profile-card .username { font-size: 18px; flex-wrap: wrap; }
+            .work-hours {
+                grid-template-columns: 1fr;
+                gap: 2px;
+            }
+            .work-hours .time { text-align: left; }
+            .hero .hero-title { font-size: 26px; }
+            .hero .hero-btn { font-size: 14px; padding: 10px 24px; }
         }
     </style>
 </head>
@@ -917,9 +1134,13 @@
         <div class="container">
             <!-- ===== ГЛАВНАЯ ===== -->
             <div class="page active" id="page-home">
-                <div class="header">
-                    <h1>BattleZ</h1>
-                    <p>Новый игровой проект в Telegram</p>
+
+                <!-- ===== БАННЕР ===== -->
+                <div class="hero">
+                    <div class="hero-icon">⚔️</div>
+                    <div class="hero-title">BattleZ</div>
+                    <div class="hero-subtitle">Новый игровой проект в Telegram</div>
+                    <a href="#beta" class="hero-btn" onclick="document.getElementById('page-home').scrollIntoView({behavior:'smooth'});">🎮 Присоединиться</a>
                 </div>
 
                 <div class="online-counter">
@@ -932,14 +1153,51 @@
                     <div class="time" id="timerDisplay">Дата не установлена</div>
                 </div>
 
+                <!-- ===== ОПИСАНИЕ ИГРЫ ===== -->
                 <div class="card">
-                    <h2>📢 Мы готовим нечто большое</h2>
+                    <h2>📖 Что такое BattleZ?</h2>
                     <p style="color: var(--text-muted); line-height: 1.6; font-size: 13px;">
-                        BattleZ — это новый игровой проект в Telegram, который объединит квесты, гильдии и PvP.
-                        Сейчас мы в стадии закрытого тестирования и готовимся к запуску.
+                        <strong>BattleZ</strong> — это инновационный игровой проект в Telegram, который объединяет элементы стратегии, RPG и социального взаимодействия. 
+                    </p>
+                    <ul style="color: var(--text-muted); line-height: 1.8; font-size: 13px; padding-left: 18px; margin-top: 8px;">
+                        <li>🧙 <strong>Система персонажей</strong> — прокачка, уровни, уникальные навыки</li>
+                        <li>⚔️ <strong>PvP-арена</strong> — сражения с другими игроками в реальном времени</li>
+                        <li>🏆 <strong>Гильдии</strong> — создавай кланы и участвуй в битвах</li>
+                        <li>🎁 <strong>Промокоды и бонусы</strong> — награды для активных игроков</li>
+                    </ul>
+                    <p style="color: var(--text-muted); font-size: 13px; margin-top: 8px;">
+                        Мы в стадии закрытого тестирования и готовимся к полному запуску. Присоединяйся первым!
                     </p>
                 </div>
 
+                <!-- ===== СОЦИАЛЬНЫЕ КНОПКИ ===== -->
+                <div class="card">
+                    <h2>🌐 Мы в соцсетях</h2>
+                    <div class="social-links">
+                        <a href="https://t.me/StarWayBuyStarsNews" target="_blank" class="social-btn telegram">
+                            <span class="icon">📱</span> Telegram-канал
+                        </a>
+                        <a href="#" class="social-btn bot" onclick="showToast('Бот в разработке! Скоро появится 🚀', 'info')">
+                            <span class="icon">🤖</span> Telegram-бот
+                            <span class="badge">Скоро</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- ===== ПРОГРЕСС РАЗРАБОТКИ ===== -->
+                <div class="card">
+                    <h2>🚀 Дорожная карта</h2>
+                    <p class="sub">Этапы разработки BattleZ</p>
+                    <div id="roadmapContainer"></div>
+                </div>
+
+                <!-- ===== ЧАСЫ РАБОТЫ ===== -->
+                <div class="card">
+                    <h2>🕐 Часы работы поддержки</h2>
+                    <div id="workHoursContainer"></div>
+                </div>
+
+                <!-- ===== QR-КОД ===== -->
                 <div class="card">
                     <h2>📱 Присоединяйся к нам</h2>
                     <div class="qr-container">
@@ -948,7 +1206,7 @@
                     </div>
                 </div>
 
-                <div class="card beta-card">
+                <div class="card beta-card" id="beta">
                     <h2>🎮 Запись на бета-тест</h2>
                     <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 8px;">
                         Оставь свои данные, чтобы стать одним из первых тестировщиков.
@@ -1048,6 +1306,7 @@
         <div class="menu-item" onclick="switchAdmin('beta')">📋 Бета</div>
         <div class="menu-item" onclick="switchAdmin('notifications')">🔔 Уведомления</div>
         <div class="menu-item" onclick="switchAdmin('maintenance')">🛠️ Техработы</div>
+        <div class="menu-item" onclick="switchAdmin('roadmap')">🚀 Roadmap</div>
         <div class="menu-item exit" onclick="closeAdmin()">🚪 Выйти</div>
     </div>
 
@@ -1185,6 +1444,23 @@
                 <div id="maintenanceStatus" style="margin-top:8px;font-size:13px;color:var(--text-muted);"></div>
             </div>
         </div>
+
+        <!-- ===== ROADMAP (АДМИНКА) ===== -->
+        <div class="admin-section" id="admin-roadmap">
+            <div class="admin-card">
+                <h3>🚀 Добавить этап разработки</h3>
+                <input class="admin-input" id="roadmapTitle" placeholder="Название этапа...">
+                <input class="admin-input" id="roadmapDesc" placeholder="Описание...">
+                <input class="admin-input" id="roadmapDate" placeholder="Дата (например: Q1 2026)...">
+                <select class="admin-input" id="roadmapStatus">
+                    <option value="done">✅ Выполнено</option>
+                    <option value="in-progress" selected>🔄 В процессе</option>
+                    <option value="pending">⏳ Запланировано</option>
+                </select>
+                <button class="admin-btn" onclick="addRoadmapItem()">➕ Добавить</button>
+            </div>
+            <div class="admin-card"><h3>📋 Список этапов</h3><div id="adminRoadmapList"></div></div>
+        </div>
     </div>
 
     <!-- ===== МОДАЛКА БЕТЫ ===== -->
@@ -1206,7 +1482,7 @@
         const ADMIN_PASSWORD = 'admin123';
 
         // ============================================
-        // 2. СИСТЕМА ПОЛЬЗОВАТЕЛЕЙ (регистрация/авторизация)
+        // 2. СИСТЕМА ПОЛЬЗОВАТЕЛЕЙ
         // ============================================
         let currentUser = null;
 
@@ -1297,7 +1573,7 @@
         }
 
         // ============================================
-        // 3. ВЕРИФИКАЦИЯ (как в Major)
+        // 3. ВЕРИФИКАЦИЯ
         // ============================================
         function toggleVerification(username) {
             if (!isAdminLoggedIn) { openAdmin(); return; }
@@ -1376,7 +1652,7 @@
         }
 
         // ============================================
-        // 5. АВТОРИЗАЦИЯ (форма входа/регистрации)
+        // 5. АВТОРИЗАЦИЯ
         // ============================================
         function showAuthForm(type) {
             const container = document.getElementById('profileContent');
@@ -2102,7 +2378,159 @@
         }
 
         // ============================================
-        // 25. АДМИНКА
+        // 25. ROADMAP (Дорожная карта)
+        // ============================================
+        function getRoadmap() {
+            try { return JSON.parse(localStorage.getItem('battlez_roadmap')) || []; } catch { return []; }
+        }
+
+        function saveRoadmap(r) { localStorage.setItem('battlez_roadmap', JSON.stringify(r)); }
+
+        function addRoadmapItem() {
+            if (!isAdminLoggedIn) { openAdmin(); return; }
+            const title = document.getElementById('roadmapTitle');
+            const desc = document.getElementById('roadmapDesc');
+            const date = document.getElementById('roadmapDate');
+            const status = document.getElementById('roadmapStatus');
+            if (!title.value.trim()) return showToast('Введите название этапа', 'error');
+            const roadmap = getRoadmap();
+            roadmap.push({
+                title: title.value.trim(),
+                desc: desc.value.trim() || '',
+                date: date.value.trim() || 'Скоро',
+                status: status.value,
+                id: Date.now()
+            });
+            saveRoadmap(roadmap);
+            title.value = '';
+            desc.value = '';
+            date.value = '';
+            renderAll();
+            showToast('Этап добавлен ✅', 'success');
+        }
+
+        function deleteRoadmapItem(id) {
+            let roadmap = getRoadmap().filter(r => r.id !== id);
+            saveRoadmap(roadmap);
+            renderAll();
+            showToast('Этап удалён 🗑️', 'warning');
+        }
+
+        function renderRoadmap() {
+            const container = document.getElementById('roadmapContainer');
+            const roadmap = getRoadmap();
+            if (!roadmap.length) {
+                container.innerHTML = '<p style="color:var(--text-muted);text-align:center;font-size:13px;">Дорожная карта пока не заполнена</p>';
+                return;
+            }
+            const statusMap = {
+                done: { label: '✅ Выполнено', class: 'done' },
+                'in-progress': { label: '🔄 В процессе', class: 'in-progress' },
+                pending: { label: '⏳ Запланировано', class: 'pending' }
+            };
+            const stepMap = {
+                done: '✅',
+                'in-progress': '🔄',
+                pending: '⏳'
+            };
+            container.innerHTML = roadmap.map((r, i) => `
+                <div class="roadmap-item">
+                    <div class="step ${r.status === 'done' ? 'done' : r.status === 'in-progress' ? 'current' : ''}">
+                        ${stepMap[r.status] || i+1}
+                    </div>
+                    <div class="info">
+                        <div class="title">${r.title}</div>
+                        ${r.desc ? `<div class="desc">${r.desc}</div>` : ''}
+                        <div class="date">📅 ${r.date}</div>
+                        <span class="status-badge ${statusMap[r.status]?.class || 'pending'}">
+                            ${statusMap[r.status]?.label || '⏳ Запланировано'}
+                        </span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // ============================================
+        // 26. ЧАСЫ РАБОТЫ
+        // ============================================
+        function renderWorkHours() {
+            const container = document.getElementById('workHoursContainer');
+            const now = new Date();
+            const days = ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'];
+            const todayIndex = now.getDay();
+
+            const schedule = {
+                'Понедельник': '10:00 - 20:00',
+                'Вторник': '09:00 - 20:00',
+                'Среда': '09:00 - 20:00',
+                'Четверг': '09:00 - 20:00',
+                'Пятница': '09:00 - 20:00',
+                'Суббота': '12:00 - 15:00, 15:30 - 22:00',
+                'Воскресенье': 'Закрыто'
+            };
+
+            // Проверяем, открыто ли сейчас
+            function isOpenNow() {
+                const day = days[todayIndex];
+                if (day === 'Воскресенье') return false;
+                const hours = schedule[day];
+                if (!hours || hours === 'Закрыто') return false;
+                const parts = hours.split(', ');
+                let currentTime = now.getHours() * 60 + now.getMinutes();
+                for (let part of parts) {
+                    let [start, end] = part.split(' - ');
+                    let [startH, startM] = start.split(':').map(Number);
+                    let [endH, endM] = end.split(':').map(Number);
+                    let startTotal = startH * 60 + startM;
+                    let endTotal = endH * 60 + endM;
+                    if (currentTime >= startTotal && currentTime <= endTotal) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            const openNow = isOpenNow();
+
+            let html = `
+                <div style="margin-bottom:10px;font-size:14px;font-weight:600;color:${openNow ? '#4ade80' : '#ff6b6b'};">
+                    ${openNow ? '🟢 Сейчас открыто' : '🔴 Сейчас закрыто'}
+                </div>
+                <div class="work-hours">
+            `;
+
+            for (let day of days) {
+                const time = schedule[day] || 'Закрыто';
+                const isToday = day === days[todayIndex];
+                const isWeekend = day === 'Воскресенье';
+                const isClosed = time === 'Закрыто';
+                const isBreak = time.includes('15:00');
+
+                html += `
+                    <div class="day ${isWeekend ? 'weekend' : ''} ${isToday ? 'today' : ''}" 
+                         style="${isToday ? 'color:var(--gold);font-weight:600;' : ''}">
+                        ${isToday ? '▶️ ' : ''}${day}
+                    </div>
+                    <div class="time ${isClosed ? 'closed' : ''} ${isToday && openNow ? 'now' : ''} ${isBreak ? 'break' : ''}"
+                         style="${isToday && !isClosed ? 'font-weight:600;' : ''}">
+                        ${isClosed ? '❌ Закрыто' : time}
+                        ${isToday && openNow ? ' 🟢' : ''}
+                    </div>
+                `;
+            }
+
+            html += `</div>`;
+            html += `
+                <div style="margin-top:8px;font-size:11px;color:var(--text-muted);text-align:center;">
+                    🕐 Время указано по московскому времени (UTC+3)
+                </div>
+            `;
+
+            container.innerHTML = html;
+        }
+
+        // ============================================
+        // 27. АДМИНКА
         // ============================================
         function switchAdmin(section) {
             if (!isAdminLoggedIn) { openAdmin(); return; }
@@ -2164,7 +2592,7 @@
                 </div>
             `).join('') : '<p style="color:var(--text-muted);font-size:13px;">Команды нет</p>';
 
-            // ===== ПОЛЬЗОВАТЕЛИ (ВЕРИФИКАЦИЯ) =====
+            // Пользователи
             const users = getUsers();
             const userList = document.getElementById('adminUsersList');
             const userNames = Object.keys(users);
@@ -2203,10 +2631,19 @@
             document.getElementById('maintenanceStatus').textContent = maint ?
                 '🔴 Техработы ВКЛЮЧЕНЫ (сайт скрыт для всех, кроме админа)' :
                 '🟢 Техработы ВЫКЛЮЧЕНЫ';
+
+            // Roadmap
+            const roadmap = getRoadmap();
+            document.getElementById('adminRoadmapList').innerHTML = roadmap.length ? roadmap.map(r => `
+                <div class="admin-item">
+                    <span>${r.title} — ${r.date} (${r.status})</span>
+                    <button class="del" onclick="deleteRoadmapItem(${r.id})">✕</button>
+                </div>
+            `).join('') : '<p style="color:var(--text-muted);font-size:13px;">Этапов нет</p>';
         }
 
         // ============================================
-        // 26. ОБЩАЯ ОТРИСОВКА
+        // 28. ОБЩАЯ ОТРИСОВКА
         // ============================================
         function renderAll() {
             renderNews();
@@ -2215,6 +2652,8 @@
             renderPartners();
             renderFaq();
             renderSupporters();
+            renderRoadmap();
+            renderWorkHours();
             generateQR();
             showNotification();
             updateUI();
@@ -2224,14 +2663,14 @@
         }
 
         // ============================================
-        // 27. ЗАКРЫТИЕ МОДАЛКИ
+        // 29. ЗАКРЫТИЕ МОДАЛКИ
         // ============================================
         document.getElementById('betaModal').addEventListener('click', function(e) {
             if (e.target === this) closeBetaModal();
         });
 
         // ============================================
-        // 28. ЗАПУСК
+        // 30. ЗАПУСК
         // ============================================
         const savedUser = getCurrentUser();
         if (savedUser) {
