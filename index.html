@@ -1690,34 +1690,45 @@
         }
 
         function sendVerificationCode(email, username) {
-            if (!email || !email.trim()) {
-                showToast('❌ Email не указан', 'error');
-                return;
-            }
+    // ===== ПРОВЕРКА EMAIL =====
+    if (!email || email === '' || email === 'undefined') {
+        const emailInput = document.getElementById('regEmail');
+        if (emailInput && emailInput.value) {
+            email = emailInput.value.trim();
+        } else {
+            showToast('❌ Введите email в поле', 'error');
+            return;
+        }
+    }
 
-            const code = generateVerificationCode();
-            const expiresAt = Date.now() + 5 * 60 * 1000;
+    if (!email || email === '') {
+        showToast('❌ Email не указан', 'error');
+        return;
+    }
 
-            verificationCodes[email] = { code, expiresAt, username };
+    const code = generateVerificationCode();
+    const expiresAt = Date.now() + 5 * 60 * 1000;
 
-            showToast('📧 Отправка кода на почту...', 'info');
+    verificationCodes[email] = { code, expiresAt, username };
 
-            emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
-                to_email: email.trim(),
-                to_name: username.trim(),
-                code: code,
-                year: new Date().getFullYear()
-            })
-            .then(function(response) {
-                showToast('✅ Код отправлен на ' + email, 'success');
-                showVerificationForm(email, username);
-            })
-            .catch(function(error) {
-                showToast('❌ Ошибка отправки: ' + error.text, 'error');
-                console.error('EmailJS Error:', error);
-                console.log('📧 Код для теста:', code);
-                console.log('📧 Email:', email);
-            });
+    showToast('📧 Отправка кода на почту...', 'info');
+
+    emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+        to_email: email.trim(),
+        to_name: username.trim(),
+        code: code,
+        year: new Date().getFullYear()
+    })
+    .then(function(response) {
+        showToast('✅ Код отправлен на ' + email, 'success');
+        showVerificationForm(email, username);
+    })
+    .catch(function(error) {
+        showToast('❌ Ошибка отправки: ' + error.text, 'error');
+        console.error('EmailJS Error:', error);
+        console.log('📧 Код для теста:', code);
+        console.log('📧 Email:', email);
+    });
         }
 
         // ============================================
