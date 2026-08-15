@@ -5,9 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>BattleZ — Игровой проект</title>
     <style>
-        /* ========================================== */
-        /* 1. ПЕРЕМЕННЫЕ                              */
-        /* ========================================== */
         :root {
             --bg: #0b0e1a;
             --bg-card: rgba(18, 22, 40, 0.75);
@@ -672,31 +669,6 @@
         .news-item .status.holiday { background: rgba(245, 179, 66, 0.2); color: #f5b342; }
         .news-item .status.warning { background: rgba(255, 165, 0, 0.2); color: #ffa500; }
         .news-item .text { color: var(--text); font-size: 13px; line-height: 1.5; word-wrap: break-word; }
-        .news-item .read-more {
-            color: var(--gold);
-            cursor: pointer;
-            font-size: 12px;
-            font-weight: 600;
-            display: none;
-            margin-top: 4px;
-        }
-        .news-item .read-more.visible { display: inline-block; }
-        .news-item .full-text { display: none; }
-        .news-item .full-text.open { display: block; }
-        .news-item .tags {
-            display: flex;
-            gap: 4px;
-            flex-wrap: wrap;
-            margin-top: 4px;
-        }
-        .news-item .tags .tag {
-            background: rgba(245, 179, 66, 0.1);
-            color: var(--gold);
-            font-size: 9px;
-            padding: 1px 8px;
-            border-radius: 20px;
-            font-weight: 600;
-        }
 
         /* ===== ИВЕНТЫ ===== */
         .event-item {
@@ -752,18 +724,6 @@
         }
         .calendar-nav button:hover { background: var(--gold-glow); }
         .calendar-nav .month-year { font-weight: 600; font-size: 15px; }
-        .calendar-event-tooltip {
-            background: var(--bg-card);
-            border: 1px solid var(--gold);
-            border-radius: 8px;
-            padding: 8px 12px;
-            margin-top: 8px;
-            font-size: 12px;
-            color: var(--text);
-            display: none;
-        }
-        .calendar-event-tooltip.visible { display: block; }
-        .calendar-event-tooltip .ev-title { color: var(--gold); font-weight: 600; }
 
         /* ===== ПАРТНЁРЫ ===== */
         .partner-item {
@@ -783,7 +743,6 @@
         .partner-item .name { font-weight: 600; color: var(--text); font-size: 14px; }
         .partner-item .desc { font-size: 11px; color: var(--text-muted); }
         .partner-item .link { color: var(--gold); text-decoration: none; font-size: 12px; }
-        .partner-item .link:hover { text-decoration: underline; }
 
         /* ===== ДОСТИЖЕНИЯ ===== */
         .achievement-grid {
@@ -912,7 +871,6 @@
         .support-item .name { font-weight: 600; font-size: 12px; word-wrap: break-word; }
         .support-item .role { font-size: 10px; color: var(--text-muted); }
         .support-item .link { font-size: 10px; color: var(--gold); text-decoration: none; display: inline-block; margin-top: 2px; }
-        .support-item .link:hover { text-decoration: underline; }
 
         /* ===== УВЕДОМЛЕНИЯ ===== */
         .notification-banner {
@@ -1067,15 +1025,6 @@
             gap: 2px;
         }
         .admin-item .verified-badge-small tg-emoji { font-size: 14px; }
-        .admin-item .tags .tag {
-            background: rgba(245, 179, 66, 0.1);
-            color: var(--gold);
-            font-size: 9px;
-            padding: 1px 6px;
-            border-radius: 20px;
-            font-weight: 600;
-            margin-right: 2px;
-        }
 
         /* ===== МОДАЛКА ===== */
         .modal {
@@ -1116,20 +1065,6 @@
             font-size: 22px;
             color: var(--text-muted);
         }
-
-        /* ===== СПИННЕР ===== */
-        .spinner {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(245, 179, 66, 0.2);
-            border-top-color: var(--gold);
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            vertical-align: middle;
-            margin-right: 8px;
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
 
         /* ===== КНОПКА НАВЕРХ ===== */
         #scrollTopBtn {
@@ -1374,10 +1309,6 @@
                 <div class="header"><h2>📅 Календарь ивентов</h2></div>
                 <div class="card">
                     <div id="calendarContainer"></div>
-                    <div class="calendar-event-tooltip" id="calendarTooltip">
-                        <div class="ev-title">📌 <span id="tooltipEventTitle"></span></div>
-                        <div class="ev-desc" id="tooltipEventDesc"></div>
-                    </div>
                 </div>
             </div>
 
@@ -1466,15 +1397,9 @@
                     <option value="warning">⚠️ Предупреждение</option>
                 </select>
                 <input class="admin-input" id="newsInput" placeholder="Текст новости...">
-                <input class="admin-input" id="newsTags" placeholder="Теги (через запятую)..." style="font-size:12px;">
                 <button class="admin-btn" onclick="addNews()">➕ Добавить</button>
             </div>
-            <div class="admin-card">
-                <h3>📋 Список</h3>
-                <input class="admin-input" id="adminNewsSearch" placeholder="🔍 Поиск..." style="font-size:12px;margin-bottom:8px;" oninput="filterAdminNews(this.value)">
-                <div id="adminNewsList"></div>
-                <div id="adminNewsPagination" style="display:flex;gap:4px;justify-content:center;margin-top:8px;flex-wrap:wrap;"></div>
-            </div>
+            <div class="admin-card"><h3>📋 Список</h3><div id="adminNewsList"></div></div>
         </div>
 
         <!-- Ивенты -->
@@ -1633,20 +1558,17 @@
 
     <script>
         // ============================================
-        // === 1. EMAILJS НАСТРОЙКА ===
+        // === EMAILJS НАСТРОЙКА ===
         // ============================================
         const EMAILJS_SERVICE_ID = 'service_wv2zg9k';
         const EMAILJS_TEMPLATE_ID = 'template_48bsq5q';
         const EMAILJS_PUBLIC_KEY = 'nIsKqNsZOVOxlYuTY';
 
-        // Инициализация EmailJS
         emailjs.init(EMAILJS_PUBLIC_KEY);
 
         // ============================================
-        // === 2. БЕЗОПАСНОСТЬ ===
+        // === БЕЗОПАСНОСТЬ ===
         // ============================================
-
-        // Хеширование паролей
         async function hashPassword(password) {
             const encoder = new TextEncoder();
             const data = encoder.encode(password + 'BattleZ_Salt_2026_SuperSecure');
@@ -1655,7 +1577,6 @@
             return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
         }
 
-        // Защита от XSS
         function sanitizeInput(input) {
             if (!input) return '';
             const div = document.createElement('div');
@@ -1663,7 +1584,6 @@
             return div.innerHTML;
         }
 
-        // CSRF-токен
         function generateCSRFToken() {
             const array = new Uint8Array(32);
             crypto.getRandomValues(array);
@@ -1676,7 +1596,6 @@
             return localStorage.getItem('csrf_token') || generateCSRFToken();
         }
 
-        // Капча
         let currentCaptcha = null;
 
         function generateCaptcha() {
@@ -1704,7 +1623,6 @@
             return parseInt(answer) === currentCaptcha.result;
         }
 
-        // Ограничение попыток входа
         let loginAttempts = {};
         const MAX_ATTEMPTS = 5;
         const BLOCK_TIME = 5 * 60 * 1000;
@@ -1741,7 +1659,7 @@
         }
 
         // ============================================
-        // === 3. СИСТЕМА ПОЛЬЗОВАТЕЛЕЙ ===
+        // === СИСТЕМА ПОЛЬЗОВАТЕЛЕЙ ===
         // ============================================
         let currentUser = null;
 
@@ -1762,7 +1680,7 @@
         }
 
         // ============================================
-        // === 4. ОТПРАВКА КОДА ПОДТВЕРЖДЕНИЯ ===
+        // === ОТПРАВКА КОДА ПОДТВЕРЖДЕНИЯ ===
         // ============================================
         let verificationCodes = {};
         let pendingUser = null;
@@ -1772,6 +1690,11 @@
         }
 
         function sendVerificationCode(email, username) {
+            if (!email || !email.trim()) {
+                showToast('❌ Email не указан', 'error');
+                return;
+            }
+
             const code = generateVerificationCode();
             const expiresAt = Date.now() + 5 * 60 * 1000;
 
@@ -1780,8 +1703,8 @@
             showToast('📧 Отправка кода на почту...', 'info');
 
             emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
-                to_email: email,
-                to_name: username,
+                to_email: email.trim(),
+                to_name: username.trim(),
                 code: code,
                 year: new Date().getFullYear()
             })
@@ -1790,7 +1713,7 @@
                 showVerificationForm(email, username);
             })
             .catch(function(error) {
-                showToast('❌ Ошибка: ' + error.text, 'error');
+                showToast('❌ Ошибка отправки: ' + error.text, 'error');
                 console.error('EmailJS Error:', error);
                 console.log('📧 Код для теста:', code);
                 console.log('📧 Email:', email);
@@ -1798,7 +1721,7 @@
         }
 
         // ============================================
-        // === 5. ФОРМА ПОДТВЕРЖДЕНИЯ ===
+        // === ФОРМА ПОДТВЕРЖДЕНИЯ ===
         // ============================================
         function showVerificationForm(email, username) {
             const container = document.getElementById('profileContent');
@@ -1938,7 +1861,7 @@
         }
 
         // ============================================
-        // === 6. РЕГИСТРАЦИЯ С БЕЗОПАСНОСТЬЮ ===
+        // === РЕГИСТРАЦИЯ ===
         // ============================================
         let isProcessing = false;
 
@@ -1952,48 +1875,59 @@
                 const password = document.getElementById('regPassword');
                 const confirm = document.getElementById('regConfirm');
                 const captchaInput = document.getElementById('captchaInput');
-                const errorEl = document.getElementById('authError');
 
-                if (errorEl) errorEl.classList.remove('visible');
+                // Проверяем, что поля существуют
+                if (!username || !email || !password || !confirm || !captchaInput) {
+                    showToast('❌ Ошибка: не найдены поля формы', 'error');
+                    isProcessing = false;
+                    return;
+                }
 
-                // Валидация
                 if (!username.value.trim() || !email.value.trim() || !password.value.trim() || !confirm.value.trim()) {
                     showToast('❌ Заполните все поля', 'error');
+                    isProcessing = false;
                     return;
                 }
 
                 if (username.value.trim().length < 3) {
                     showToast('❌ Имя должно быть минимум 3 символа', 'error');
+                    isProcessing = false;
                     return;
                 }
 
                 if (username.value.trim().length > 20) {
                     showToast('❌ Имя не должно превышать 20 символов', 'error');
+                    isProcessing = false;
                     return;
                 }
 
                 if (!/^[a-zA-Zа-яА-Я0-9_]+$/.test(username.value.trim())) {
                     showToast('❌ Имя содержит недопустимые символы', 'error');
+                    isProcessing = false;
                     return;
                 }
 
                 if (!email.value.includes('@') || !email.value.includes('.')) {
                     showToast('❌ Введите корректный email', 'error');
+                    isProcessing = false;
                     return;
                 }
 
                 if (password.value.length < 8) {
                     showToast('❌ Пароль должен быть минимум 8 символов', 'error');
+                    isProcessing = false;
                     return;
                 }
 
                 if (password.value.length > 30) {
                     showToast('❌ Пароль не должен превышать 30 символов', 'error');
+                    isProcessing = false;
                     return;
                 }
 
                 if (password.value !== confirm.value) {
                     showToast('❌ Пароли не совпадают', 'error');
+                    isProcessing = false;
                     return;
                 }
 
@@ -2001,6 +1935,7 @@
                     refreshCaptcha();
                     captchaInput.value = '';
                     showToast('❌ Неверный ответ капчи', 'error');
+                    isProcessing = false;
                     return;
                 }
 
@@ -2008,12 +1943,14 @@
 
                 if (users[username.value.trim()]) {
                     showToast('❌ Пользователь с таким именем уже существует', 'error');
+                    isProcessing = false;
                     return;
                 }
 
                 for (const [key, value] of Object.entries(users)) {
                     if (value.email === email.value.trim()) {
                         showToast('❌ Этот email уже используется', 'error');
+                        isProcessing = false;
                         return;
                     }
                 }
@@ -2026,6 +1963,7 @@
                     passwordHash: hashedPassword
                 };
 
+                // Отправляем код
                 sendVerificationCode(email.value.trim(), username.value.trim());
 
             } catch (error) {
@@ -2037,7 +1975,7 @@
         }
 
         // ============================================
-        // === 7. АВТОРИЗАЦИЯ ===
+        // === АВТОРИЗАЦИЯ ===
         // ============================================
         async function loginUserSecure() {
             if (isProcessing) return;
@@ -2046,16 +1984,23 @@
             try {
                 const username = document.getElementById('loginUsername');
                 const password = document.getElementById('loginPassword');
-                const errorEl = document.getElementById('authError');
 
-                if (errorEl) errorEl.classList.remove('visible');
-
-                if (!username.value.trim() || !password.value.trim()) {
-                    showToast('❌ Заполните все поля', 'error');
+                if (!username || !password) {
+                    showToast('❌ Ошибка: не найдены поля', 'error');
+                    isProcessing = false;
                     return;
                 }
 
-                if (!checkLoginAttempts(username.value.trim())) return;
+                if (!username.value.trim() || !password.value.trim()) {
+                    showToast('❌ Заполните все поля', 'error');
+                    isProcessing = false;
+                    return;
+                }
+
+                if (!checkLoginAttempts(username.value.trim())) {
+                    isProcessing = false;
+                    return;
+                }
 
                 const users = getUsers();
                 const user = users[username.value.trim()];
@@ -2063,6 +2008,7 @@
                 if (!user) {
                     recordFailedAttempt(username.value.trim());
                     showToast('❌ Неверное имя пользователя или пароль', 'error');
+                    isProcessing = false;
                     return;
                 }
 
@@ -2070,6 +2016,7 @@
                 if (user.passwordHash !== hashedInput) {
                     recordFailedAttempt(username.value.trim());
                     showToast('❌ Неверное имя пользователя или пароль', 'error');
+                    isProcessing = false;
                     return;
                 }
 
@@ -2102,7 +2049,7 @@
         }
 
         // ============================================
-        // === 8. ПРОФИЛЬ ===
+        // === ПРОФИЛЬ ===
         // ============================================
         function renderProfile() {
             const container = document.getElementById('profileContent');
@@ -2155,7 +2102,7 @@
         }
 
         // ============================================
-        // === 9. АВТОРИЗАЦИЯ (ФОРМЫ) ===
+        // === АВТОРИЗАЦИЯ (ФОРМЫ) ===
         // ============================================
         function showAuthForm(type) {
             const container = document.getElementById('profileContent');
@@ -2165,7 +2112,6 @@
                 container.innerHTML = `
                     <div class="auth-form">
                         <h3 style="text-align:center;color:var(--gold);margin-bottom:12px;">🔐 Вход</h3>
-                        <div class="error-text" id="authError"></div>
                         <input type="text" id="loginUsername" placeholder="Имя пользователя">
                         <input type="password" id="loginPassword" placeholder="Пароль" onkeydown="if(event.key==='Enter') loginUserSecure()">
                         <button class="btn" onclick="loginUserSecure()">Войти</button>
@@ -2183,7 +2129,6 @@
                 container.innerHTML = `
                     <div class="auth-form">
                         <h3 style="text-align:center;color:var(--gold);margin-bottom:12px;">📝 Регистрация</h3>
-                        <div class="error-text" id="authError"></div>
                         <input type="text" id="regUsername" placeholder="Имя пользователя (3-20 символов)">
                         <input type="email" id="regEmail" placeholder="Email (для подтверждения)">
                         <input type="password" id="regPassword" placeholder="Пароль (8-30 символов)" oninput="checkPasswordStrength(this.value)">
@@ -2191,7 +2136,7 @@
                         <input type="password" id="regConfirm" placeholder="Подтвердите пароль">
                         <div class="captcha-container">
                             <span class="captcha-text" id="captchaDisplay">5 + 3 = ?</span>
-                            <input type="text" id="captchaInput" placeholder="Ответ" style="flex:1;">
+                            <input type="text" id="captchaInput" placeholder="Ответ">
                             <button class="refresh-btn" onclick="refreshCaptcha()">🔄</button>
                         </div>
                         <button class="btn" onclick="registerUserSecure()">📧 Зарегистрироваться</button>
@@ -2229,7 +2174,7 @@
         }
 
         // ============================================
-        // === 10. ВЕРИФИКАЦИЯ (АДМИН) ===
+        // === ВЕРИФИКАЦИЯ ===
         // ============================================
         function toggleVerification(username) {
             if (!isAdminLoggedIn) { openAdmin(); return; }
@@ -2253,7 +2198,7 @@
         }
 
         // ============================================
-        // === 11. ТЕХРАБОТЫ ===
+        // === ТЕХРАБОТЫ ===
         // ============================================
         let isMaintenanceMode = false;
 
@@ -2279,7 +2224,7 @@
         }
 
         // ============================================
-        // === 12. АДМИН-ЛОГИН ===
+        // === АДМИН ===
         // ============================================
         let isAdminLoggedIn = false;
 
@@ -2335,7 +2280,7 @@
         }
 
         // ============================================
-        // === 13. TOAST ===
+        // === TOAST ===
         // ============================================
         function showToast(message, type = 'info') {
             const container = document.getElementById('toastContainer');
@@ -2348,7 +2293,7 @@
         }
 
         // ============================================
-        // === 14. ТЕМА ===
+        // === ТЕМА ===
         // ============================================
         function toggleTheme() {
             document.body.classList.toggle('light-mode');
@@ -2360,7 +2305,7 @@
         }
 
         // ============================================
-        // === 15. СТРАНИЦЫ ===
+        // === СТРАНИЦЫ ===
         // ============================================
         function switchPage(id) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -2374,7 +2319,6 @@
                 if (links[map[id]]) links[map[id]].classList.add('active');
             }
 
-            // Обновляем контент при переключении
             if (id === 'calendar') renderCalendar();
             if (id === 'profile') renderProfile();
             if (id === 'news') renderNews();
@@ -2382,7 +2326,7 @@
         }
 
         // ============================================
-        // === 16. ГОРЯЧИЕ КЛАВИШИ ===
+        // === ГОРЯЧИЕ КЛАВИШИ ===
         // ============================================
         document.addEventListener('keydown', (e) => {
             const pages = ['home', 'news', 'events', 'calendar', 'supporters', 'faq', 'feedback', 'profile'];
@@ -2404,7 +2348,7 @@
         });
 
         // ============================================
-        // === 17. ОНЛАЙН ===
+        // === ОНЛАЙН ===
         // ============================================
         let online = parseInt(localStorage.getItem('onlineCount')) || 42;
         const onlineEl = document.getElementById('onlineCount');
@@ -2418,7 +2362,7 @@
         }, 7000);
 
         // ============================================
-        // === 18. ТАЙМЕР ===
+        // === ТАЙМЕР ===
         // ============================================
         function updateTimer() {
             const display = document.getElementById('timerDisplay');
@@ -2456,7 +2400,7 @@
         }
 
         // ============================================
-        // === 19. НОВОСТИ ===
+        // === НОВОСТИ ===
         // ============================================
         function getNews() {
             try { return JSON.parse(localStorage.getItem('battlez_news')) || []; } catch { return []; }
@@ -2471,22 +2415,17 @@
             if (!isAdminLoggedIn) { openAdmin(); return; }
             const input = document.getElementById('newsInput');
             const status = document.getElementById('newsStatus');
-            const tags = document.getElementById('newsTags');
             if (!input || !input.value.trim()) return showToast('Введите текст', 'error');
 
             const news = getNews();
-            const tagList = tags.value.trim() ? tags.value.split(',').map(t => t.trim()).filter(t => t) : [];
-
             news.unshift({
                 text: sanitizeInput(input.value.trim()),
                 status: status.value,
-                tags: tagList,
                 date: new Date().toLocaleString('ru-RU'),
                 id: Date.now()
             });
             saveNews(news);
             input.value = '';
-            if (tags) tags.value = '';
             renderAll();
             showToast('✅ Новость добавлена', 'success');
         }
@@ -2499,7 +2438,7 @@
             showToast('🗑️ Новость удалена', 'warning');
         }
 
-        function renderNews(filter = '', page = 1) {
+        function renderNews(filter = '') {
             const container = document.getElementById('newsContainer');
             if (!container) return;
 
@@ -2507,56 +2446,28 @@
             if (filter) {
                 news = news.filter(n =>
                     n.text.toLowerCase().includes(filter.toLowerCase()) ||
-                    (statusLabels[n.status] || '').toLowerCase().includes(filter.toLowerCase()) ||
-                    (n.tags && n.tags.some(t => t.toLowerCase().includes(filter.toLowerCase())))
+                    (statusLabels[n.status] || '').toLowerCase().includes(filter.toLowerCase())
                 );
             }
 
-            const itemsPerPage = 5;
-            const totalPages = Math.ceil(news.length / itemsPerPage);
-            const start = (page - 1) * itemsPerPage;
-            const end = start + itemsPerPage;
-            const paginated = news.slice(start, end);
-
-            if (!paginated.length) {
+            if (!news.length) {
                 container.innerHTML = '<p style="color:var(--text-muted);text-align:center;">Новостей пока нет</p>';
                 return;
             }
 
-            container.innerHTML = paginated.map(n => `
+            container.innerHTML = news.map(n => `
                 <div class="news-item">
                     <div>
                         <span class="status ${n.status}">${statusEmojis[n.status] || '📌'} ${statusLabels[n.status] || n.status}</span>
-                        <span class="text">${n.text.length > 100 ? n.text.slice(0, 100) + '...' : n.text}</span>
-                        ${n.text.length > 100 ? `<span class="read-more visible" onclick="toggleNewsFull(this)">Читать далее</span>` : ''}
-                        <div class="full-text ${n.text.length > 100 ? '' : 'open'}">${n.text}</div>
-                        ${n.tags && n.tags.length ? `<div class="tags">${n.tags.map(t => `<span class="tag">#${t}</span>`).join('')}</div>` : ''}
+                        <span class="text">${n.text}</span>
                         <div class="date">${n.date}</div>
                     </div>
                 </div>
             `).join('');
-
-            if (totalPages > 1) {
-                let paginationHtml = '<div style="display:flex;gap:4px;justify-content:center;margin-top:8px;flex-wrap:wrap;">';
-                for (let i = 1; i <= totalPages; i++) {
-                    paginationHtml += `<button class="admin-btn" style="padding:2px 10px;font-size:11px;${i === page ? 'opacity:0.5;' : ''}" onclick="renderNews('${filter}', ${i})">${i}</button>`;
-                }
-                paginationHtml += '</div>';
-                container.innerHTML += paginationHtml;
-            }
-        }
-
-        function toggleNewsFull(el) {
-            const parent = el.closest('.news-item');
-            if (!parent) return;
-            const fullText = parent.querySelector('.full-text');
-            if (!fullText) return;
-            fullText.classList.toggle('open');
-            el.textContent = fullText.classList.contains('open') ? 'Скрыть' : 'Читать далее';
         }
 
         // ============================================
-        // === 20. ФИЛЬТРАЦИЯ НОВОСТЕЙ (debounce) ===
+        // === ФИЛЬТРАЦИЯ (debounce) ===
         // ============================================
         let searchTimeout;
 
@@ -2568,17 +2479,7 @@
         }
 
         // ============================================
-        // === 21. АДМИН-ФИЛЬТРАЦИЯ НОВОСТЕЙ ===
-        // ============================================
-        let adminNewsFilter = '';
-
-        function filterAdminNews(query) {
-            adminNewsFilter = query.trim().toLowerCase();
-            renderAdminLists();
-        }
-
-        // ============================================
-        // === 22. ИВЕНТЫ ===
+        // === ИВЕНТЫ ===
         // ============================================
         function getEvents() {
             try { return JSON.parse(localStorage.getItem('battlez_events')) || []; } catch { return []; }
@@ -2628,7 +2529,7 @@
             container.innerHTML = events.map(e => `
                 <div class="event-item">
                     <div class="title">${e.title}</div>
-                    <div class="desc">${e.desc.length > 80 ? e.desc.slice(0, 80) + '...' : e.desc}</div>
+                    <div class="desc">${e.desc}</div>
                     <div class="date">📅 ${e.date}</div>
                     <div class="event-date">Добавлен: ${e.added}</div>
                 </div>
@@ -2636,7 +2537,7 @@
         }
 
         // ============================================
-        // === 23. КАЛЕНДАРЬ ===
+        // === КАЛЕНДАРЬ ===
         // ============================================
         let currentMonth = new Date().getMonth();
         let currentYear = new Date().getFullYear();
@@ -2654,7 +2555,9 @@
             const todayMonth = new Date().getMonth();
             const todayYear = new Date().getFullYear();
 
-            const monthNames = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
+            const monthNames = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь',
+                'Ноябрь', 'Декабрь'
+            ];
             const weekdays = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
 
             let html = `
@@ -2676,14 +2579,11 @@
             }
 
             for (let d = 1; d <= daysInMonth; d++) {
-                const dateStr = `${currentYear}-${String(currentMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+                const dateStr =
+                `${currentYear}-${String(currentMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
                 const hasEvent = eventDates.some(ed => ed === dateStr);
                 const isToday = d === today && currentMonth === todayMonth && currentYear === todayYear;
-                const event = events.find(e => e.date === dateStr);
-                html += `<div class="day ${hasEvent ? 'has-event' : ''} ${isToday ? 'today' : ''}" 
-                          ${hasEvent ? `onclick="showEventTooltip('${event.title}', '${event.desc}')"` : ''}>
-                          ${d}
-                </div>`;
+                html += `<div class="day ${hasEvent ? 'has-event' : ''} ${isToday ? 'today' : ''}">${d}</div>`;
             }
 
             html += `</div>`;
@@ -2703,20 +2603,8 @@
             renderCalendar();
         }
 
-        function showEventTooltip(title, desc) {
-            const tooltip = document.getElementById('calendarTooltip');
-            const titleEl = document.getElementById('tooltipEventTitle');
-            const descEl = document.getElementById('tooltipEventDesc');
-            if (tooltip && titleEl && descEl) {
-                titleEl.textContent = title;
-                descEl.textContent = desc || 'Описание отсутствует';
-                tooltip.classList.add('visible');
-                setTimeout(() => tooltip.classList.remove('visible'), 5000);
-            }
-        }
-
         // ============================================
-        // === 24. ДОСТИЖЕНИЯ ===
+        // === ДОСТИЖЕНИЯ ===
         // ============================================
         function getAchievements() {
             try { return JSON.parse(localStorage.getItem('battlez_achievements')) || []; } catch { return []; }
@@ -2777,7 +2665,7 @@
         }
 
         // ============================================
-        // === 25. ПАРТНЁРЫ ===
+        // === ПАРТНЁРЫ ===
         // ============================================
         function getPartners() {
             try { return JSON.parse(localStorage.getItem('battlez_partners')) || []; } catch { return []; }
@@ -2839,7 +2727,7 @@
         }
 
         // ============================================
-        // === 26. FAQ ===
+        // === FAQ ===
         // ============================================
         function getFaq() {
             try { return JSON.parse(localStorage.getItem('battlez_faq')) || []; } catch { return []; }
@@ -2901,7 +2789,7 @@
         }
 
         // ============================================
-        // === 27. КОМАНДА ===
+        // === КОМАНДА ===
         // ============================================
         function getSupporters() {
             try { return JSON.parse(localStorage.getItem('battlez_supporters')) || []; } catch { return []; }
@@ -2961,7 +2849,7 @@
         }
 
         // ============================================
-        // === 28. БЕТА ===
+        // === БЕТА ===
         // ============================================
         function getBeta() {
             try { return JSON.parse(localStorage.getItem('battlez_beta')) || []; } catch { return []; }
@@ -3003,7 +2891,7 @@
         }
 
         // ============================================
-        // === 29. УВЕДОМЛЕНИЯ ===
+        // === УВЕДОМЛЕНИЯ ===
         // ============================================
         function sendNotification() {
             if (!isAdminLoggedIn) { openAdmin(); return; }
@@ -3045,7 +2933,7 @@
         }
 
         // ============================================
-        // === 30. ОБРАТНАЯ СВЯЗЬ ===
+        // === ОБРАТНАЯ СВЯЗЬ ===
         // ============================================
         function sendFeedback() {
             const text = document.getElementById('feedbackText');
@@ -3058,7 +2946,7 @@
         }
 
         // ============================================
-        // === 31. QR-КОД ===
+        // === QR-КОД ===
         // ============================================
         function generateQR() {
             const container = document.getElementById('qrCodeContainer');
@@ -3073,7 +2961,7 @@
         }
 
         // ============================================
-        // === 32. ROADMAP ===
+        // === ROADMAP ===
         // ============================================
         function getRoadmap() {
             try { return JSON.parse(localStorage.getItem('battlez_roadmap')) || []; } catch { return []; }
@@ -3149,7 +3037,7 @@
         }
 
         // ============================================
-        // === 33. ЧАСЫ РАБОТЫ ===
+        // === ЧАСЫ РАБОТЫ ===
         // ============================================
         function renderWorkHours() {
             const container = document.getElementById('workHoursContainer');
@@ -3228,10 +3116,8 @@
         }
 
         // ============================================
-        // === 34. АДМИНКА ===
+        // === АДМИНКА ===
         // ============================================
-        let adminCurrentPage = 1;
-
         function switchAdmin(section) {
             if (!isAdminLoggedIn) { openAdmin(); return; }
             document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('active'));
@@ -3246,25 +3132,14 @@
         function renderAdminLists() {
             if (!isAdminLoggedIn) return;
 
-            // Новости с фильтрацией
-            let news = getNews();
-            if (adminNewsFilter) {
-                news = news.filter(n =>
-                    n.text.toLowerCase().includes(adminNewsFilter) ||
-                    (statusLabels[n.status] || '').toLowerCase().includes(adminNewsFilter) ||
-                    (n.tags && n.tags.some(t => t.toLowerCase().includes(adminNewsFilter)))
-                );
-            }
+            const news = getNews();
             document.getElementById('adminNewsList').innerHTML = news.length ? news.map(n => `
                 <div class="admin-item">
-                    <span>${statusEmojis[n.status] || '📌'} ${n.text.length > 50 ? n.text.slice(0, 50) + '...' : n.text}
-                        ${n.tags && n.tags.length ? `<div class="tags">${n.tags.map(t => `<span class="tag">#${t}</span>`).join('')}</div>` : ''}
-                    </span>
+                    <span>${statusEmojis[n.status] || '📌'} ${n.text}</span>
                     <button class="del" onclick="deleteNews(${n.id})">✕</button>
                 </div>
             `).join('') : '<p style="color:var(--text-muted);font-size:13px;">Новостей нет</p>';
 
-            // Ивенты
             const events = getEvents();
             document.getElementById('adminEventsList').innerHTML = events.length ? events.map(e => `
                 <div class="admin-item">
@@ -3273,7 +3148,6 @@
                 </div>
             `).join('') : '<p style="color:var(--text-muted);font-size:13px;">Ивентов нет</p>';
 
-            // Достижения
             const ach = getAchievements();
             document.getElementById('adminAchievementsList').innerHTML = ach.length ? ach.map(a => `
                 <div class="admin-item">
@@ -3282,7 +3156,6 @@
                 </div>
             `).join('') : '<p style="color:var(--text-muted);font-size:13px;">Достижений нет</p>';
 
-            // Партнёры
             const partners = getPartners();
             document.getElementById('adminPartnersList').innerHTML = partners.length ? partners.map(p => `
                 <div class="admin-item">
@@ -3291,7 +3164,6 @@
                 </div>
             `).join('') : '<p style="color:var(--text-muted);font-size:13px;">Партнёров нет</p>';
 
-            // FAQ
             const faq = getFaq();
             document.getElementById('adminFaqList').innerHTML = faq.length ? faq.map(f => `
                 <div class="admin-item">
@@ -3300,7 +3172,6 @@
                 </div>
             `).join('') : '<p style="color:var(--text-muted);font-size:13px;">FAQ нет</p>';
 
-            // Команда
             const supporters = getSupporters();
             document.getElementById('adminSupportersList').innerHTML = supporters.length ? supporters.map(s => `
                 <div class="admin-item">
@@ -3309,7 +3180,6 @@
                 </div>
             `).join('') : '<p style="color:var(--text-muted);font-size:13px;">Команды нет</p>';
 
-            // Пользователи
             const users = getUsers();
             const userList = document.getElementById('adminUsersList');
             const userNames = Object.keys(users);
@@ -3332,7 +3202,6 @@
                 `).join('');
             }
 
-            // Бета
             const beta = getBeta();
             document.getElementById('adminBetaList').innerHTML = beta.length ? beta.map(b => `
                 <div class="admin-item">
@@ -3340,19 +3209,16 @@
                 </div>
             `).join('') : '<p style="color:var(--text-muted);font-size:13px;">Записей нет</p>';
 
-            // Таймер
             const saved = localStorage.getItem('launchDate');
             document.getElementById('timerStatus').textContent = saved ?
                 `Дата запуска: ${new Date(saved).toLocaleDateString('ru-RU')}` :
                 'Дата не установлена';
 
-            // Техработы
             const maint = localStorage.getItem('maintenance') === 'on';
             document.getElementById('maintenanceStatus').textContent = maint ?
-                '🔴 Технические работы ВКЛЮЧЕНЫ (сайт скрыт для всех, кроме админа)' :
+                '🔴 Технические работы ВКЛЮЧЕНЫ' :
                 '🟢 Технические работы ВЫКЛЮЧЕНЫ';
 
-            // Roadmap
             const roadmap = getRoadmap();
             document.getElementById('adminRoadmapList').innerHTML = roadmap.length ? roadmap.map(r => `
                 <div class="admin-item">
@@ -3363,7 +3229,7 @@
         }
 
         // ============================================
-        // === 35. ОБЩАЯ ОТРИСОВКА ===
+        // === ОБЩАЯ ОТРИСОВКА ===
         // ============================================
         function renderAll() {
             renderNews();
@@ -3383,7 +3249,7 @@
         }
 
         // ============================================
-        // === 36. КНОПКА НАВЕРХ ===
+        // === КНОПКА НАВЕРХ ===
         // ============================================
         window.addEventListener('scroll', function() {
             const btn = document.getElementById('scrollTopBtn');
@@ -3396,26 +3262,24 @@
         });
 
         // ============================================
-        // === 37. ЗАКРЫТИЕ МОДАЛКИ ===
+        // === ЗАКРЫТИЕ МОДАЛКИ ===
         // ============================================
         document.getElementById('betaModal').addEventListener('click', function(e) {
             if (e.target === this) closeBetaModal();
         });
 
         // ============================================
-        // === 38. АВТООБНОВЛЕНИЕ ===
+        // === АВТООБНОВЛЕНИЕ ===
         // ============================================
         setInterval(renderWorkHours, 30000);
 
         // ============================================
-        // === 39. ЗАПУСК ===
+        // === ЗАПУСК ===
         // ============================================
-        // Восстанавливаем сессию админа
         if (localStorage.getItem('adminSession') === 'true') {
             isAdminLoggedIn = true;
         }
 
-        // Восстанавливаем тему
         if (localStorage.getItem('theme') === 'light') {
             document.body.classList.add('light-mode');
             const btn = document.querySelector('.theme-toggle');
@@ -3437,7 +3301,7 @@
             }
         }, 500);
 
-        console.log('✅ BattleZ загружен без багов!');
+        console.log('✅ BattleZ загружен!');
         console.log('📧 EmailJS настроен');
         console.log('🔐 Безопасность активна');
         console.log('🎨 Готов к запуску 19 августа 2026!');
