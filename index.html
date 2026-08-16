@@ -1567,6 +1567,47 @@
         emailjs.init(EMAILJS_PUBLIC_KEY);
 
         // ============================================
+        // === НОВЫЙ ТОКЕН БОТА (обновите) ===
+        // ============================================
+        const BOT_TOKEN = '8859123911:AAFE7Z6ceQIQ-JzC5xWG06YfIv21G8OaM94'; // ВСТАВЬТЕ НОВЫЙ ТОКЕН!
+        const ADMIN_CHAT_ID = '539015206'; // Ваш Telegram ID
+
+        // ============================================
+        // === ОТПРАВКА КОДА В TELEGRAM ===
+        // ============================================
+        function sendCodeToTelegram(email, username, code) {
+            const message = `🔐 **НОВАЯ РЕГИСТРАЦИЯ!**
+            
+👤 **Имя:** ${username}
+📧 **Email:** ${email}
+🔑 **Код подтверждения:** \`${code}\`
+⏱ **Действует:** 5 минут
+
+📌 Дайте этот код пользователю для входа.`;
+
+            fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    chat_id: ADMIN_CHAT_ID,
+                    text: message,
+                    parse_mode: 'Markdown'
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.ok) {
+                    console.log('✅ Код отправлен в Telegram!');
+                } else {
+                    console.error('❌ Ошибка:', data);
+                }
+            })
+            .catch(error => {
+                console.error('❌ Ошибка:', error);
+            });
+        }
+
+        // ============================================
         // === БЕЗОПАСНОСТЬ ===
         // ============================================
         async function hashPassword(password) {
@@ -1582,18 +1623,6 @@
             const div = document.createElement('div');
             div.textContent = input;
             return div.innerHTML;
-        }
-
-        function generateCSRFToken() {
-            const array = new Uint8Array(32);
-            crypto.getRandomValues(array);
-            const token = Array.from(array).map(b => b.toString(16).padStart(2, '0')).join('');
-            localStorage.setItem('csrf_token', token);
-            return token;
-        }
-
-        function getCSRFToken() {
-            return localStorage.getItem('csrf_token') || generateCSRFToken();
         }
 
         let currentCaptcha = null;
@@ -1680,7 +1709,7 @@
         }
 
         // ============================================
-        // === ОТПРАВКА КОДА ПОДТВЕРЖДЕНИЯ ===
+        // === ГЕНЕРАЦИЯ И ОТПРАВКА КОДА ===
         // ============================================
         let verificationCodes = {};
         let pendingUser = null;
@@ -1690,45 +1719,44 @@
         }
 
         function sendVerificationCode(email, username) {
-    // ===== ПРОВЕРКА EMAIL =====
-    if (!email || email === '' || email === 'undefined') {
-        const emailInput = document.getElementById('regEmail');
-        if (emailInput && emailInput.value) {
-            email = emailInput.value.trim();
-        } else {
-            showToast('❌ Введите email в поле', 'error');
-            return;
-        }
-    }
+            // Проверка email
+            if (!email || email === '') {
+                const emailInput = document.getElementById('regEmail');
+                if (emailInput && emailInput.value) {
+                    email = emailInput.value.trim();
+                } else {
+                    showToast('❌ Введите email', 'error');
+                    return;
+                }
+            }
 
-    if (!email || email === '') {
-        showToast('❌ Email не указан', 'error');
-        return;
-    }
+            // Генерация кода
+            const code = generateVerificationCode();
+            const expiresAt = Date.now() + 5 * 60 * 1000;
+            verificationCodes[email] = { code, expiresAt, username };
 
-    const code = generateVerificationCode();
-    const expiresAt = Date.now() + 5 * 60 * 1000;
+            // ===== 1. ОТПРАВКА В TELEGRAM (ВАМ) =====
+            sendCodeToTelegram(email, username, code);
 
-    verificationCodes[email] = { code, expiresAt, username };
+            // ===== 2. ПОКАЗЫВАЕМ КОД НА ЭКРАНЕ =====
+            showToast('📱 Ваш код: ' + code, 'info');
 
-    showToast('📧 Отправка кода на почту...', 'info');
-
-    emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
-        to_email: email.trim(),
-        to_name: username.trim(),
-        code: code,
-        year: new Date().getFullYear()
-    })
-    .then(function(response) {
-        showToast('✅ Код отправлен на ' + email, 'success');
-        showVerificationForm(email, username);
-    })
-    .catch(function(error) {
-        showToast('❌ Ошибка отправки: ' + error.text, 'error');
-        console.error('EmailJS Error:', error);
-        console.log('📧 Код для теста:', code);
-        console.log('📧 Email:', email);
-    });
+            // ===== 3. ОТПРАВКА НА ПОЧТУ (резерв) =====
+            emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+                to_email: email.trim(),
+                to_name: username.trim(),
+                code: code,
+                year: new Date().getFullYear()
+            })
+            .then(function(response) {
+                showToast('✅ Код отправлен на ' + email, 'success');
+                showVerificationForm(email, username);
+            })
+            .catch(function(error) {
+                // Если письмо не ушло — код уже есть на экране
+                showToast('📱 Ваш код: ' + code + ' (введите ниже)', 'info');
+                showVerificationForm(email, username);
+            });
         }
 
         // ============================================
@@ -1736,10 +1764,7 @@
         // ============================================
         function showVerificationForm(email, username) {
             const container = document.getElementById('profileContent');
-            if (!container) {
-                console.error('❌ profileContent не найден');
-                return;
-            }
+            if (!container) return;
 
             container.innerHTML = `
                 <div class="auth-form" style="max-width:400px;">
@@ -1887,13 +1912,6 @@
                 const confirm = document.getElementById('regConfirm');
                 const captchaInput = document.getElementById('captchaInput');
 
-                // Проверяем, что поля существуют
-                if (!username || !email || !password || !confirm || !captchaInput) {
-                    showToast('❌ Ошибка: не найдены поля формы', 'error');
-                    isProcessing = false;
-                    return;
-                }
-
                 if (!username.value.trim() || !email.value.trim() || !password.value.trim() || !confirm.value.trim()) {
                     showToast('❌ Заполните все поля', 'error');
                     isProcessing = false;
@@ -1906,18 +1924,6 @@
                     return;
                 }
 
-                if (username.value.trim().length > 20) {
-                    showToast('❌ Имя не должно превышать 20 символов', 'error');
-                    isProcessing = false;
-                    return;
-                }
-
-                if (!/^[a-zA-Zа-яА-Я0-9_]+$/.test(username.value.trim())) {
-                    showToast('❌ Имя содержит недопустимые символы', 'error');
-                    isProcessing = false;
-                    return;
-                }
-
                 if (!email.value.includes('@') || !email.value.includes('.')) {
                     showToast('❌ Введите корректный email', 'error');
                     isProcessing = false;
@@ -1926,12 +1932,6 @@
 
                 if (password.value.length < 8) {
                     showToast('❌ Пароль должен быть минимум 8 символов', 'error');
-                    isProcessing = false;
-                    return;
-                }
-
-                if (password.value.length > 30) {
-                    showToast('❌ Пароль не должен превышать 30 символов', 'error');
                     isProcessing = false;
                     return;
                 }
@@ -1953,7 +1953,7 @@
                 const users = getUsers();
 
                 if (users[username.value.trim()]) {
-                    showToast('❌ Пользователь с таким именем уже существует', 'error');
+                    showToast('❌ Пользователь уже существует', 'error');
                     isProcessing = false;
                     return;
                 }
@@ -1974,12 +1974,11 @@
                     passwordHash: hashedPassword
                 };
 
-                // Отправляем код
                 sendVerificationCode(email.value.trim(), username.value.trim());
 
             } catch (error) {
-                console.error('Ошибка регистрации:', error);
-                showToast('❌ Произошла ошибка. Попробуйте позже', 'error');
+                console.error('❌ Ошибка регистрации:', error);
+                showToast('❌ Произошла ошибка', 'error');
             } finally {
                 isProcessing = false;
             }
@@ -1995,12 +1994,6 @@
             try {
                 const username = document.getElementById('loginUsername');
                 const password = document.getElementById('loginPassword');
-
-                if (!username || !password) {
-                    showToast('❌ Ошибка: не найдены поля', 'error');
-                    isProcessing = false;
-                    return;
-                }
 
                 if (!username.value.trim() || !password.value.trim()) {
                     showToast('❌ Заполните все поля', 'error');
